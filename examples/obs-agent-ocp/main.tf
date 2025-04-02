@@ -82,7 +82,7 @@ module "ocp_base" {
   worker_pools                        = local.worker_pools
   access_tags                         = var.access_tags
   ocp_entitlement                     = var.ocp_entitlement
-  disable_outbound_traffic_protection = false
+  disable_outbound_traffic_protection = true # set as True to enable outbound traffic
 }
 
 data "ibm_container_cluster_config" "cluster_config" {
