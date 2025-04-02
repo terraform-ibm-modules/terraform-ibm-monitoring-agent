@@ -72,7 +72,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 
 	var region = validRegions[rand.IntN(len(validRegions))]
 	// ------------------------------------------------------------------------------------------------------
-	// Deploy SLZ ROKS Cluster and Observability instances since it is needed to deploy Monitoring Agent
+	// Deploy SLZ ROKS Cluster and Monitoring instances since it is needed to deploy Monitoring Agent
 	// ------------------------------------------------------------------------------------------------------
 
 	prefix := fmt.Sprintf("slz-%s", strings.ToLower(random.UniqueId()))
@@ -101,7 +101,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
 
 	if existErr != nil {
-		assert.True(t, existErr == nil, "Init and Apply of temp resources (SLZ-ROKS and Observability Instances) failed")
+		assert.True(t, existErr == nil, "Init and Apply of temp resources (SLZ-ROKS and Monitoring Instances) failed")
 	} else {
 
 		options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -130,7 +130,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 			{Name: "cloud_monitoring_instance_region", Value: region, DataType: "string"},
-			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "workload_cluster_id"), DataType: "string"},
+			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "cloud_monitoring_access_key", Value: terraform.Output(t, existingTerraformOptions, "cloud_monitoring_access_key"), DataType: "string", Secure: true},
 			{Name: "prefix", Value: options.Prefix, DataType: "string"},
@@ -159,7 +159,7 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 	var region = validRegions[rand.IntN(len(validRegions))]
 
 	// ------------------------------------------------------------------------------------------------------
-	// Deploy SLZ ROKS Cluster and Observability instances since it is needed to deploy Monitoring Agent
+	// Deploy SLZ ROKS Cluster and Monitoring instances since it is needed to deploy Monitoring Agent
 	// ------------------------------------------------------------------------------------------------------
 
 	prefix := fmt.Sprintf("slz-%s", strings.ToLower(random.UniqueId()))
@@ -188,7 +188,7 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
 
 	if existErr != nil {
-		assert.True(t, existErr == nil, "Init and Apply of temp resources (SLZ-ROKS and Observability Instances) failed")
+		assert.True(t, existErr == nil, "Init and Apply of temp resources (SLZ-ROKS and Monitoring Instances) failed")
 	} else {
 
 		options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{

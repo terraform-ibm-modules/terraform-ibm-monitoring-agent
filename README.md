@@ -6,7 +6,7 @@
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-This module deploys the following observability agents to an IBM Cloud Red Hat OpenShift Container Platform or Kubernetes cluster:
+This module deploys the following monitoring agent to an IBM Cloud Red Hat OpenShift Container Platform or Kubernetes cluster:
 
 - [Monitoring agent](https://cloud.ibm.com/docs/monitoring?topic=monitoring-about-collect-metrics)
 
@@ -30,7 +30,7 @@ This module deploys the following observability agents to an IBM Cloud Red Hat O
 # ############################################################################
 
 data "ibm_container_cluster_config" "cluster_config" {
-  # update this value with the Id of the cluster where these agents will be provisioned
+  # update this value with the Id of the cluster where these agent will be provisioned
   cluster_name_id = "cluster_id"
 }
 
@@ -49,23 +49,17 @@ provider "helm" {
     token                  = data.ibm_container_cluster_config.cluster_config.token
     cluster_ca_certificate = data.ibm_container_cluster_config.cluster_config.ca_certificate
   }
-  # IBM Cloud credentials are required to authenticate to the helm repo
-  registry {
-    url = "oci://icr.io/ibm/observe/monitoring-agent-helm"
-    username = "iamapikey"
-    password = "XXXXXXXXXXXXXXXXX" # replace with an IBM cloud apikey   # pragma: allowlist secret
-  }
 }
 
 # ############################################################################
-# Install observability agents
+# Install monitoring agents
 # ############################################################################
 
-module "observability_agents" {
-  source                           = "terraform-ibm-modules/observability-agents/ibm"
+module "monitoring_agents" {
+  source                           = "terraform-ibm-modules/monitoring-agent/ibm"
   version                          = "X.X.X" # Replace "X.X.X" with a release version to lock into a specific release
   is_vpc_cluster                   = true # Change to false if target cluster is running on classic infrastructure
-  cluster_id                       = "cluster id" # update this with your cluster id where the agents will be installed
+  cluster_id                       = "cluster id" # update this with your cluster id where the agent will be installed
   cluster_resource_group_id        = "resource group id" # update this with the Id of your IBM Cloud resource group
   cloud_monitoring_access_key      = "XXXXXXXX"
   cloud_monitoring_instance_region = "us-south"
@@ -108,22 +102,22 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_chart_location"></a> [chart\_location](#input\_chart\_location) | Location of the chart to be used for the Cloud Monitoring agent. Default value is 'ibm-sysdig/agent' | `string` | `"https://charts.sysdig.com/"` | no |
+| <a name="input_chart_repository"></a> [chart\_repository](#input\_chart\_repository) | Repository of the chart to be used for the Cloud Monitoring agent. Default value is 'ibm-sysdig/agent' | `string` | `"sysdig-deploy"` | no |
 | <a name="input_cloud_monitoring_access_key"></a> [cloud\_monitoring\_access\_key](#input\_cloud\_monitoring\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance | `string` | `null` | no |
-| <a name="input_cloud_monitoring_add_cluster_name"></a> [cloud\_monitoring\_add\_cluster\_name](#input\_cloud\_monitoring\_add\_cluster\_name) | If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data. | `bool` | `true` | no |
 | <a name="input_cloud_monitoring_agent_name"></a> [cloud\_monitoring\_agent\_name](#input\_cloud\_monitoring\_agent\_name) | Cloud Monitoring agent name. Used for naming all kubernetes and helm resources on the cluster. | `string` | `"sysdig-agent"` | no |
 | <a name="input_cloud_monitoring_agent_namespace"></a> [cloud\_monitoring\_agent\_namespace](#input\_cloud\_monitoring\_agent\_namespace) | Namespace where to deploy the Cloud Monitoring agent. Default value is 'ibm-observe' | `string` | `"ibm-observe"` | no |
-| <a name="input_cloud_monitoring_agent_tags"></a> [cloud\_monitoring\_agent\_tags](#input\_cloud\_monitoring\_agent\_tags) | List of tags to associate to all matrics that the agent collects. NOTE: Use the 'cloud\_monitoring\_add\_cluster\_name' variable to add the cluster name as a tag. | `list(string)` | `[]` | no |
 | <a name="input_cloud_monitoring_agent_tolerations"></a> [cloud\_monitoring\_agent\_tolerations](#input\_cloud\_monitoring\_agent\_tolerations) | List of tolerations to apply to Cloud Monitoring agent. | <pre>list(object({<br/>    key               = optional(string)<br/>    operator          = optional(string)<br/>    value             = optional(string)<br/>    effect            = optional(string)<br/>    tolerationSeconds = optional(number)<br/>  }))</pre> | <pre>[<br/>  {<br/>    "operator": "Exists"<br/>  },<br/>  {<br/>    "effect": "NoSchedule",<br/>    "key": "node-role.kubernetes.io/master",<br/>    "operator": "Exists"<br/>  }<br/>]</pre> | no |
 | <a name="input_cloud_monitoring_container_filter"></a> [cloud\_monitoring\_container\_filter](#input\_cloud\_monitoring\_container\_filter) | To filter custom containers, specify which containers to include or exclude from metrics collection for the cloud monitoring agent. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_filter_data. | <pre>list(object({<br/>    type      = string<br/>    parameter = string<br/>    name      = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_cloud_monitoring_enabled"></a> [cloud\_monitoring\_enabled](#input\_cloud\_monitoring\_enabled) | Deploy IBM Cloud Monitoring agent | `bool` | `true` | no |
 | <a name="input_cloud_monitoring_endpoint_type"></a> [cloud\_monitoring\_endpoint\_type](#input\_cloud\_monitoring\_endpoint\_type) | Specify the IBM Cloud Monitoring instance endpoint type (public or private) to use. Used to construct the ingestion endpoint. | `string` | `"private"` | no |
 | <a name="input_cloud_monitoring_instance_region"></a> [cloud\_monitoring\_instance\_region](#input\_cloud\_monitoring\_instance\_region) | The IBM Cloud Monitoring instance region. Used to construct the ingestion endpoint. | `string` | `null` | no |
 | <a name="input_cloud_monitoring_metrics_filter"></a> [cloud\_monitoring\_metrics\_filter](#input\_cloud\_monitoring\_metrics\_filter) | To filter custom metrics, specify the Cloud Monitoring metrics to include or to exclude. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics. | <pre>list(object({<br/>    type = string<br/>    name = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_cloud_monitoring_secret_name"></a> [cloud\_monitoring\_secret\_name](#input\_cloud\_monitoring\_secret\_name) | The name of the secret which will store the access key. | `string` | `"sysdig-agent"` | no |
 | <a name="input_cluster_config_endpoint_type"></a> [cluster\_config\_endpoint\_type](#input\_cluster\_config\_endpoint\_type) | Specify which type of endpoint to use for for cluster config access: 'default', 'private', 'vpe', 'link'. 'default' value will use the default endpoint of the cluster. | `string` | `"default"` | no |
-| <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | The ID of the cluster you wish to deploy the agents in | `string` | n/a | yes |
+| <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | The ID of the cluster you wish to deploy the agent in | `string` | n/a | yes |
 | <a name="input_cluster_resource_group_id"></a> [cluster\_resource\_group\_id](#input\_cluster\_resource\_group\_id) | The Resource Group ID of the cluster | `string` | n/a | yes |
-| <a name="input_is_vpc_cluster"></a> [is\_vpc\_cluster](#input\_is\_vpc\_cluster) | Specify true if the target cluster for the observability agents is a VPC cluster, false if it is a classic cluster. | `bool` | `true` | no |
+| <a name="input_is_vpc_cluster"></a> [is\_vpc\_cluster](#input\_is\_vpc\_cluster) | Specify true if the target cluster for the monitoring agent is a VPC cluster, false if it is a classic cluster. | `bool` | `true` | no |
+| <a name="input_node_analyzer_enabled"></a> [node\_analyzer\_enabled](#input\_node\_analyzer\_enabled) | Enable the node analyzer. The node analyzer is a component of the IBM Cloud Monitoring agent that collects and sends data about the nodes in your cluster to the IBM Cloud Monitoring service. | `bool` | `false` | no |
 | <a name="input_wait_till"></a> [wait\_till](#input\_wait\_till) | To avoid long wait times when you run your Terraform code, you can specify the stage when you want Terraform to mark the cluster resource creation as completed. Depending on what stage you choose, the cluster creation might not be fully completed and continues to run in the background. However, your Terraform code can continue to run without waiting for the cluster to be fully created. Supported args are `MasterNodeReady`, `OneWorkerNodeReady`, `IngressReady` and `Normal` | `string` | `"Normal"` | no |
 | <a name="input_wait_till_timeout"></a> [wait\_till\_timeout](#input\_wait\_till\_timeout) | Timeout for wait\_till in minutes. | `number` | `90` | no |
 

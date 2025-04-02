@@ -1,8 +1,8 @@
 #! /bin/bash
 
 ############################################################################################################
-## This script is used by the catalog pipeline to deploy the SLZ ROKS and Observability instances,
-## which are the prerequisites for the Observability Agents extension.
+## This script is used by the catalog pipeline to deploy the SLZ ROKS and Monitoring instances,
+## which are the prerequisites for the Monitoring Agent extension.
 ############################################################################################################
 
 set -e
@@ -16,7 +16,7 @@ TF_VARS_FILE="terraform.tfvars"
 (
   cwd=$(pwd)
   cd ${TERRAFORM_SOURCE_DIR}
-  echo "Provisioning prerequisite SLZ ROKS CLUSTER and Observability Instances .."
+  echo "Provisioning prerequisite SLZ ROKS CLUSTER and Monitoring Instances .."
   terraform init || exit 1
   # $VALIDATION_APIKEY is available in the catalog runtime
   {

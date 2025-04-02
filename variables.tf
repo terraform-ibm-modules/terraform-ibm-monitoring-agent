@@ -4,7 +4,7 @@
 
 variable "cluster_id" {
   type        = string
-  description = "The ID of the cluster you wish to deploy the agents in"
+  description = "The ID of the cluster you wish to deploy the agent in"
 }
 
 variable "cluster_resource_group_id" {
@@ -24,7 +24,7 @@ variable "cluster_config_endpoint_type" {
 }
 
 variable "is_vpc_cluster" {
-  description = "Specify true if the target cluster for the observability agents is a VPC cluster, false if it is a classic cluster."
+  description = "Specify true if the target cluster for the monitoring agent is a VPC cluster, false if it is a classic cluster."
   type        = bool
   default     = true
 }
@@ -68,11 +68,10 @@ variable "cloud_monitoring_access_key" {
   default     = null
 }
 
-variable "cloud_monitoring_secret_name" {
-  type        = string
-  description = "The name of the secret which will store the access key."
-  default     = "sysdig-agent"
-  nullable    = false
+variable "node_analyzer_enabled" {
+  type        = bool
+  description = "Enable the node analyzer. The node analyzer is a component of the IBM Cloud Monitoring agent that collects and sends data about the nodes in your cluster to the IBM Cloud Monitoring service."
+  default     = false
 }
 
 variable "cloud_monitoring_instance_region" {
@@ -118,24 +117,6 @@ variable "cloud_monitoring_container_filter" {
   }
 }
 
-variable "cloud_monitoring_agent_tags" {
-  type        = list(string)
-  description = "List of tags to associate to all matrics that the agent collects. NOTE: Use the 'cloud_monitoring_add_cluster_name' variable to add the cluster name as a tag."
-  default     = []
-  nullable    = false
-
-  validation {
-    condition     = alltrue([for tags in var.cloud_monitoring_agent_tags : !can(regex("\\s", tags))])
-    error_message = "The cloud monitoring agent tags must not contain any spaces."
-  }
-}
-
-variable "cloud_monitoring_add_cluster_name" {
-  type        = bool
-  description = "If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data."
-  default     = true
-}
-
 variable "cloud_monitoring_agent_name" {
   description = "Cloud Monitoring agent name. Used for naming all kubernetes and helm resources on the cluster."
   type        = string
@@ -166,4 +147,18 @@ variable "cloud_monitoring_agent_tolerations" {
       effect   = "NoSchedule"
       key      = "node-role.kubernetes.io/master"
   }]
+}
+
+variable "chart_location" {
+  description = "Location of the chart to be used for the Cloud Monitoring agent. Default value is 'ibm-sysdig/agent'"
+  type        = string
+  default     = "https://charts.sysdig.com/"
+  nullable    = false
+}
+
+variable "chart_repository" {
+  description = "Repository of the chart to be used for the Cloud Monitoring agent. Default value is 'ibm-sysdig/agent'"
+  type        = string
+  default     = "sysdig-deploy"
+  nullable    = false
 }

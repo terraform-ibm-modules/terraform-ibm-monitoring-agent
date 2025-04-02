@@ -16,7 +16,7 @@ variable "prefix" {
 
 variable "cluster_id" {
   type        = string
-  description = "The ID of the cluster to deploy the agents in."
+  description = "The ID of the cluster to deploy the agent in."
 }
 
 variable "cluster_resource_group_id" {
@@ -60,13 +60,6 @@ variable "cloud_monitoring_access_key" {
   default     = null
 }
 
-variable "cloud_monitoring_secret_name" {
-  type        = string
-  description = "The name of the secret that will store the access key. If a prefix input variable is passed, the secret name is prefixed to the value in the `<prefix>-<name>` format."
-  default     = "sysdig-agent"
-  nullable    = false
-}
-
 variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The name of the region where the IBM Cloud Monitoring instance is created. This name is used to construct the ingestion endpoint."
@@ -86,19 +79,6 @@ variable "cloud_monitoring_metrics_filter" {
   }))
   description = "To filter on custom metrics, specify the IBM Cloud Monitoring metrics to include or exclude. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics) and [here](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/solutions/fully-configurable/DA-types.md)."
   default     = [] # [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
-}
-
-variable "cloud_monitoring_agent_tags" {
-  type        = list(string)
-  description = "A list of the tags to associate with the metrics that the IBM Cloud Monitoring agent collects. To add the cluster name as a tag, use the `cloud_monitoring_add_cluster_name` variable."
-  default     = []
-  nullable    = false
-}
-
-variable "cloud_monitoring_add_cluster_name" {
-  type        = bool
-  description = "Whether to attach a tag to log messages. Set to `true` to configure the IBM Cloud Monitoring agent to attach a tag that contains the cluster name to all log messages."
-  default     = true
 }
 
 variable "cloud_monitoring_agent_name" {

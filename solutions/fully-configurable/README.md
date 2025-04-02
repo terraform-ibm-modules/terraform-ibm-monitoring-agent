@@ -1,6 +1,6 @@
 # Cloud automation for Cloud Monitoring Agent
 
-This architecture deploys the following observability agent on a Red Hat OpenShift cluster:
+This architecture deploys the following monitoring agent on a Red Hat OpenShift cluster:
 
 * Cloud Monitoring agent
 

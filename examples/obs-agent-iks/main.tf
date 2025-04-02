@@ -103,26 +103,23 @@ resource "time_sleep" "wait_operators" {
 }
 
 ##############################################################################
-# Observability Instance
+# Monitoring Instance
 ##############################################################################
 
-module "observability_instances" {
-  source                         = "terraform-ibm-modules/observability-instances/ibm"
-  version                        = "3.5.0"
-  resource_group_id              = module.resource_group.resource_group_id
-  region                         = var.region
-  cloud_logs_plan                = "standard"
-  cloud_monitoring_plan          = "graduated-tier"
-  enable_platform_metrics        = false
-  cloud_logs_instance_name       = "${var.prefix}-cloud-logs"
-  cloud_monitoring_instance_name = "${var.prefix}-cloud-monitoring"
+module "cloud_monitoring" {
+  source            = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_monitoring"
+  version           = "3.5.0"
+  instance_name     = "${var.prefix}-cloud-monitoring"
+  resource_group_id = module.resource_group.resource_group_id
+  region            = var.region
+  plan              = "graduated-tier"
 }
 
 ##############################################################################
-# Observability Agents
+# Monitoring Agents
 ##############################################################################
 
-module "observability_agents" {
+module "monitoring_agents" {
   source                    = "../.."
   depends_on                = [time_sleep.wait_operators]
   cluster_id                = local.cluster_name_id
@@ -130,6 +127,6 @@ module "observability_agents" {
   cluster_resource_group_id = module.resource_group.resource_group_id
   # # Monitoring agent
   cloud_monitoring_enabled         = true
-  cloud_monitoring_access_key      = module.observability_instances.cloud_monitoring_access_key
-  cloud_monitoring_instance_region = module.observability_instances.region
+  cloud_monitoring_access_key      = module.cloud_monitoring.access_key
+  cloud_monitoring_instance_region = var.region
 }

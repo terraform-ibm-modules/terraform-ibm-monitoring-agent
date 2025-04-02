@@ -29,12 +29,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 locals {
   # LOCALS
-  cluster_name                      = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publically documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
-  cloud_monitoring_chart_location   = "${path.module}/chart/sysdig-agent"
-  cloud_monitoring_image_tag_digest = "13.8.0@sha256:58dc3f3ed78352954767810672497ceda516eb9450a5c6dd3c801e57ff3a8ffc" # datasource: icr.io/ext/sysdig/agent
-  cloud_monitoring_agent_registry   = "icr.io/ext/sysdig/agent"
-  cloud_monitoring_agent_tags       = var.cloud_monitoring_add_cluster_name ? concat(["ibm.containers-kubernetes.cluster.name:${local.cluster_name}"], var.cloud_monitoring_agent_tags) : var.cloud_monitoring_agent_tags
-  cloud_monitoring_host             = var.cloud_monitoring_enabled ? var.cloud_monitoring_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "logs.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : null
+  cluster_name          = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publically documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
+  cloud_monitoring_host = var.cloud_monitoring_enabled ? var.cloud_monitoring_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "logs.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : null
 
   # TODO: Move this into variable.tf since module requires 1.9 now
   # VARIABLE VALIDATION
@@ -48,7 +44,8 @@ resource "helm_release" "cloud_monitoring_agent" {
   count = var.cloud_monitoring_enabled ? 1 : 0
 
   name             = var.cloud_monitoring_agent_name
-  chart            = local.cloud_monitoring_chart_location
+  chart            = var.chart_location
+  repository       = var.chart_repository
   namespace        = var.cloud_monitoring_agent_namespace
   create_namespace = true
   timeout          = 1200
@@ -58,44 +55,24 @@ resource "helm_release" "cloud_monitoring_agent" {
   reset_values     = true
 
   set {
-    name  = "metadata.name"
-    type  = "string"
-    value = var.cloud_monitoring_agent_name
+    name  = "nodeAnalyzer.enabled"
+    type  = "auto"
+    value = var.node_analyzer_enabled
   }
   set {
-    name  = "image.version"
-    type  = "string"
-    value = local.cloud_monitoring_image_tag_digest
-  }
-  set {
-    name  = "image.registry"
-    type  = "string"
-    value = local.cloud_monitoring_agent_registry
-  }
-  set {
-    name  = "config.clustername"
-    type  = "string"
-    value = local.cluster_name
-  }
-  set {
-    name  = "config.host"
+    name  = "agent.collectorSettings.collectorHost"
     type  = "string"
     value = local.cloud_monitoring_host
   }
   set {
-    name  = "secret.name"
-    type  = "string"
-    value = var.cloud_monitoring_secret_name
-  }
-  set_sensitive {
-    name  = "secret.key"
+    name  = "global.sysdig.accessKey"
     type  = "string"
     value = var.cloud_monitoring_access_key
   }
   set {
-    name  = "config.tags"
+    name  = "global.clusterConfig.name"
     type  = "string"
-    value = join("\\,", local.cloud_monitoring_agent_tags)
+    value = local.cluster_name
   }
 
   values = [yamlencode({

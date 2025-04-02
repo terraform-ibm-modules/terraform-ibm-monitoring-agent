@@ -1,5 +1,5 @@
 ##############################################################################
-# Observability Agents
+# Monitoring Agents
 ##############################################################################
 
 locals {
@@ -14,7 +14,7 @@ data "ibm_container_cluster_config" "cluster_config" {
   endpoint_type     = local.cluster_config_endpoint_type != "default" ? local.cluster_config_endpoint_type : null
 }
 
-module "observability_agents" {
+module "monitoring_agent" {
   source                       = "../.."
   cluster_id                   = var.cluster_id
   cluster_resource_group_id    = var.cluster_resource_group_id
@@ -26,10 +26,7 @@ module "observability_agents" {
   cloud_monitoring_agent_namespace   = var.cloud_monitoring_agent_namespace
   cloud_monitoring_endpoint_type     = var.cloud_monitoring_endpoint_type
   cloud_monitoring_access_key        = var.cloud_monitoring_access_key
-  cloud_monitoring_secret_name       = var.prefix != null ? "${var.prefix}-${var.cloud_monitoring_secret_name}" : var.cloud_monitoring_secret_name
   cloud_monitoring_metrics_filter    = var.cloud_monitoring_metrics_filter
-  cloud_monitoring_agent_tags        = var.cloud_monitoring_agent_tags
   cloud_monitoring_instance_region   = var.cloud_monitoring_instance_region
   cloud_monitoring_agent_tolerations = var.cloud_monitoring_agent_tolerations
-  cloud_monitoring_add_cluster_name  = var.cloud_monitoring_add_cluster_name
 }

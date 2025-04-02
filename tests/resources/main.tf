@@ -62,37 +62,40 @@ locals {
       subnet_prefix    = "default"
       pool_name        = "default" # ibm_container_vpc_cluster automatically names default pool "default" (See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/2849)
       machine_type     = "bx2.4x16"
-      operating_system = "REDHAT_8_64"
       workers_per_zone = 2 # minimum of 2 is allowed when using single zone
+      operating_system = "REDHAT_8_64"
     }
   ]
 }
 
+locals {
+  cluster_name = "${var.prefix}-cluster"
+}
+
 module "ocp_base" {
   source                              = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version                             = "3.41.7"
+  version                             = "3.43.1"
   resource_group_id                   = module.resource_group.resource_group_id
   region                              = var.region
   tags                                = var.resource_tags
-  cluster_name                        = var.prefix
+  cluster_name                        = local.cluster_name
   force_delete_storage                = true
   vpc_id                              = ibm_is_vpc.vpc.id
   vpc_subnets                         = local.cluster_vpc_subnets
-  ocp_version                         = var.ocp_version
   worker_pools                        = local.worker_pools
-  access_tags                         = var.access_tags
-  ocp_entitlement                     = var.ocp_entitlement
-  disable_outbound_traffic_protection = false
-}
-
-data "ibm_container_cluster_config" "cluster_config" {
-  cluster_name_id   = module.ocp_base.cluster_id
-  resource_group_id = module.resource_group.resource_group_id
+  access_tags                         = []
+  disable_outbound_traffic_protection = true # set as True to enable outbound traffic
 }
 
 ##############################################################################
-# Monitoring Instance
+# Monitoring:
+# - Cloud Monitoring instance
 ##############################################################################
+
+locals {
+  cluster_resource_group_id = module.landing_zone.cluster_data[local.cluster_name].resource_group_id
+  cluster_crn               = module.landing_zone.cluster_data[local.cluster_name].crn
+}
 
 module "cloud_monitoring" {
   source            = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_monitoring"
@@ -101,20 +104,5 @@ module "cloud_monitoring" {
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   plan              = "graduated-tier"
-}
-
-##############################################################################
-# Monitoring Agents
-##############################################################################
-
-module "monitoring_agents" {
-  source                    = "../.."
-  cluster_id                = module.ocp_base.cluster_id
-  cluster_resource_group_id = module.resource_group.resource_group_id
-  # Monitoring agent
-  cloud_monitoring_access_key = module.cloud_monitoring.access_key
-  # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
-  cloud_monitoring_metrics_filter   = [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
-  cloud_monitoring_container_filter = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
-  cloud_monitoring_instance_region  = var.region
+  tags              = var.resource_tags
 }

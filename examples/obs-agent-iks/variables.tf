@@ -30,7 +30,7 @@ variable "region" {
 
 variable "is_vpc_cluster" {
   type        = bool
-  description = "Specify true if the target cluster for the observability agents is a VPC cluster, false if it is classic cluster."
+  description = "Specify true if the target cluster for the monitoring agent is a VPC cluster, false if it is classic cluster."
   default     = true
 }
 
