@@ -92,11 +92,6 @@ module "ocp_base" {
 # - Cloud Monitoring instance
 ##############################################################################
 
-locals {
-  cluster_resource_group_id = module.landing_zone.cluster_data[local.cluster_name].resource_group_id
-  cluster_crn               = module.landing_zone.cluster_data[local.cluster_name].crn
-}
-
 module "cloud_monitoring" {
   source            = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_monitoring"
   version           = "3.5.0"
