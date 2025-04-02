@@ -44,8 +44,9 @@ resource "helm_release" "cloud_monitoring_agent" {
   count = var.cloud_monitoring_enabled ? 1 : 0
 
   name             = var.cloud_monitoring_agent_name
-  chart            = var.chart_location
-  repository       = var.chart_repository
+  repository       = var.chart_repository # Add the repository URL for the sysdig-deploy chart
+  chart            = var.chart_location   # Add the path to the sysdig-deploy chart
+  version          = var.chart_version    # Specify the version of the sysdig-deploy chart
   namespace        = var.cloud_monitoring_agent_namespace
   create_namespace = true
   timeout          = 1200

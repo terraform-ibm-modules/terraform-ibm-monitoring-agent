@@ -150,15 +150,21 @@ variable "cloud_monitoring_agent_tolerations" {
 }
 
 variable "chart_location" {
-  description = "Location of the chart to be used for the Cloud Monitoring agent. Default value is 'ibm-sysdig/agent'"
+  description = "The location of the Helm chart for the Sysdig agent."
   type        = string
-  default     = "https://charts.sysdig.com/"
+  default     = "sysdig-deploy" # Replace with the actual chart location if different
   nullable    = false
 }
 
 variable "chart_repository" {
-  description = "Repository of the chart to be used for the Cloud Monitoring agent. Default value is 'ibm-sysdig/agent'"
+  description = "The repository URL for the Sysdig Helm chart."
   type        = string
-  default     = "sysdig-deploy"
+  default     = "https://charts.sysdig.com" # Replace with the actual repository URL if different
   nullable    = false
+}
+
+variable "chart_version" {
+  description = "The version of the Sysdig Helm chart to deploy."
+  type        = string
+  default     = null # Replace with the desired version, or null for the latest version
 }
