@@ -27,15 +27,3 @@ variable "region" {
   description = "The region where the resources are created."
   default     = "au-syd"
 }
-
-variable "is_vpc_cluster" {
-  type        = bool
-  description = "Specify true if the target cluster for the monitoring agent is a VPC cluster, false if it is classic cluster."
-  default     = true
-}
-
-variable "datacenter" {
-  type        = string
-  description = "If creating a classic cluster, the data center where the cluster is created"
-  default     = "syd01"
-}
