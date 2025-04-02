@@ -64,6 +64,8 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 		options.TerraformVars["ocp_entitlement"] = "cloud_pak"
 	}
 
+	options.TerraformVars["enable_platform_metrics"] = false
+
 	return options
 }
 

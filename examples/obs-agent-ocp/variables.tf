@@ -45,3 +45,9 @@ variable "ocp_entitlement" {
   description = "Value that is applied to the entitlements for OCP cluster provisioning"
   default     = null
 }
+
+variable "enable_platform_metrics" {
+  type        = bool
+  description = "Enable platform metrics"
+  default     = false
+}

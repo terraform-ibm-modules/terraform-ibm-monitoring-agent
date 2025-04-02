@@ -98,12 +98,13 @@ resource "time_sleep" "wait_operators" {
 ##############################################################################
 
 module "cloud_monitoring" {
-  source            = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_monitoring"
-  version           = "3.5.0"
-  instance_name     = "${var.prefix}-cloud-monitoring"
-  resource_group_id = module.resource_group.resource_group_id
-  region            = var.region
-  plan              = "graduated-tier"
+  source                  = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_monitoring"
+  version                 = "3.5.0"
+  instance_name           = "${var.prefix}-cloud-monitoring"
+  resource_group_id       = module.resource_group.resource_group_id
+  region                  = var.region
+  plan                    = "graduated-tier"
+  enable_platform_metrics = var.enable_platform_metrics
 }
 
 ##############################################################################

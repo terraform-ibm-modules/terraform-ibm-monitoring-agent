@@ -27,3 +27,9 @@ variable "region" {
   description = "The region where the resources are created."
   default     = "au-syd"
 }
+
+variable "enable_platform_metrics" {
+  type        = bool
+  description = "Enable platform metrics"
+  default     = false
+}
