@@ -30,23 +30,13 @@ data "ibm_container_cluster_config" "cluster_config" {
 locals {
   # LOCALS
   cluster_name          = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publically documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
-  cloud_monitoring_host = var.cloud_monitoring_enabled ? var.cloud_monitoring_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "logs.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : null
-
-  # TODO: Move this into variable.tf since module requires 1.9 now
-  # VARIABLE VALIDATION
-  cloud_monitoring_key_validate_condition = var.cloud_monitoring_enabled == true && var.cloud_monitoring_instance_region == null && var.cloud_monitoring_access_key == null
-  cloud_monitoring_key_validate_msg       = "Values for 'cloud_monitoring_access_key' and 'log_analysis_instance_region' variables must be passed when 'cloud_monitoring_enabled = true'"
-  # tflint-ignore: terraform_unused_declarations
-  cloud_monitoring_key_validate_check = regex("^${local.cloud_monitoring_key_validate_msg}$", (!local.cloud_monitoring_key_validate_condition ? local.cloud_monitoring_key_validate_msg : ""))
+  cloud_monitoring_host = var.cloud_monitoring_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "logs.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com"
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
-  count = var.cloud_monitoring_enabled ? 1 : 0
-
   name             = var.cloud_monitoring_agent_name
-  repository       = var.chart_repository # Add the repository URL for the sysdig-deploy chart
-  chart            = var.chart_location   # Add the path to the sysdig-deploy chart
-  version          = var.chart_version    # Specify the version of the sysdig-deploy chart
+  chart            = var.chart_location
+  version          = var.chart_version
   namespace        = var.cloud_monitoring_agent_namespace
   create_namespace = true
   timeout          = 1200

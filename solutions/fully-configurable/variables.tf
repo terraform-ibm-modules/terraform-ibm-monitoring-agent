@@ -4,12 +4,6 @@ variable "ibmcloud_api_key" {
   sensitive   = true
 }
 
-variable "prefix" {
-  type        = string
-  description = "The prefix for resources created by this solution."
-  default     = null
-}
-
 ##############################################################################
 # Cluster variables
 ##############################################################################
@@ -118,14 +112,7 @@ variable "cloud_monitoring_agent_tolerations" {
 variable "chart_location" {
   description = "The location of the Helm chart for the Sysdig agent."
   type        = string
-  default     = "sysdig-deploy" # Replace with the actual chart location if different
-  nullable    = false
-}
-
-variable "chart_repository" {
-  description = "The repository URL for the Sysdig Helm chart."
-  type        = string
-  default     = "https://charts.sysdig.com" # Replace with the actual repository URL if different
+  default     = "https://charts.sysdig.com/charts/sysdig-deploy"
   nullable    = false
 }
 

@@ -135,7 +135,6 @@ func TestFullyConfigurableSolution(t *testing.T) {
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "cloud_monitoring_access_key", Value: terraform.Output(t, existingTerraformOptions, "cloud_monitoring_access_key"), DataType: "string", Secure: true},
-			{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		}
 
 		err := options.RunSchematicTest()
@@ -217,7 +216,6 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "cloud_monitoring_access_key", Value: terraform.Output(t, existingTerraformOptions, "cloud_monitoring_access_key"), DataType: "string", Secure: true},
-			{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		}
 
 		err := options.RunSchematicUpgradeTest()
@@ -255,14 +253,12 @@ func TestRunAgentVpcOcp(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunAgentVpcOcpUpgrade(t *testing.T) {
+func TestRunAgentClassicKubernetes(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "log-agent-upg", terraformDirMonitoringAgentROKS)
-
-	output, err := options.RunTestUpgrade()
-	if !options.UpgradeTestSkipped {
-		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
-	}
+	options := setupOptions(t, "obs-agent-iks", terraformDirMonitoringAgentIKS)
+	options.TerraformVars["is_vpc_cluster"] = false
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
 }

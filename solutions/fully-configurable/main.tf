@@ -18,7 +18,7 @@ module "monitoring_agent" {
   wait_till_timeout            = var.wait_till_timeout
   is_vpc_cluster               = var.is_vpc_cluster
   # Cloud Monitoring (Sysdig) Agent
-  cloud_monitoring_agent_name        = var.prefix != null ? "${var.prefix}-${var.cloud_monitoring_agent_name}" : var.cloud_monitoring_agent_name
+  cloud_monitoring_agent_name        = var.cloud_monitoring_agent_name
   cloud_monitoring_agent_namespace   = var.cloud_monitoring_agent_namespace
   cloud_monitoring_endpoint_type     = var.cloud_monitoring_endpoint_type
   cloud_monitoring_access_key        = var.cloud_monitoring_access_key
@@ -26,6 +26,5 @@ module "monitoring_agent" {
   cloud_monitoring_instance_region   = var.cloud_monitoring_instance_region
   cloud_monitoring_agent_tolerations = var.cloud_monitoring_agent_tolerations
   chart_location                     = var.chart_location
-  chart_repository                   = var.chart_repository
   chart_version                      = var.chart_version
 }

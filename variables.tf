@@ -55,12 +55,6 @@ variable "wait_till_timeout" {
 # Cloud Monitoring variables
 ##############################################################################
 
-variable "cloud_monitoring_enabled" {
-  type        = bool
-  description = "Deploy IBM Cloud Monitoring agent"
-  default     = true
-}
-
 variable "cloud_monitoring_access_key" {
   type        = string
   description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance"
@@ -152,14 +146,7 @@ variable "cloud_monitoring_agent_tolerations" {
 variable "chart_location" {
   description = "The location of the Helm chart for the Sysdig agent."
   type        = string
-  default     = "sysdig-deploy" # Replace with the actual chart location if different
-  nullable    = false
-}
-
-variable "chart_repository" {
-  description = "The repository URL for the Sysdig Helm chart."
-  type        = string
-  default     = "https://charts.sysdig.com" # Replace with the actual repository URL if different
+  default     = "https://charts.sysdig.com/charts/sysdig-deploy"
   nullable    = false
 }
 

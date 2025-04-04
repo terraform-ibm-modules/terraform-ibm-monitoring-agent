@@ -1,13 +1,13 @@
 {
   "products": [
     {
-      "label": "Cloud automation for Cloud Monitoring Agent",
+      "label": "Cloud automation for Monitoring agent",
       "name": "deploy-arch-ibm-monitoring-agent",
       "product_kind": "solution",
       "tags": [
         "ibm_created",
         "logging",
-        "logging_agent",
+        "logging_monitoring",
         "terraform",
         "target_terraform",
         "solution"
@@ -94,9 +94,6 @@
               "key": "chart_location"
             },
             {
-              "key": "chart_repository"
-            },
-            {
               "key": "chart_version"
             },
             {
@@ -121,10 +118,25 @@
               "key": "cloud_monitoring_metrics_filter"
             },
             {
-              "key": "prefix"
-            },
-            {
-              "key": "cluster_config_endpoint_type"
+              "key": "cluster_config_endpoint_type",
+              "options": [
+                {
+                  "displayname": "Default",
+                  "value": "default"
+                },
+                {
+                  "displayname": "Private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "VPE",
+                  "value": "vpe"
+                },
+                {
+                  "displayname": "Link",
+                  "value": "link"
+                }
+              ]
             },
             {
               "key": "wait_till",
@@ -134,12 +146,12 @@
                   "value": "MasterNodeReady"
                 },
                 {
-                  "displayname": "OneWorkerNodeReady",
-                  "value": "One Worker Node Ready"
+                  "displayname": "One Worker NodeReady",
+                  "value": "OneWorkerNodeReady"
                 },
                 {
-                  "displayname": "IngressReady",
-                  "value": "Ingress Ready"
+                  "displayname": "Ingress Ready",
+                  "value": "IngressReady"
                 },
                 {
                   "displayname": "Normal",
