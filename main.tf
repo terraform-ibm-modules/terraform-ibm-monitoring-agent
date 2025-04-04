@@ -30,12 +30,13 @@ data "ibm_container_cluster_config" "cluster_config" {
 locals {
   # LOCALS
   cluster_name          = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publically documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
-  cloud_monitoring_host = var.cloud_monitoring_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "logs.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com"
+  cloud_monitoring_host = var.cloud_monitoring_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com"
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
   name             = var.cloud_monitoring_agent_name
   chart            = var.chart_location
+  repository       = var.chart_repository
   version          = var.chart_version
   namespace        = var.cloud_monitoring_agent_namespace
   create_namespace = true
