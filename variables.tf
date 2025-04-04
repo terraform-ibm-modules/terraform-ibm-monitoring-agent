@@ -160,5 +160,5 @@ variable "chart_repository" {
 variable "chart_version" {
   description = "The version of the Sysdig Helm chart to deploy."
   type        = string
-  default     = null # Replace with the desired version, or null for the latest version
+  default     = "1.79.0" # Replace with the desired version, or null for the latest version
 }

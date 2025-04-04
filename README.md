@@ -104,7 +104,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_chart_location"></a> [chart\_location](#input\_chart\_location) | The location of the Helm chart for the Sysdig agent. | `string` | `"sysdig-deploy"` | no |
 | <a name="input_chart_repository"></a> [chart\_repository](#input\_chart\_repository) | The repository URL for the Sysdig Helm chart. | `string` | `"https://charts.sysdig.com"` | no |
-| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the Sysdig Helm chart to deploy. | `string` | `null` | no |
+| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the Sysdig Helm chart to deploy. | `string` | `"1.79.0"` | no |
 | <a name="input_cloud_monitoring_access_key"></a> [cloud\_monitoring\_access\_key](#input\_cloud\_monitoring\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance | `string` | `null` | no |
 | <a name="input_cloud_monitoring_agent_name"></a> [cloud\_monitoring\_agent\_name](#input\_cloud\_monitoring\_agent\_name) | Cloud Monitoring agent name. Used for naming all kubernetes and helm resources on the cluster. | `string` | `"sysdig-agent"` | no |
 | <a name="input_cloud_monitoring_agent_namespace"></a> [cloud\_monitoring\_agent\_namespace](#input\_cloud\_monitoring\_agent\_namespace) | Namespace where to deploy the Cloud Monitoring agent. Default value is 'ibm-observe' | `string` | `"ibm-observe"` | no |
