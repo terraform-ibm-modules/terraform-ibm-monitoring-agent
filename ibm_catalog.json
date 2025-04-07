@@ -94,6 +94,9 @@
               "key": "chart_location"
             },
             {
+              "key": "chart_repository"
+            },
+            {
               "key": "chart_version"
             },
             {

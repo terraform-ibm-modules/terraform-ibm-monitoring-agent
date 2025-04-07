@@ -26,5 +26,6 @@ module "monitoring_agent" {
   cloud_monitoring_instance_region   = var.cloud_monitoring_instance_region
   cloud_monitoring_agent_tolerations = var.cloud_monitoring_agent_tolerations
   chart_location                     = var.chart_location
+  chart_repository                   = var.chart_repository
   chart_version                      = var.chart_version
 }
