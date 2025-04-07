@@ -257,7 +257,6 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 	t.Parallel()
 
 	options := setupOptions(t, "obs-agent-iks", terraformDirMonitoringAgentIKS)
-	options.TerraformVars["is_vpc_cluster"] = false
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
