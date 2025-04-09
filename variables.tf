@@ -136,7 +136,7 @@ variable "cloud_monitoring_agent_tolerations" {
 }
 
 variable "chart" {
-  description = "The location of the Helm chart for the Sysdig agent."
+  description = "The name of the Helm chart to deploy."
   type        = string
   default     = "sysdig-deploy" # Replace with the actual chart location if different
   nullable    = false
