@@ -11,11 +11,13 @@ variable "ibmcloud_api_key" {
 variable "cluster_id" {
   type        = string
   description = "The ID of the cluster to deploy the agent in."
+  nullable    = false
 }
 
 variable "cluster_resource_group_id" {
   type        = string
   description = "The resource group ID of the cluster."
+  nullable    = false
 }
 
 variable "cluster_config_endpoint_type" {
@@ -51,13 +53,13 @@ variable "cloud_monitoring_access_key" {
   type        = string
   description = "The access key that is used by the IBM Cloud Monitoring agent to communicate with the instance."
   sensitive   = true
-  default     = null
+  nullable    = false
 }
 
 variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The name of the region where the IBM Cloud Monitoring instance is created. This name is used to construct the ingestion endpoint."
-  default     = null
+  nullable    = false
 }
 
 variable "cloud_monitoring_endpoint_type" {
@@ -109,22 +111,22 @@ variable "cloud_monitoring_agent_tolerations" {
   ]
 }
 
-variable "chart_location" {
+variable "chart" {
   description = "The location of the Helm chart for the Sysdig agent."
   type        = string
   default     = "sysdig-deploy" # Replace with the actual chart location if different
   nullable    = false
 }
 
-variable "chart_repository" {
-  description = "The repository URL for the Sysdig Helm chart."
+variable "chart_location" {
+  description = "The location of the Cloud Monitoring agent helm chart."
   type        = string
   default     = "https://charts.sysdig.com" # Replace with the actual repository URL if different
   nullable    = false
 }
 
 variable "chart_version" {
-  description = "The version of the Sysdig Helm chart to deploy."
+  description = "The version of the Cloud Monitoring agent helm chart to deploy."
   type        = string
   default     = "1.79.0" # Replace with the desired version, or null for the latest version
 }

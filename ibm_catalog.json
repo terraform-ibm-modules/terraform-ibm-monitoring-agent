@@ -73,7 +73,8 @@
                   "type": "cluster_var",
                   "grouping": "deployment",
                   "original_grouping": "deployment"
-              }
+              },
+              "required": true
             },
             {
               "key": "cluster_resource_group_id",
@@ -84,23 +85,28 @@
                   "config_constraints": {
                       "identifier": "rg_id"
                   }
-              }
+              },
+              "required": true
             },
             {
-              "key": "is_vpc_cluster",
+              "key": "cloud_monitoring_access_key",
               "required": true
+            },
+            {
+              "key": "cloud_monitoring_instance_region",
+              "required": true
+            },
+            {
+              "key": "is_vpc_cluster"
+            },
+            {
+              "key": "chart"
             },
             {
               "key": "chart_location"
             },
             {
-              "key": "chart_repository"
-            },
-            {
               "key": "chart_version"
-            },
-            {
-              "key": "cloud_monitoring_access_key"
             },
             {
               "key": "cloud_monitoring_agent_name"
@@ -113,9 +119,6 @@
             },
             {
               "key": "cloud_monitoring_endpoint_type"
-            },
-            {
-              "key": "cloud_monitoring_instance_region"
             },
             {
               "key": "cloud_monitoring_metrics_filter"

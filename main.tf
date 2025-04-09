@@ -35,8 +35,8 @@ locals {
 
 resource "helm_release" "cloud_monitoring_agent" {
   name             = var.cloud_monitoring_agent_name
-  chart            = var.chart_location
-  repository       = var.chart_repository
+  chart            = var.chart
+  repository       = var.chart_location
   version          = var.chart_version
   namespace        = var.cloud_monitoring_agent_namespace
   create_namespace = true
@@ -46,11 +46,6 @@ resource "helm_release" "cloud_monitoring_agent" {
   force_update     = true
   reset_values     = true
 
-  set {
-    name  = "nodeAnalyzer.enabled"
-    type  = "auto"
-    value = var.node_analyzer_enabled
-  }
   set {
     name  = "agent.collectorSettings.collectorHost"
     type  = "string"

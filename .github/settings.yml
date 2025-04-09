@@ -22,7 +22,7 @@ repository:
 
   # Uncomment this description property
   # and update the description to the current repo description.
-  description: "Terraform module to install and configure the Sysdig Monitoring Agent on IBM Cloud Kubernetes Service (IKS) and Red Hat OpenShift on IBM Cloud (ROKS)."
+  description: "Terraform module to install and configure the Monitoring Agent on IBM Cloud Kubernetes Service and Red Hat OpenShift on IBM Cloud."
 
   # Use a comma-separated list of topics to set on the repo (ensure not to use any caps in the topic string).
   topics: terraform, ibm-cloud, terraform-module, core-team, monitoring-agent, sysdig-agent, observability, monitoring, agent, sysdig

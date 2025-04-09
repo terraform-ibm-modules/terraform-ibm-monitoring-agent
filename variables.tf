@@ -59,19 +59,11 @@ variable "cloud_monitoring_access_key" {
   type        = string
   description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance"
   sensitive   = true
-  default     = null
-}
-
-variable "node_analyzer_enabled" {
-  type        = bool
-  description = "Enable the node analyzer. The node analyzer is a component of the IBM Cloud Monitoring agent that collects and sends data about the nodes in your cluster to the IBM Cloud Monitoring service."
-  default     = false
 }
 
 variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The IBM Cloud Monitoring instance region. Used to construct the ingestion endpoint."
-  default     = null
 }
 
 variable "cloud_monitoring_endpoint_type" {
@@ -143,22 +135,22 @@ variable "cloud_monitoring_agent_tolerations" {
   }]
 }
 
-variable "chart_location" {
+variable "chart" {
   description = "The location of the Helm chart for the Sysdig agent."
   type        = string
   default     = "sysdig-deploy" # Replace with the actual chart location if different
   nullable    = false
 }
 
-variable "chart_repository" {
-  description = "The repository URL for the Sysdig Helm chart."
+variable "chart_location" {
+  description = "The location of the Cloud Monitoring agent helm chart."
   type        = string
   default     = "https://charts.sysdig.com" # Replace with the actual repository URL if different
   nullable    = false
 }
 
 variable "chart_version" {
-  description = "The version of the Sysdig Helm chart to deploy."
+  description = "The version of the Cloud Monitoring agent helm chart to deploy."
   type        = string
   default     = "1.79.0" # Replace with the desired version, or null for the latest version
 }
