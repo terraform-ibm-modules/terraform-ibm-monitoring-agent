@@ -17,7 +17,7 @@ module "monitoring_agent" {
   wait_till                    = var.wait_till
   wait_till_timeout            = var.wait_till_timeout
   is_vpc_cluster               = var.is_vpc_cluster
-  # Cloud Monitoring (Sysdig) Agent
+  # Cloud Monitoring Agent
   cloud_monitoring_agent_name        = var.cloud_monitoring_agent_name
   cloud_monitoring_agent_namespace   = var.cloud_monitoring_agent_namespace
   cloud_monitoring_endpoint_type     = var.cloud_monitoring_endpoint_type
