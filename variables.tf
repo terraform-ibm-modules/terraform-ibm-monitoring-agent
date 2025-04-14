@@ -5,11 +5,13 @@
 variable "cluster_id" {
   type        = string
   description = "The ID of the cluster you wish to deploy the agent in"
+  nullable    = false
 }
 
 variable "cluster_resource_group_id" {
   type        = string
   description = "The Resource Group ID of the cluster"
+  nullable    = false
 }
 
 variable "cluster_config_endpoint_type" {
@@ -59,11 +61,13 @@ variable "cloud_monitoring_access_key" {
   type        = string
   description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance"
   sensitive   = true
+  nullable    = false
 }
 
 variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The IBM Cloud Monitoring instance region. Used to construct the ingestion endpoint."
+  nullable    = false
 }
 
 variable "cloud_monitoring_endpoint_type" {
@@ -153,4 +157,5 @@ variable "chart_version" {
   description = "The version of the Cloud Monitoring agent helm chart to deploy."
   type        = string
   default     = "1.79.0" # Replace with the desired version
+  nullable    = false
 }
