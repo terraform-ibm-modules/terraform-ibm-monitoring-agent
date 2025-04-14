@@ -10,4 +10,4 @@ offerings:
         mark_ready: true
         install_type: fullstack
         pre_validation: "tests/scripts/pre-validation-deploy-slz-roks-and-obs-instances.sh"
-        post_validation: "tests/scripts/post-validation-destroy-slz-roks-and-obs-instances.sh"
+        post_validation: "tests/scripts/post-validation-deploy-slz-roks-and-obs-instances.sh"
