@@ -159,3 +159,17 @@ variable "chart_version" {
   default     = "1.79.0" # Replace with the desired version
   nullable    = false
 }
+
+variable "cloud_monitoring_agent_registry" {
+  description = "The image registry to use for the Cloud Monitoring agent."
+  type        = string
+  default     = "icr.io/ext/sysdig/agent"
+  nullable    = false
+}
+
+variable "cloud_monitoring_image_tag_digest" {
+  description = "The image tag digest to use for the Cloud Monitoring agent."
+  type        = string
+  default     = "13.8.1@sha256:e5d1c63edf07c9f861249432c00873e32141381c15fbcff80b90a12b272dc0b9" # datasource: icr.io/ext/sysdig/agent
+  nullable    = false
+}

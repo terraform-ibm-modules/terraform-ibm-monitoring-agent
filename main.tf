@@ -61,6 +61,16 @@ resource "helm_release" "cloud_monitoring_agent" {
     type  = "string"
     value = local.cluster_name
   }
+  set {
+    name  = "image.version"
+    type  = "string"
+    value = var.cloud_monitoring_image_tag_digest
+  }
+  set {
+    name  = "image.registry"
+    type  = "string"
+    value = var.cloud_monitoring_agent_registry
+  }
 
   values = [yamlencode({
     metrics_filter = var.cloud_monitoring_metrics_filter

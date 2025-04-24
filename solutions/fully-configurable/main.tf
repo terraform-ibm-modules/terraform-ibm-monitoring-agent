@@ -28,4 +28,6 @@ module "monitoring_agent" {
   chart                              = var.chart
   chart_location                     = var.chart_location
   chart_version                      = var.chart_version
+  cloud_monitoring_agent_registry    = var.cloud_monitoring_agent_registry
+  cloud_monitoring_image_tag_digest  = var.cloud_monitoring_image_tag_digest
 }
