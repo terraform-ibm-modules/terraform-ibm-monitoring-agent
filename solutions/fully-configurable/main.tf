@@ -18,16 +18,16 @@ module "monitoring_agent" {
   wait_till_timeout            = var.wait_till_timeout
   is_vpc_cluster               = var.is_vpc_cluster
   # Cloud Monitoring Agent
-  cloud_monitoring_agent_name        = var.cloud_monitoring_agent_name
-  cloud_monitoring_agent_namespace   = var.cloud_monitoring_agent_namespace
-  cloud_monitoring_endpoint_type     = var.cloud_monitoring_endpoint_type
-  cloud_monitoring_access_key        = var.cloud_monitoring_access_key
-  cloud_monitoring_metrics_filter    = var.cloud_monitoring_metrics_filter
-  cloud_monitoring_instance_region   = var.cloud_monitoring_instance_region
-  cloud_monitoring_agent_tolerations = var.cloud_monitoring_agent_tolerations
-  chart                              = var.chart
-  chart_location                     = var.chart_location
-  chart_version                      = var.chart_version
-  cloud_monitoring_image_registry    = var.cloud_monitoring_image_registry
-  cloud_monitoring_image_tag_digest  = var.cloud_monitoring_image_tag_digest
+  name             = var.name
+  namespace        = var.namespace
+  endpoint_type    = var.endpoint_type
+  access_key       = var.access_key
+  metrics_filter   = var.metrics_filter
+  instance_region  = var.instance_region
+  tolerations      = var.tolerations
+  chart            = var.chart
+  chart_location   = var.chart_location
+  chart_version    = var.chart_version
+  image_registry   = var.image_registry
+  image_tag_digest = var.image_tag_digest
 }

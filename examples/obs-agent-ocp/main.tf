@@ -113,9 +113,9 @@ module "monitoring_agents" {
   cluster_id                = module.ocp_base.cluster_id
   cluster_resource_group_id = module.resource_group.resource_group_id
   # Monitoring agent
-  cloud_monitoring_access_key = module.cloud_monitoring.access_key
+  access_key = module.cloud_monitoring.access_key
   # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
-  cloud_monitoring_metrics_filter   = [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
-  cloud_monitoring_container_filter = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
-  cloud_monitoring_instance_region  = var.region
+  metrics_filter   = [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
+  container_filter = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
+  instance_region  = var.region
 }

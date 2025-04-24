@@ -49,26 +49,26 @@ variable "wait_till_timeout" {
 # Cloud Monitoring variables
 ##############################################################################
 
-variable "cloud_monitoring_access_key" {
+variable "access_key" {
   type        = string
   description = "The access key that is used by the IBM Cloud Monitoring agent to communicate with the instance."
   sensitive   = true
   nullable    = false
 }
 
-variable "cloud_monitoring_instance_region" {
+variable "instance_region" {
   type        = string
   description = "The name of the region where the IBM Cloud Monitoring instance is created. This name is used to construct the ingestion endpoint."
   nullable    = false
 }
 
-variable "cloud_monitoring_endpoint_type" {
+variable "endpoint_type" {
   type        = string
   description = "Specify the IBM Cloud Monitoring instance endpoint type (`public` or `private`) to use to construct the ingestion endpoint."
   default     = "private"
 }
 
-variable "cloud_monitoring_metrics_filter" {
+variable "metrics_filter" {
   type = list(object({
     type = string
     name = string
@@ -77,20 +77,20 @@ variable "cloud_monitoring_metrics_filter" {
   default     = [] # [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
 }
 
-variable "cloud_monitoring_agent_name" {
-  description = "The name of the IBM Cloud Monitoring agent that is used to name the Kubernetes and Helm resources on the cluster. If a prefix input variable is passed, the name of the IBM Cloud Monitoring agent is prefixed to the value in the `<prefix>-<name>` format."
+variable "name" {
+  description = "The name of the IBM Cloud Monitoring agent that is used to name the Kubernetes and Helm resources on the cluster."
   type        = string
   default     = "sysdig-agent"
 }
 
-variable "cloud_monitoring_agent_namespace" {
+variable "namespace" {
   type        = string
   description = "The namespace to deploy the IBM Cloud Monitoring agent in. Default value: `ibm-observe`."
   default     = "ibm-observe"
   nullable    = false
 }
 
-variable "cloud_monitoring_agent_tolerations" {
+variable "tolerations" {
   description = "The list of tolerations to apply to the IBM Cloud Monitoring agent. The default operator value `Exists` matches any taint on any node except the master node. [Learn more](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)"
   type = list(object({
     key               = optional(string)
@@ -132,14 +132,14 @@ variable "chart_version" {
   nullable    = false
 }
 
-variable "cloud_monitoring_image_registry" {
+variable "image_registry" {
   description = "The image registry to use for the Cloud Monitoring agent."
   type        = string
   default     = "icr.io/ext/sysdig/agent"
   nullable    = false
 }
 
-variable "cloud_monitoring_image_tag_digest" {
+variable "image_tag_digest" {
   description = "The image tag digest to use for the Cloud Monitoring agent."
   type        = string
   default     = "13.8.1@sha256:e5d1c63edf07c9f861249432c00873e32141381c15fbcff80b90a12b272dc0b9" # datasource: icr.io/ext/sysdig/agent

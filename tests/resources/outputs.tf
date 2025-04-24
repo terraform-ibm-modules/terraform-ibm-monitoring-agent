@@ -27,12 +27,12 @@ output "cluster_name" {
   description = "Name of the cluster."
 }
 
-output "cloud_monitoring_instance_id" {
+output "instance_id" {
   value       = module.cloud_monitoring.crn
   description = "The cloud monitoring instance crn."
 }
 
-output "cloud_monitoring_access_key" {
+output "access_key" {
   value       = module.cloud_monitoring.access_key
   description = "The access key of the provisioned IBM Cloud Monitoring instance."
   sensitive   = true

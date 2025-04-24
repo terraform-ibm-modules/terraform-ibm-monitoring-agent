@@ -57,30 +57,30 @@ variable "wait_till_timeout" {
 # Cloud Monitoring variables
 ##############################################################################
 
-variable "cloud_monitoring_access_key" {
+variable "access_key" {
   type        = string
   description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance"
   sensitive   = true
   nullable    = false
 }
 
-variable "cloud_monitoring_instance_region" {
+variable "instance_region" {
   type        = string
   description = "The IBM Cloud Monitoring instance region. Used to construct the ingestion endpoint."
   nullable    = false
 }
 
-variable "cloud_monitoring_endpoint_type" {
+variable "endpoint_type" {
   type        = string
   description = "Specify the IBM Cloud Monitoring instance endpoint type (public or private) to use. Used to construct the ingestion endpoint."
   default     = "private"
   validation {
     error_message = "The specified endpoint_type can be private or public only."
-    condition     = contains(["private", "public"], var.cloud_monitoring_endpoint_type)
+    condition     = contains(["private", "public"], var.endpoint_type)
   }
 }
 
-variable "cloud_monitoring_metrics_filter" {
+variable "metrics_filter" {
   type = list(object({
     type = string
     name = string
@@ -88,12 +88,12 @@ variable "cloud_monitoring_metrics_filter" {
   description = "To filter custom metrics, specify the Cloud Monitoring metrics to include or to exclude. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics."
   default     = []
   validation {
-    condition     = alltrue([for filter in var.cloud_monitoring_metrics_filter : can(regex("^(include|exclude)$", filter.type)) && filter.name != ""])
-    error_message = "The specified `type` for the `cloud_monitoring_metrics_filter` is not valid. Specify either `include` or `exclude`. The `name` field cannot be empty."
+    condition     = alltrue([for filter in var.metrics_filter : can(regex("^(include|exclude)$", filter.type)) && filter.name != ""])
+    error_message = "The specified `type` for the `metrics_filter` is not valid. Specify either `include` or `exclude`. The `name` field cannot be empty."
   }
 }
 
-variable "cloud_monitoring_container_filter" {
+variable "container_filter" {
   type = list(object({
     type      = string
     parameter = string
@@ -102,25 +102,25 @@ variable "cloud_monitoring_container_filter" {
   description = "To filter custom containers, specify which containers to include or exclude from metrics collection for the cloud monitoring agent. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_filter_data."
   default     = []
   validation {
-    condition     = length(var.cloud_monitoring_container_filter) == 0 || can(regex("^(include|exclude)$", var.cloud_monitoring_container_filter[0].type))
-    error_message = "Invalid input for `cloud_monitoring_container_filter`. Valid options for 'type' are: `include` and `exclude`. If empty, no containers are included or excluded."
+    condition     = length(var.container_filter) == 0 || can(regex("^(include|exclude)$", var.container_filter[0].type))
+    error_message = "Invalid input for `container_filter`. Valid options for 'type' are: `include` and `exclude`. If empty, no containers are included or excluded."
   }
 }
 
-variable "cloud_monitoring_agent_name" {
+variable "name" {
   description = "Cloud Monitoring agent name. Used for naming all kubernetes and helm resources on the cluster."
   type        = string
   default     = "sysdig-agent"
 }
 
-variable "cloud_monitoring_agent_namespace" {
+variable "namespace" {
   type        = string
   description = "Namespace where to deploy the Cloud Monitoring agent. Default value is 'ibm-observe'"
   default     = "ibm-observe"
   nullable    = false
 }
 
-variable "cloud_monitoring_agent_tolerations" {
+variable "tolerations" {
   description = "List of tolerations to apply to Cloud Monitoring agent."
   type = list(object({
     key               = optional(string)
@@ -160,14 +160,14 @@ variable "chart_version" {
   nullable    = false
 }
 
-variable "cloud_monitoring_image_registry" {
+variable "image_registry" {
   description = "The image registry to use for the Cloud Monitoring agent."
   type        = string
   default     = "icr.io/ext/sysdig/agent"
   nullable    = false
 }
 
-variable "cloud_monitoring_image_tag_digest" {
+variable "image_tag_digest" {
   description = "The image tag digest to use for the Cloud Monitoring agent."
   type        = string
   default     = "13.8.1@sha256:e5d1c63edf07c9f861249432c00873e32141381c15fbcff80b90a12b272dc0b9" # datasource: icr.io/ext/sysdig/agent
