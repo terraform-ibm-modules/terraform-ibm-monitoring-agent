@@ -71,6 +71,12 @@ resource "helm_release" "cloud_monitoring_agent" {
     type  = "string"
     value = var.image_registry
   }
+  # Specific to SCC WP, enabled by default
+  set {
+    name  = "nodeAnalyzer.enabled"
+    type  = "auto"
+    value = false
+  }
 
   values = [yamlencode({
     metrics_filter = var.metrics_filter
