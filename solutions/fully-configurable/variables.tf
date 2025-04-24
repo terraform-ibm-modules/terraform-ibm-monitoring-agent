@@ -132,7 +132,7 @@ variable "chart_version" {
   nullable    = false
 }
 
-variable "cloud_monitoring_agent_registry" {
+variable "cloud_monitoring_image_registry" {
   description = "The image registry to use for the Cloud Monitoring agent."
   type        = string
   default     = "icr.io/ext/sysdig/agent"

@@ -69,7 +69,7 @@ resource "helm_release" "cloud_monitoring_agent" {
   set {
     name  = "image.registry"
     type  = "string"
-    value = var.cloud_monitoring_agent_registry
+    value = var.cloud_monitoring_image_registry
   }
 
   values = [yamlencode({

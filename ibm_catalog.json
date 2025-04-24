@@ -93,7 +93,7 @@
               "required": true
             },
             {
-              "key": "cloud_monitoring_agent_registry",
+              "key": "cloud_monitoring_image_registry",
               "required": true
             },
             {
