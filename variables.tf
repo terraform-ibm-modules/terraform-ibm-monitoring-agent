@@ -156,7 +156,7 @@ variable "chart_location" {
 variable "chart_version" {
   description = "The version of the Cloud Monitoring agent helm chart to deploy."
   type        = string
-  default     = "1.79.0" # Replace with the desired version
+  default     = "1.79.0" # registryUrl: charts.sysdig.com
   nullable    = false
 }
 

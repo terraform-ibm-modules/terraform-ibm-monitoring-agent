@@ -1,4 +1,33 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>terraform-ibm-modules/common-dev-assets:commonRenovateConfig"]
+  "extends": ["github>terraform-ibm-modules/common-dev-assets:commonRenovateConfig"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update docker image digest to latest in variables.tf",
+      "fileMatch": ["variables.tf$"],
+      "datasourceTemplate": "docker",
+      "matchStrings": [
+        "default\\s*=\\s*\"(?<currentValue>[\\w.-]+)@(?<currentDigest>sha256:[a-f0-9]+)\"\\s*# datasource: (?<depName>[^\\s]+)"
+      ]
+    },
+    {
+      "customType": "regex",
+      "description": "Update sysdig-deploy helm chart version to latest in variables.tf",
+      "fileMatch": ["variables.tf$"],
+      "matchStrings": ["default\\s*=\\s*\"(?<currentValue>.*?)\"\\s*# registryUrl: charts.sysdig.com\\n"],
+      "depNameTemplate": "sysdig-deploy",
+      "datasourceTemplate": "helm",
+      "registryUrlTemplate": "https://charts.sysdig.com"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Bundle image + helm chart updates into the same PR",
+      "matchPackageNames": ["icr.io/ext/sysdig/agent", "sysdig-deploy"],
+      "groupName": "Charts and Images",
+      "commitMessageExtra": "to latest",
+      "group": true
+    }
+  ]
 }
