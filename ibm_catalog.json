@@ -22,7 +22,7 @@
       ],
       "provider_name": "IBM",
       "short_description": "Deploys IBM Monitoring Agent to a cluster",
-      "long_description": "Solutions that support deploying IBM Monitoring Agent for logging.",
+      "long_description": "Solution that supports deploying an IBM Monitoring Agent.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/main/images/monitoring-icon.svg",
       "flavors": [
@@ -93,15 +93,7 @@
               "required": true
             },
             {
-              "key": "image_registry",
-              "required": true
-            },
-            {
-              "key": "image_tag_digest",
-              "required": true
-            },
-            {
-              "key": "instance_region",
+              "key": "cloud_monitoring_instance_region",
               "required": true,
               "options": [
                 {
@@ -131,7 +123,14 @@
               ]
             },
             {
-              "key": "is_vpc_cluster"
+              "key": "is_vpc_cluster",
+              "required": true
+            },
+            {
+              "key": "image_registry"
+            },
+            {
+              "key": "image_tag_digest"
             },
             {
               "key": "chart"
@@ -152,7 +151,7 @@
               "key": "tolerations"
             },
             {
-              "key": "endpoint_type"
+              "key": "cloud_monitoring_instance_endpoint_type"
             },
             {
               "key": "metrics_filter"

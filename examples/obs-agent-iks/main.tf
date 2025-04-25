@@ -117,6 +117,6 @@ module "monitoring_agents" {
   cluster_id                = module.ocp_base.cluster_id
   cluster_resource_group_id = module.resource_group.resource_group_id
   # # Monitoring agent
-  access_key      = module.cloud_monitoring.access_key
-  instance_region = var.region
+  access_key                       = module.cloud_monitoring.access_key
+  cloud_monitoring_instance_region = var.region
 }

@@ -56,13 +56,13 @@ variable "access_key" {
   nullable    = false
 }
 
-variable "instance_region" {
+variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The name of the region where the IBM Cloud Monitoring instance is created. This name is used to construct the ingestion endpoint."
   nullable    = false
 }
 
-variable "endpoint_type" {
+variable "cloud_monitoring_instance_endpoint_type" {
   type        = string
   description = "Specify the IBM Cloud Monitoring instance endpoint type (`public` or `private`) to use to construct the ingestion endpoint."
   default     = "private"

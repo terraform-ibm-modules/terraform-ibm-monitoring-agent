@@ -31,7 +31,7 @@ TF_VARS_FILE="terraform.tfvars"
   cluster_id_value=$(terraform output -state=terraform.tfstate -raw cluster_id)
   cluster_resource_group_id_var_name="cluster_resource_group_id"
   cluster_resource_group_id_value=$(terraform output -state=terraform.tfstate -raw cluster_resource_group_id)
-  instance_region_var_name="instance_region"
+  cloud_monitoring_instance_region_var_name="instance_region"
   access_key_var_name="access_key"
   access_key_value=$(terraform output -state=terraform.tfstate -raw access_key)
 
@@ -46,9 +46,9 @@ TF_VARS_FILE="terraform.tfvars"
         --arg cluster_resource_group_id_value "${cluster_resource_group_id_value}" \
         --arg access_key_var_name "${access_key_var_name}" \
         --arg access_key_value "${access_key_value}" \
-        --arg instance_region_var_name "${instance_region_var_name}" \
-        --arg instance_region_var_value "${REGION}" \
-        '. + {($region_var_name): $region_var_value, ($cluster_id_var_name): $cluster_id_value, ($cluster_resource_group_id_var_name): $cluster_resource_group_id_value, ($instance_region_var_name): $instance_region_var_value, ($access_key_var_name): $access_key_value}' "${JSON_FILE}" > tmpfile && mv tmpfile "${JSON_FILE}" || exit 1
+        --arg cloud_monitoring_instance_region_var_name "${cloud_monitoring_instance_region_var_name}" \
+        --arg cloud_monitoring_instance_region_var_value "${REGION}" \
+        '. + {($region_var_name): $region_var_value, ($cluster_id_var_name): $cluster_id_value, ($cluster_resource_group_id_var_name): $cluster_resource_group_id_value, ($cloud_monitoring_instance_region_var_name): $cloud_monitoring_instance_region_var_value, ($access_key_var_name): $access_key_value}' "${JSON_FILE}" > tmpfile && mv tmpfile "${JSON_FILE}" || exit 1
 
   echo "Pre-validation complete successfully"
 )

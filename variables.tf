@@ -64,19 +64,19 @@ variable "access_key" {
   nullable    = false
 }
 
-variable "instance_region" {
+variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The IBM Cloud Monitoring instance region. Used to construct the ingestion endpoint."
   nullable    = false
 }
 
-variable "endpoint_type" {
+variable "cloud_monitoring_instance_endpoint_type" {
   type        = string
   description = "Specify the IBM Cloud Monitoring instance endpoint type (public or private) to use. Used to construct the ingestion endpoint."
   default     = "private"
   validation {
-    error_message = "The specified endpoint_type can be private or public only."
-    condition     = contains(["private", "public"], var.endpoint_type)
+    error_message = "The specified endpoint type can be private or public only."
+    condition     = contains(["private", "public"], var.cloud_monitoring_instance_endpoint_type)
   }
 }
 
