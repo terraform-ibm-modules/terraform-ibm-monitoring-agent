@@ -54,7 +54,7 @@
             "diagrams": [
               {
                 "diagram": {
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/reference-architecture/deployable-architecture-monitoring-agent.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/refs/heads/main/reference-architecture/deployable-architecture-monitoring-agent.svg",
                   "caption": "Monitoring Agent on a cluster",
                   "type": "image/svg+xml"
                 },
