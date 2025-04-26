@@ -152,6 +152,16 @@
             },
             {
               "key": "cloud_monitoring_instance_endpoint_type"
+              "options": [
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "private",
+                  "value": "private"
+                }
+              ]
             },
             {
               "key": "metrics_filter"
