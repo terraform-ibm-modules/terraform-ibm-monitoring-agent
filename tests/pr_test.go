@@ -208,6 +208,11 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 			DeleteWorkspaceOnFail:  false,
 			WaitJobCompleteMinutes: 60,
 			Region:                 region,
+			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+				List: []string{
+					"module.monitoring_agent.helm_release.cloud_monitoring_agent",
+				},
+			},
 		})
 
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
