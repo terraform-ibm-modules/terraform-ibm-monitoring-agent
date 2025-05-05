@@ -30,7 +30,15 @@
           "label": "Fully Configurable",
           "name": "fully-configurable",
           "working_directory": "solutions/fully-configurable",
-          "compliance": {},
+          "compliance": {
+            "authority": "scc-v3",
+            "profiles": [
+              {
+                "profile_name": "IBM Cloud Framework for Financial Services",
+                "profile_version": "1.7.0"
+              }
+            ]
+          },
           "iam_permissions": [
             {
               "service_name": "containers-kubernetes",
@@ -70,21 +78,21 @@
             {
               "key": "cluster_id",
               "custom_config": {
-                  "type": "cluster_var",
-                  "grouping": "deployment",
-                  "original_grouping": "deployment"
+                "type": "cluster_var",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
               },
               "required": true
             },
             {
               "key": "cluster_resource_group_id",
               "custom_config": {
-                  "type": "resource_group",
-                  "grouping": "deployment",
-                  "original_grouping": "deployment",
-                  "config_constraints": {
-                      "identifier": "rg_id"
-                  }
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_id"
+                }
               },
               "required": true
             },
