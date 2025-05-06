@@ -2,7 +2,7 @@ module github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent
 
 go 1.23.0
 
-toolchain go1.24.2
+toolchain go1.24.3
 
 require (
 	github.com/gruntwork-io/terratest v0.48.2
