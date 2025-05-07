@@ -30,7 +30,6 @@
           "label": "Fully Configurable",
           "name": "fully-configurable",
           "working_directory": "solutions/fully-configurable",
-          "compliance": {},
           "iam_permissions": [
             {
               "service_name": "containers-kubernetes",
