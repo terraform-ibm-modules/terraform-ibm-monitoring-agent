@@ -93,6 +93,12 @@ variable "metrics_filter" {
   }
 }
 
+variable "blacklisted_ports" {
+  type        = list(number)
+  description = "To blacklist ports, include the ports you wish to block network traffic and metrics from network ports. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports."
+  default     = []
+}
+
 variable "container_filter" {
   type = list(object({
     type      = string
@@ -172,4 +178,22 @@ variable "image_tag_digest" {
   type        = string
   default     = "13.9.1@sha256:3193987f77dba930cb22c200df9981afcd097e7cd5885b77d13e20ef353dc5b8" # datasource: icr.io/ext/sysdig/agent
   nullable    = false
+}
+
+variable "min_memory" {
+  description = "Minimum memory required for the Cloud Monitoring agent."
+  type        = string
+  default     = "256Mi"
+}
+
+variable "max_memory" {
+  description = "Maximum memory required for the Cloud Monitoring agent."
+  type        = string
+  default     = "1Gi"
+}
+
+variable "cpu" {
+  description = "CPU required for the Cloud Monitoring agent."
+  type        = string
+  default     = "500m"
 }
