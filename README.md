@@ -103,6 +103,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance | `string` | n/a | yes |
+| <a name="input_blacklisted_ports"></a> [blacklisted\_ports](#input\_blacklisted\_ports) | To blacklist ports, include the ports you wish to block network traffic and metrics from network ports. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports. | `list(number)` | `[]` | no |
 | <a name="input_chart"></a> [chart](#input\_chart) | The name of the Helm chart to deploy. | `string` | `"sysdig-deploy"` | no |
 | <a name="input_chart_location"></a> [chart\_location](#input\_chart\_location) | The location of the Cloud Monitoring agent helm chart. | `string` | `"https://charts.sysdig.com"` | no |
 | <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the Cloud Monitoring agent helm chart to deploy. | `string` | `"1.83.0"` | no |
