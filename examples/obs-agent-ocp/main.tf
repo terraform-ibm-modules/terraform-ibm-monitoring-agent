@@ -96,7 +96,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 module "cloud_monitoring" {
   source                  = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_monitoring"
-  version                 = "3.5.2"
+  version                 = "3.5.3"
   instance_name           = "${var.prefix}-cloud-monitoring"
   resource_group_id       = module.resource_group.resource_group_id
   region                  = var.region
