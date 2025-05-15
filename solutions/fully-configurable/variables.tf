@@ -135,7 +135,14 @@ variable "chart_version" {
 variable "image_registry" {
   description = "The image registry to use for the Cloud Monitoring agent."
   type        = string
-  default     = "icr.io/ext/sysdig/agent"
+  default     = "icr.io"
+  nullable    = false
+}
+
+variable "image_repository" {
+  description = "The image repository to use for the Cloud Monitoring agent."
+  type        = string
+  default     = "ext/sysdig/agent"
   nullable    = false
 }
 

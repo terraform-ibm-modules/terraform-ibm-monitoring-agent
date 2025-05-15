@@ -129,6 +129,9 @@
               "key": "image_registry"
             },
             {
+              "key": "image_repository"
+            },
+            {
               "key": "image_tag_digest"
             },
             {

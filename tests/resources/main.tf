@@ -26,20 +26,12 @@ resource "ibm_is_vpc" "vpc" {
   tags                      = var.resource_tags
 }
 
-resource "ibm_is_public_gateway" "gateway" {
-  name           = "${var.prefix}-gateway-1"
-  vpc            = ibm_is_vpc.vpc.id
-  resource_group = module.resource_group.resource_group_id
-  zone           = "${var.region}-1"
-}
-
 resource "ibm_is_subnet" "subnet_zone_1" {
   name                     = "${var.prefix}-subnet-1"
   vpc                      = ibm_is_vpc.vpc.id
   resource_group           = module.resource_group.resource_group_id
   zone                     = "${var.region}-1"
   total_ipv4_address_count = 256
-  public_gateway           = ibm_is_public_gateway.gateway.id
 }
 
 ########################################################################################################################
@@ -68,23 +60,18 @@ locals {
   ]
 }
 
-locals {
-  cluster_name = "${var.prefix}-cluster"
-}
-
 module "ocp_base" {
-  source                              = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version                             = "3.46.17"
-  resource_group_id                   = module.resource_group.resource_group_id
-  region                              = var.region
-  tags                                = var.resource_tags
-  cluster_name                        = local.cluster_name
-  force_delete_storage                = true
-  vpc_id                              = ibm_is_vpc.vpc.id
-  vpc_subnets                         = local.cluster_vpc_subnets
-  worker_pools                        = local.worker_pools
-  access_tags                         = []
-  disable_outbound_traffic_protection = true # set as True to enable outbound traffic
+  source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
+  version              = "3.46.17"
+  resource_group_id    = module.resource_group.resource_group_id
+  region               = var.region
+  tags                 = var.resource_tags
+  cluster_name         = "${var.prefix}-cluster"
+  force_delete_storage = true
+  vpc_id               = ibm_is_vpc.vpc.id
+  vpc_subnets          = local.cluster_vpc_subnets
+  worker_pools         = local.worker_pools
+  access_tags          = []
 }
 
 ##############################################################################

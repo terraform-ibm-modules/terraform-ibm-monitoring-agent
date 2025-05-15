@@ -62,14 +62,19 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = local.cluster_name
   }
   set {
-    name  = "image.version"
-    type  = "string"
-    value = var.image_tag_digest
-  }
-  set {
-    name  = "image.registry"
+    name  = "global.imageRegistry"
     type  = "string"
     value = var.image_registry
+  }
+  set {
+    name  = "image.repository"
+    type  = "string"
+    value = var.image_repository
+  }
+  set {
+    name  = "image.tag"
+    type  = "string"
+    value = var.image_tag_digest
   }
   # Specific to SCC WP, enabled by default
   set {
