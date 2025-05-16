@@ -119,4 +119,9 @@ module "monitoring_agents" {
   # # Monitoring agent
   access_key                       = module.cloud_monitoring.access_key
   cloud_monitoring_instance_region = var.region
+  # blacklisted_ports = [
+  #   {
+  #     port = 8080
+  #   }
+  # ]
 }

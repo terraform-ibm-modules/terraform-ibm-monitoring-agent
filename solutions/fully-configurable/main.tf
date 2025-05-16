@@ -23,6 +23,7 @@ module "monitoring_agent" {
   cloud_monitoring_instance_endpoint_type = var.cloud_monitoring_instance_endpoint_type
   access_key                              = var.access_key
   metrics_filter                          = var.metrics_filter
+  blacklisted_ports                       = var.blacklisted_ports
   cloud_monitoring_instance_region        = var.cloud_monitoring_instance_region
   tolerations                             = var.tolerations
   chart                                   = var.chart
@@ -30,4 +31,7 @@ module "monitoring_agent" {
   chart_version                           = var.chart_version
   image_registry                          = var.image_registry
   image_tag_digest                        = var.image_tag_digest
+  min_memory                              = var.min_memory
+  max_memory                              = var.max_memory
+  cpu                                     = var.cpu
 }
