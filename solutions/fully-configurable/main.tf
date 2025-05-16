@@ -28,7 +28,10 @@ module "monitoring_agent" {
   chart                                   = var.chart
   chart_location                          = var.chart_location
   chart_version                           = var.chart_version
-  image_registry                          = var.image_registry
-  image_repository                        = var.image_repository
-  image_tag_digest                        = var.image_tag_digest
+  agent_image_registry                    = var.agent_image_registry
+  agent_image_namespace                   = var.agent_image_namespace
+  agent_image_repository                  = var.agent_image_repository
+  agent_image_tag_digest                  = var.agent_image_tag_digest
+  kernel_module_image_tag_digest          = var.kernel_module_image_tag_digest
+  kernal_module_image_repository          = var.kernal_module_image_repository
 }

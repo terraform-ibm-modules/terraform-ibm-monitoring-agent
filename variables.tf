@@ -160,23 +160,44 @@ variable "chart_version" {
   nullable    = false
 }
 
-variable "image_registry" {
+variable "agent_image_registry" {
   description = "The image registry to use for the Cloud Monitoring agent."
   type        = string
   default     = "icr.io"
   nullable    = false
 }
 
-variable "image_repository" {
+variable "agent_image_namespace" {
   description = "The image repository to use for the Cloud Monitoring agent."
   type        = string
-  default     = "ext/sysdig/agent"
+  default     = "ext/sysdig"
   nullable    = false
 }
 
-variable "image_tag_digest" {
+variable "agent_image_repository" {
+  description = "The image repository to use for the Cloud Monitoring agent."
+  type        = string
+  default     = "agent-slim"
+  nullable    = false
+}
+
+variable "agent_image_tag_digest" {
   description = "The image tag digest to use for the Cloud Monitoring agent."
   type        = string
-  default     = "13.9.1@sha256:3193987f77dba930cb22c200df9981afcd097e7cd5885b77d13e20ef353dc5b8" # datasource: icr.io/ext/sysdig/agent
+  default     = "13.9.1@sha256:14860d181a8b712c4150bb59e3ba0ff4be08959e2c45376b32c8eb7ff70461f9" # datasource: icr.io/ext/sysdig/agent-slim
+  nullable    = false
+}
+
+variable "kernel_module_image_tag_digest" {
+  description = "The image tag digest to use for the Cloud Monitoring agent kernel module."
+  type        = string
+  default     = "13.9.1@sha256:0eef614a5988f6979d487f949b3cb1212f8253433057894b5583bf01bf378fb3" # datasource: icr.io/ext/sysdig/agent-kmodule
+  nullable    = false
+}
+
+variable "kernal_module_image_repository" {
+  description = "The image repository to use for the Cloud Monitoring agent."
+  type        = string
+  default     = "agent-kmodule"
   nullable    = false
 }

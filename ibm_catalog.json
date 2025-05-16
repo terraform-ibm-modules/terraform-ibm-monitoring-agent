@@ -126,13 +126,22 @@
               "required": true
             },
             {
-              "key": "image_registry"
+              "key": "agent_image_registry"
             },
             {
-              "key": "image_repository"
+              "key": "agent_image_namespace"
             },
             {
-              "key": "image_tag_digest"
+              "key": "agent_image_repository"
+            },
+            {
+              "key": "agent_image_tag_digest"
+            },
+            {
+              "key": "kernal_module_image_repository"
+            },
+            {
+              "key": "kernel_module_image_tag_digest"
             },
             {
               "key": "chart"

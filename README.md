@@ -103,6 +103,10 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance | `string` | n/a | yes |
+| <a name="input_agent_image_namespace"></a> [agent\_image\_namespace](#input\_agent\_image\_namespace) | The image repository to use for the Cloud Monitoring agent. | `string` | `"ext/sysdig"` | no |
+| <a name="input_agent_image_registry"></a> [agent\_image\_registry](#input\_agent\_image\_registry) | The image registry to use for the Cloud Monitoring agent. | `string` | `"icr.io"` | no |
+| <a name="input_agent_image_repository"></a> [agent\_image\_repository](#input\_agent\_image\_repository) | The image repository to use for the Cloud Monitoring agent. | `string` | `"agent-slim"` | no |
+| <a name="input_agent_image_tag_digest"></a> [agent\_image\_tag\_digest](#input\_agent\_image\_tag\_digest) | The image tag digest to use for the Cloud Monitoring agent. | `string` | `"13.9.1@sha256:14860d181a8b712c4150bb59e3ba0ff4be08959e2c45376b32c8eb7ff70461f9"` | no |
 | <a name="input_chart"></a> [chart](#input\_chart) | The name of the Helm chart to deploy. | `string` | `"sysdig-deploy"` | no |
 | <a name="input_chart_location"></a> [chart\_location](#input\_chart\_location) | The location of the Cloud Monitoring agent helm chart. | `string` | `"https://charts.sysdig.com"` | no |
 | <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the Cloud Monitoring agent helm chart to deploy. | `string` | `"1.83.1"` | no |
@@ -112,10 +116,9 @@ No modules.
 | <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | The ID of the cluster you wish to deploy the agent in | `string` | n/a | yes |
 | <a name="input_cluster_resource_group_id"></a> [cluster\_resource\_group\_id](#input\_cluster\_resource\_group\_id) | The Resource Group ID of the cluster | `string` | n/a | yes |
 | <a name="input_container_filter"></a> [container\_filter](#input\_container\_filter) | To filter custom containers, specify which containers to include or exclude from metrics collection for the cloud monitoring agent. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_filter_data. | <pre>list(object({<br/>    type      = string<br/>    parameter = string<br/>    name      = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_image_registry"></a> [image\_registry](#input\_image\_registry) | The image registry to use for the Cloud Monitoring agent. | `string` | `"icr.io"` | no |
-| <a name="input_image_repository"></a> [image\_repository](#input\_image\_repository) | The image repository to use for the Cloud Monitoring agent. | `string` | `"ext/sysdig/agent"` | no |
-| <a name="input_image_tag_digest"></a> [image\_tag\_digest](#input\_image\_tag\_digest) | The image tag digest to use for the Cloud Monitoring agent. | `string` | `"13.9.1@sha256:3193987f77dba930cb22c200df9981afcd097e7cd5885b77d13e20ef353dc5b8"` | no |
 | <a name="input_is_vpc_cluster"></a> [is\_vpc\_cluster](#input\_is\_vpc\_cluster) | Specify true if the target cluster for the monitoring agent is a VPC cluster, false if it is a classic cluster. | `bool` | `true` | no |
+| <a name="input_kernal_module_image_repository"></a> [kernal\_module\_image\_repository](#input\_kernal\_module\_image\_repository) | The image repository to use for the Cloud Monitoring agent. | `string` | `"agent-kmodule"` | no |
+| <a name="input_kernel_module_image_tag_digest"></a> [kernel\_module\_image\_tag\_digest](#input\_kernel\_module\_image\_tag\_digest) | The image tag digest to use for the Cloud Monitoring agent kernel module. | `string` | `"13.9.1@sha256:0eef614a5988f6979d487f949b3cb1212f8253433057894b5583bf01bf378fb3"` | no |
 | <a name="input_metrics_filter"></a> [metrics\_filter](#input\_metrics\_filter) | To filter custom metrics, specify the Cloud Monitoring metrics to include or to exclude. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics. | <pre>list(object({<br/>    type = string<br/>    name = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_name"></a> [name](#input\_name) | Cloud Monitoring agent name. Used for naming all kubernetes and helm resources on the cluster. | `string` | `"sysdig-agent"` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace where to deploy the Cloud Monitoring agent. Default value is 'ibm-observe' | `string` | `"ibm-observe"` | no |

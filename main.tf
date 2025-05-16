@@ -30,7 +30,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 locals {
   # LOCALS
   cluster_name   = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publically documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
-  collector_host = var.cloud_monitoring_instance_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com"
+  collector_host = var.cloud_monitoring_instance_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "ingest.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com"
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
@@ -52,6 +52,20 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = local.collector_host
   }
   set {
+    name  = "agent.slim.image.repository"
+    type  = "string"
+    value = var.agent_image_repository
+  }
+  set {
+    name  = "agent.slim.kmoduleImage.repository"
+    type  = "string"
+    value = var.kernal_module_image_repository
+  }
+  set {
+    name  = "agent.slim.enabled"
+    value = true
+  }
+  set {
     name  = "global.sysdig.accessKey"
     type  = "string"
     value = var.access_key
@@ -62,19 +76,29 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = local.cluster_name
   }
   set {
+    name  = "agent.image.registry"
+    type  = "string"
+    value = var.agent_image_registry
+  }
+  set {
+    name  = "Values.image.repository"
+    type  = "string"
+    value = var.agent_image_registry
+  }
+  set {
     name  = "global.imageRegistry"
     type  = "string"
-    value = var.image_registry
+    value = "${var.agent_image_registry}/${var.agent_image_namespace}"
   }
   set {
-    name  = "image.repository"
+    name  = "agent.image.tag"
     type  = "string"
-    value = var.image_repository
+    value = var.agent_image_tag_digest
   }
   set {
-    name  = "image.tag"
+    name  = "agent.slim.kmoduleImage.digest"
     type  = "string"
-    value = var.image_tag_digest
+    value = regex("@(.*)", var.kernel_module_image_tag_digest)[0]
   }
   # Specific to SCC WP, enabled by default
   set {
