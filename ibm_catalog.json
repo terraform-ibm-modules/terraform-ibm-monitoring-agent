@@ -166,6 +166,9 @@
               "key": "metrics_filter"
             },
             {
+              "key": "blacklisted_ports"
+            },
+            {
               "key": "cluster_config_endpoint_type",
               "options": [
                 {

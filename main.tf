@@ -78,13 +78,28 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = false
   }
 
-  values = [yamlencode({
-    metrics_filter = var.metrics_filter
-    }), yamlencode({
-    tolerations = var.tolerations
-    }), yamlencode({
-    container_filter = var.container_filter
-  })]
+  values = [
+    yamlencode(
+      {
+        metrics_filter = var.metrics_filter
+      }
+    ),
+    yamlencode(
+      {
+        tolerations = var.tolerations
+      }
+    ),
+    yamlencode(
+      {
+        container_filter = var.container_filter
+      }
+    ),
+    yamlencode(
+      {
+        blacklisted_ports = var.blacklisted_ports
+      }
+    )
+  ]
 
   provisioner "local-exec" {
     command     = "${path.module}/scripts/confirm-rollout-status.sh ${var.name} ${var.namespace}"
