@@ -23,7 +23,7 @@ output "cluster_resource_group_id" {
 }
 
 output "cluster_name" {
-  value       = local.cluster_name
+  value       = module.ocp_base.cluster_name
   description = "Name of the cluster."
 }
 
