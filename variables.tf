@@ -175,7 +175,7 @@ variable "agent_image_namespace" {
 }
 
 variable "agent_image_repository" {
-  description = "The image repository to use for the Cloud Monitoring agent."
+  description = "The image repository to pull the Cloud Monitoring agent image from."
   type        = string
   default     = "agent-slim"
   nullable    = false
