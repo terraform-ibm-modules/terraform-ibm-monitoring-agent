@@ -133,42 +133,42 @@ variable "chart_version" {
 }
 
 variable "image_registry_base_url" {
-  description = "The image registry to use for the Cloud Monitoring agent."
+  description = "The image registry base URL to pull the Cloud Monitoring agent images from. For example `icr.io`, `quay.io`, etc."
   type        = string
   default     = "icr.io"
   nullable    = false
 }
 
 variable "image_registry_namespace" {
-  description = "The image repository to use for the Cloud Monitoring agent."
+  description = "The namespace within the image registry to pull the Cloud Monitoring agent images from."
   type        = string
   default     = "ext/sysdig"
   nullable    = false
 }
 
 variable "agent_image_repository" {
-  description = "The image repository to use for the Cloud Monitoring agent."
+  description = "The image repository to pull the Cloud Monitoring agent image from."
   type        = string
   default     = "agent-slim"
   nullable    = false
 }
 
 variable "agent_image_tag_digest" {
-  description = "The image tag digest to use for the Cloud Monitoring agent."
+  description = "The namespace within the image registry to pull the Cloud Monitoring agent images from."
   type        = string
   default     = "13.9.1@sha256:14860d181a8b712c4150bb59e3ba0ff4be08959e2c45376b32c8eb7ff70461f9" # datasource: icr.io/ext/sysdig/agent-slim
   nullable    = false
 }
 
 variable "kernel_module_image_tag_digest" {
-  description = "The image tag digest to use for the Cloud Monitoring agent kernel module."
+  description = "The image tag digest to use for the Cloud Monitoring agent kernel module used by the initContainer."
   type        = string
   default     = "13.9.1@sha256:0eef614a5988f6979d487f949b3cb1212f8253433057894b5583bf01bf378fb3" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable    = false
 }
 
 variable "kernal_module_image_repository" {
-  description = "The image repository to use for the Cloud Monitoring agent."
+  description = "The image repository to pull the Cloud Monitoring agent kernal module initContainer image from."
   type        = string
   default     = "agent-kmodule"
   nullable    = false
