@@ -64,6 +64,13 @@ variable "access_key" {
   nullable    = false
 }
 
+variable "access_key_secret" {
+  type        = string
+  description = "The name of the secret which will store the access key."
+  default     = "sysdig-agent"
+  nullable    = false
+}
+
 variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The IBM Cloud Monitoring instance region. Used to construct the ingestion endpoint."
@@ -105,6 +112,24 @@ variable "container_filter" {
     condition     = length(var.container_filter) == 0 || can(regex("^(include|exclude)$", var.container_filter[0].type))
     error_message = "Invalid input for `container_filter`. Valid options for 'type' are: `include` and `exclude`. If empty, no containers are included or excluded."
   }
+}
+
+variable "agent_tags" {
+  type        = list(string)
+  description = "List of tags to associate to all matrics that the agent collects. NOTE: Use the 'add_cluster_name' variable to add the cluster name as a tag."
+  default     = []
+  nullable    = false
+
+  validation {
+    condition     = alltrue([for tags in var.agent_tags : !can(regex("\\s", tags))])
+    error_message = "The cloud monitoring agent tags must not contain any spaces."
+  }
+}
+
+variable "add_cluster_name" {
+  type        = bool
+  description = "If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data."
+  default     = true
 }
 
 variable "name" {

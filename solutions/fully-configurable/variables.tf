@@ -56,6 +56,13 @@ variable "access_key" {
   nullable    = false
 }
 
+variable "access_key_secret" {
+  type        = string
+  description = "The name of the secret which will store the access key."
+  default     = "sysdig-agent"
+  nullable    = false
+}
+
 variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The name of the region where the IBM Cloud Monitoring instance is created. This name is used to construct the ingestion endpoint."
@@ -75,6 +82,24 @@ variable "metrics_filter" {
   }))
   description = "To filter on custom metrics, specify the IBM Cloud Monitoring metrics to include or exclude. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics) and [here](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/solutions/fully-configurable/DA-types.md)."
   default     = [] # [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
+}
+
+variable "agent_tags" {
+  type        = list(string)
+  description = "List of tags to associate to all matrics that the agent collects. NOTE: Use the 'add_cluster_name' variable to add the cluster name as a tag."
+  default     = []
+  nullable    = false
+
+  validation {
+    condition     = alltrue([for tags in var.agent_tags : !can(regex("\\s", tags))])
+    error_message = "The cloud monitoring agent tags must not contain any spaces."
+  }
+}
+
+variable "add_cluster_name" {
+  type        = bool
+  description = "If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data."
+  default     = true
 }
 
 variable "name" {

@@ -147,6 +147,15 @@
               "key": "namespace"
             },
             {
+              "key": "access_key_secret"
+            },
+            {
+              "key": "add_cluster_name"
+            },
+            {
+              "key": "agent_tags"
+            },
+            {
               "key": "tolerations"
             },
             {

@@ -103,6 +103,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance | `string` | n/a | yes |
+| <a name="input_access_key_secret"></a> [access\_key\_secret](#input\_access\_key\_secret) | The name of the secret which will store the access key. | `string` | `"sysdig-agent"` | no |
+| <a name="input_add_cluster_name"></a> [add\_cluster\_name](#input\_add\_cluster\_name) | If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data. | `bool` | `true` | no |
+| <a name="input_agent_tags"></a> [agent\_tags](#input\_agent\_tags) | List of tags to associate to all matrics that the agent collects. NOTE: Use the 'add\_cluster\_name' variable to add the cluster name as a tag. | `list(string)` | `[]` | no |
 | <a name="input_chart"></a> [chart](#input\_chart) | The name of the Helm chart to deploy. | `string` | `"sysdig-deploy"` | no |
 | <a name="input_chart_location"></a> [chart\_location](#input\_chart\_location) | The location of the Cloud Monitoring agent helm chart. | `string` | `"https://charts.sysdig.com"` | no |
 | <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the Cloud Monitoring agent helm chart to deploy. | `string` | `"1.83.1"` | no |

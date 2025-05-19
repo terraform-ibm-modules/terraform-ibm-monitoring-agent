@@ -22,6 +22,9 @@ module "monitoring_agent" {
   namespace                               = var.namespace
   cloud_monitoring_instance_endpoint_type = var.cloud_monitoring_instance_endpoint_type
   access_key                              = var.access_key
+  access_key_secret                       = var.access_key_secret
+  agent_tags                              = var.agent_tags
+  add_cluster_name                        = var.add_cluster_name
   metrics_filter                          = var.metrics_filter
   cloud_monitoring_instance_region        = var.cloud_monitoring_instance_region
   tolerations                             = var.tolerations
