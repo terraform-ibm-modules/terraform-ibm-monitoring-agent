@@ -168,7 +168,7 @@ variable "agent_image_registry" {
 }
 
 variable "agent_image_namespace" {
-  description = "The image repository to use for the Cloud Monitoring agent."
+  description = "The namespace within the image registry to pull the Cloud Monitoring agent images from."
   type        = string
   default     = "ext/sysdig"
   nullable    = false
