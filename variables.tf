@@ -226,3 +226,31 @@ variable "kernal_module_image_repository" {
   default     = "agent-kmodule"
   nullable    = false
 }
+
+########################################################################################################################
+# Resource Management Variables
+########################################################################################################################
+
+variable "agent_requests_cpu" {
+  type        = string
+  description = "Specifies the CPU requested to run in a node for the agent."
+  default     = "1"
+}
+
+variable "agent_limits_cpu" {
+  type        = string
+  description = "Specifies the CPU limit for the agent."
+  default     = "1"
+}
+
+variable "agent_requests_memory" {
+  type        = string
+  description = "Specifies the memory requested to run in a node for the agent."
+  default     = "1024Mi"
+}
+
+variable "agent_limits_memory" {
+  type        = string
+  description = "Specifies the memory limit for the agent."
+  default     = "1024Mi"
+}

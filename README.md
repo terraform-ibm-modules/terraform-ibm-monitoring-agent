@@ -105,9 +105,13 @@ No modules.
 | <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance | `string` | n/a | yes |
 | <a name="input_access_key_secret"></a> [access\_key\_secret](#input\_access\_key\_secret) | The name of the secret which will store the access key. | `string` | `"sysdig-agent"` | no |
 | <a name="input_add_cluster_name"></a> [add\_cluster\_name](#input\_add\_cluster\_name) | If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data. | `bool` | `true` | no |
-| <a name="input_agent_tags"></a> [agent\_tags](#input\_agent\_tags) | List of tags to associate to all matrics that the agent collects. NOTE: Use the 'add\_cluster\_name' variable to add the cluster name as a tag. | `list(string)` | `[]` | no |
 | <a name="input_agent_image_repository"></a> [agent\_image\_repository](#input\_agent\_image\_repository) | The image repository to pull the Cloud Monitoring agent image from. | `string` | `"agent-slim"` | no |
 | <a name="input_agent_image_tag_digest"></a> [agent\_image\_tag\_digest](#input\_agent\_image\_tag\_digest) | The image tag digest to use for the Cloud Monitoring agent. | `string` | `"13.9.1@sha256:14860d181a8b712c4150bb59e3ba0ff4be08959e2c45376b32c8eb7ff70461f9"` | no |
+| <a name="input_agent_limits_cpu"></a> [agent\_limits\_cpu](#input\_agent\_limits\_cpu) | Specifies the CPU limit for the agent. | `string` | `"1"` | no |
+| <a name="input_agent_limits_memory"></a> [agent\_limits\_memory](#input\_agent\_limits\_memory) | Specifies the memory limit for the agent. | `string` | `"1024Mi"` | no |
+| <a name="input_agent_requests_cpu"></a> [agent\_requests\_cpu](#input\_agent\_requests\_cpu) | Specifies the CPU requested to run in a node for the agent. | `string` | `"1"` | no |
+| <a name="input_agent_requests_memory"></a> [agent\_requests\_memory](#input\_agent\_requests\_memory) | Specifies the memory requested to run in a node for the agent. | `string` | `"1024Mi"` | no |
+| <a name="input_agent_tags"></a> [agent\_tags](#input\_agent\_tags) | List of tags to associate to all matrics that the agent collects. NOTE: Use the 'add\_cluster\_name' variable to add the cluster name as a tag. | `list(string)` | `[]` | no |
 | <a name="input_chart"></a> [chart](#input\_chart) | The name of the Helm chart to deploy. | `string` | `"sysdig-deploy"` | no |
 | <a name="input_chart_location"></a> [chart\_location](#input\_chart\_location) | The location of the Cloud Monitoring agent helm chart. | `string` | `"https://charts.sysdig.com"` | no |
 | <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the Cloud Monitoring agent helm chart to deploy. | `string` | `"1.83.1"` | no |

@@ -53,10 +53,6 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = local.collector_host
   }
   set {
-    name  = "global.sysdig.accessKeySecret"
-    type  = "string"
-    value = var.access_key_secret
-  set {
     name  = "agent.slim.image.repository"
     type  = "string"
     value = var.agent_image_repository
@@ -74,6 +70,11 @@ resource "helm_release" "cloud_monitoring_agent" {
     name  = "global.sysdig.accessKey"
     type  = "string"
     value = var.access_key
+  }
+  set {
+    name  = "global.sysdig.accessKeySecret"
+    type  = "string"
+    value = var.access_key_secret
   }
   set {
     name  = "global.sysdig.tags"
@@ -104,6 +105,26 @@ resource "helm_release" "cloud_monitoring_agent" {
     name  = "agent.image.tag"
     type  = "string"
     value = var.agent_image_tag_digest
+  }
+  set {
+    name  = "agent.resources.requests.cpu"
+    type  = "string"
+    value = var.agent_requests_cpu
+  }
+  set {
+    name  = "agent.resources.requests.memory"
+    type  = "string"
+    value = var.agent_requests_memory
+  }
+  set {
+    name  = "agent.resources.limits.cpu"
+    type  = "string"
+    value = var.agent_limits_cpu
+  }
+  set {
+    name  = "agent.resources.limits.memory"
+    type  = "string"
+    value = var.agent_limits_memory
   }
   set {
     name  = "agent.slim.kmoduleImage.digest"
