@@ -161,7 +161,7 @@ variable "chart_version" {
 }
 
 variable "agent_image_registry" {
-  description = "The image registry to use for the Cloud Monitoring agent."
+  description = "The image registry base URL to pull the Cloud Monitoring agent images from. For example `icr.io`, `quay.io`, etc."
   type        = string
   default     = "icr.io"
   nullable    = false
