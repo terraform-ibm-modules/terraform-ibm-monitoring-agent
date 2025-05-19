@@ -196,7 +196,7 @@ variable "kernel_module_image_tag_digest" {
 }
 
 variable "kernal_module_image_repository" {
-  description = "The image repository to use for the Cloud Monitoring agent."
+  description = "The image repository to pull the Cloud Monitoring agent kernal module initContainer image from."
   type        = string
   default     = "agent-kmodule"
   nullable    = false
