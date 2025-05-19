@@ -126,10 +126,10 @@
               "required": true
             },
             {
-              "key": "agent_image_registry"
+              "key": "image_registry_base_url"
             },
             {
-              "key": "agent_image_namespace"
+              "key": "image_registry_namespace"
             },
             {
               "key": "agent_image_repository"

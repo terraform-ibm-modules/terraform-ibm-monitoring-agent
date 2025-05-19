@@ -78,17 +78,17 @@ resource "helm_release" "cloud_monitoring_agent" {
   set {
     name  = "agent.image.registry"
     type  = "string"
-    value = var.agent_image_registry
+    value = var.image_registry_base_url
   }
   set {
     name  = "Values.image.repository"
     type  = "string"
-    value = var.agent_image_registry
+    value = var.image_registry_base_url
   }
   set {
     name  = "global.imageRegistry"
     type  = "string"
-    value = "${var.agent_image_registry}/${var.agent_image_namespace}"
+    value = "${var.image_registry_base_url}/${var.image_registry_namespace}"
   }
   set {
     name  = "agent.image.tag"

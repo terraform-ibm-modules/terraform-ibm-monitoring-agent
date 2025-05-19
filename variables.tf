@@ -160,14 +160,14 @@ variable "chart_version" {
   nullable    = false
 }
 
-variable "agent_image_registry" {
+variable "image_registry_base_url" {
   description = "The image registry base URL to pull the Cloud Monitoring agent images from. For example `icr.io`, `quay.io`, etc."
   type        = string
   default     = "icr.io"
   nullable    = false
 }
 
-variable "agent_image_namespace" {
+variable "image_registry_namespace" {
   description = "The namespace within the image registry to pull the Cloud Monitoring agent images from."
   type        = string
   default     = "ext/sysdig"
