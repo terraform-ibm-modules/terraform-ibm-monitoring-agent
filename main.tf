@@ -30,6 +30,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 locals {
   # LOCALS
   cluster_name   = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publically documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
+  agent_tags     = var.add_cluster_name ? concat(["ibm.containers-kubernetes.cluster.name:${local.cluster_name}"], var.agent_tags) : var.agent_tags
   collector_host = var.cloud_monitoring_instance_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "ingest.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com"
 }
 
@@ -71,6 +72,16 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = var.access_key
   }
   set {
+    name  = "global.sysdig.accessKeySecret"
+    type  = "string"
+    value = var.access_key_secret
+  }
+  set {
+    name  = "global.sysdig.tags"
+    type  = "string"
+    value = join("\\,", local.agent_tags)
+  }
+  set {
     name  = "global.clusterConfig.name"
     type  = "string"
     value = local.cluster_name
@@ -96,6 +107,26 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = var.agent_image_tag_digest
   }
   set {
+    name  = "agent.resources.requests.cpu"
+    type  = "string"
+    value = var.agent_requests_cpu
+  }
+  set {
+    name  = "agent.resources.requests.memory"
+    type  = "string"
+    value = var.agent_requests_memory
+  }
+  set {
+    name  = "agent.resources.limits.cpu"
+    type  = "string"
+    value = var.agent_limits_cpu
+  }
+  set {
+    name  = "agent.resources.limits.memory"
+    type  = "string"
+    value = var.agent_limits_memory
+  }
+  set {
     name  = "agent.slim.kmoduleImage.digest"
     type  = "string"
     value = regex("@(.*)", var.kernel_module_image_tag_digest)[0]
@@ -107,13 +138,23 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = false
   }
 
-  values = [yamlencode({
-    metrics_filter = var.metrics_filter
-    }), yamlencode({
-    tolerations = var.tolerations
-    }), yamlencode({
-    container_filter = var.container_filter
-  })]
+  values = [
+    yamlencode(
+      {
+        metrics_filter = var.metrics_filter
+      }
+    ),
+    yamlencode(
+      {
+        tolerations = var.tolerations
+      }
+    ),
+    yamlencode(
+      {
+        container_filter = var.container_filter
+      }
+    )
+  ]
 
   provisioner "local-exec" {
     command     = "${path.module}/scripts/confirm-rollout-status.sh ${var.name} ${var.namespace}"
