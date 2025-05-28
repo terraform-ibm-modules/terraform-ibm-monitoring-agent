@@ -114,7 +114,7 @@ module "monitoring_agents" {
   # Monitoring agent
   access_key = module.cloud_monitoring.access_key
   # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
-  metrics_filter                   = [{ exclude = "metricA.*", include = "metricB.*" }]
+  metrics_filter                   = [{ exclude = "metricA.*" }, { include = "metricB.*" }]
   container_filter                 = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
   cloud_monitoring_instance_region = var.region
 }
