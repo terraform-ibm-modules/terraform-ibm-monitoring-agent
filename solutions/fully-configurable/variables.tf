@@ -23,8 +23,8 @@ variable "cluster_resource_group_id" {
 variable "cluster_config_endpoint_type" {
   description = "Specify the type of endpoint to use to access the cluster configuration. Possible values: `default`, `private`, `vpe`, `link`. The `default` value uses the default endpoint of the cluster."
   type        = string
-  default     = "private" # Use 'private' for VPC clusters, 'default' for classic clusters
-  nullable    = false     # use default if null is passed in
+  default     = "private"
+  nullable    = false # use default if null is passed in
 }
 
 variable "is_vpc_cluster" {
@@ -87,11 +87,7 @@ variable "metrics_filter" {
     exclude = optional(string)
   }))
   description = "To filter on custom metrics, specify the IBM Cloud Monitoring metrics to include or exclude. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics) and [here](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/solutions/fully-configurable/DA-types.md)."
-  default     = [] # [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
-  validation {
-    condition     = length(var.metrics_filter) == 0 || can(regex("^(include|exclude)$", var.metrics_filter[0].include)) || can(regex("^(include|exclude)$", var.metrics_filter[0].exclude))
-    error_message = "Invalid input for `metrics_filter`. Valid options for 'include' and 'exclude' are: `include` and `exclude`. If empty, no metrics are included or excluded."
-  }
+  default     = [] # [{ exclude = "metricA.*", include = "metricB.*" }]
 }
 
 variable "agent_tags" {
