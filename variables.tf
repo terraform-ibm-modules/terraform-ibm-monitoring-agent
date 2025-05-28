@@ -66,9 +66,9 @@ variable "access_key" {
 
 variable "access_key_secret" {
   type        = string
-  description = "The name of the secret which will store the access key."
-  default     = "sysdig-agent"
-  nullable    = false
+  description = "The name of a Kubernetes/Openshift secret containing an access-key entry."
+  default     = null
+  nullable    = true
 }
 
 variable "cloud_monitoring_instance_region" {
@@ -87,16 +87,22 @@ variable "cloud_monitoring_instance_endpoint_type" {
   }
 }
 
+variable "blacklisted_ports" {
+  type        = list(number)
+  description = "To blacklist ports, include the ports you wish to block network traffic and metrics from network ports. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports."
+  default     = []
+}
+
 variable "metrics_filter" {
   type = list(object({
-    type = string
-    name = string
+    include = optional(string)
+    exclude = optional(string)
   }))
   description = "To filter custom metrics, specify the Cloud Monitoring metrics to include or to exclude. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics."
   default     = []
   validation {
-    condition     = alltrue([for filter in var.metrics_filter : can(regex("^(include|exclude)$", filter.type)) && filter.name != ""])
-    error_message = "The specified `type` for the `metrics_filter` is not valid. Specify either `include` or `exclude`. The `name` field cannot be empty."
+    condition     = length(var.metrics_filter) == 0 || can(regex("^(include|exclude)$", var.metrics_filter[0].include)) || can(regex("^(include|exclude)$", var.metrics_filter[0].exclude))
+    error_message = "Invalid input for `metrics_filter`. Valid options for 'include' and 'exclude' are: `include` and `exclude`. If empty, no metrics are included or excluded."
   }
 }
 
@@ -115,21 +121,15 @@ variable "container_filter" {
 }
 
 variable "agent_tags" {
-  type        = list(string)
-  description = "List of tags to associate to all matrics that the agent collects. NOTE: Use the 'add_cluster_name' variable to add the cluster name as a tag."
-  default     = []
-  nullable    = false
-
-  validation {
-    condition     = alltrue([for tags in var.agent_tags : !can(regex("\\s", tags))])
-    error_message = "The cloud monitoring agent tags must not contain any spaces."
-  }
+  description = "Map of tags to associate to all matrics that the agent collects. NOTE: Use the 'add_cluster_name' variable to add the cluster name as a tag, e.g `ibm-containers-kubernetes-cluster-name: cluster_name`."
+  type        = map(string)
+  default     = {}
 }
 
 variable "add_cluster_name" {
   type        = bool
   description = "If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data."
-  default     = true
+  default     = false
 }
 
 variable "name" {

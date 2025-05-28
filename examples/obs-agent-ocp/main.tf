@@ -26,12 +26,20 @@ resource "ibm_is_vpc" "vpc" {
   tags                      = var.resource_tags
 }
 
+resource "ibm_is_public_gateway" "gateway" {
+  name           = "${var.prefix}-gateway-1"
+  vpc            = ibm_is_vpc.vpc.id
+  resource_group = module.resource_group.resource_group_id
+  zone           = "${var.region}-1"
+}
+
 resource "ibm_is_subnet" "subnet_zone_1" {
   name                     = "${var.prefix}-subnet-1"
   vpc                      = ibm_is_vpc.vpc.id
   resource_group           = module.resource_group.resource_group_id
   zone                     = "${var.region}-1"
   total_ipv4_address_count = 256
+  public_gateway           = ibm_is_public_gateway.gateway.id
 }
 
 ########################################################################################################################
@@ -99,14 +107,14 @@ module "cloud_monitoring" {
 # Monitoring Agents
 ##############################################################################
 
-module "monitoring_agents" {
-  source                    = "../.."
-  cluster_id                = module.ocp_base.cluster_id
-  cluster_resource_group_id = module.resource_group.resource_group_id
-  # Monitoring agent
-  access_key = module.cloud_monitoring.access_key
-  # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
-  metrics_filter                   = [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
-  container_filter                 = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
-  cloud_monitoring_instance_region = var.region
-}
+# module "monitoring_agents" {
+#   source                    = "../.."
+#   cluster_id                = module.ocp_base.cluster_id
+#   cluster_resource_group_id = module.resource_group.resource_group_id
+#   # Monitoring agent
+#   access_key = module.cloud_monitoring.access_key
+#   # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
+#   metrics_filter                   = [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
+#   container_filter                 = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
+#   cloud_monitoring_instance_region = var.region
+# }

@@ -196,6 +196,9 @@
               ]
             },
             {
+              "key": "blacklisted_ports"
+            },
+            {
               "key": "metrics_filter"
             },
             {

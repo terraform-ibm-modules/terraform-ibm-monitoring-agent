@@ -25,6 +25,7 @@ module "monitoring_agent" {
   access_key_secret                       = var.access_key_secret
   agent_tags                              = var.agent_tags
   add_cluster_name                        = var.add_cluster_name
+  blacklisted_ports                       = var.blacklisted_ports
   metrics_filter                          = var.metrics_filter
   cloud_monitoring_instance_region        = var.cloud_monitoring_instance_region
   tolerations                             = var.tolerations
