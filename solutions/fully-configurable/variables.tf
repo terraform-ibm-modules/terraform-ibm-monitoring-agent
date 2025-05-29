@@ -56,6 +56,13 @@ variable "access_key" {
   nullable    = false
 }
 
+variable "access_key_secret" {
+  type        = string
+  description = "The name of a Kubernetes/Openshift secret containing an access-key entry."
+  default     = null
+  nullable    = true
+}
+
 variable "cloud_monitoring_instance_region" {
   type        = string
   description = "The name of the region where the IBM Cloud Monitoring instance is created. This name is used to construct the ingestion endpoint."
@@ -68,13 +75,31 @@ variable "cloud_monitoring_instance_endpoint_type" {
   default     = "private"
 }
 
+variable "blacklisted_ports" {
+  type        = list(number)
+  description = "To blacklist ports, include the ports you wish to block network traffic and metrics from network ports. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports."
+  default     = []
+}
+
 variable "metrics_filter" {
   type = list(object({
-    type = string
-    name = string
+    include = optional(string)
+    exclude = optional(string)
   }))
   description = "To filter on custom metrics, specify the IBM Cloud Monitoring metrics to include or exclude. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics) and [here](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/solutions/fully-configurable/DA-types.md)."
-  default     = [] # [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
+  default     = [] # [{ exclude = "metricA.*", include = "metricB.*" }]
+}
+
+variable "agent_tags" {
+  description = "Map of tags to associate to all matrics that the agent collects. NOTE: Use the 'add_cluster_name' variable to add the cluster name as a tag, e.g `ibm-containers-kubernetes-cluster-name: cluster_name`."
+  type        = map(string)
+  default     = {}
+}
+
+variable "add_cluster_name" {
+  type        = bool
+  description = "If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data."
+  default     = true
 }
 
 variable "name" {
@@ -172,4 +197,32 @@ variable "kernal_module_image_repository" {
   type        = string
   default     = "agent-kmodule"
   nullable    = false
+}
+
+########################################################################################################################
+# Resource Management Variables
+########################################################################################################################
+
+variable "agent_requests_cpu" {
+  type        = string
+  description = "Specifies the CPU requested to run in a node for the agent."
+  default     = "1"
+}
+
+variable "agent_limits_cpu" {
+  type        = string
+  description = "Specifies the CPU limit for the agent."
+  default     = "1"
+}
+
+variable "agent_requests_memory" {
+  type        = string
+  description = "Specifies the memory requested to run in a node for the agent."
+  default     = "1024Mi"
+}
+
+variable "agent_limits_memory" {
+  type        = string
+  description = "Specifies the memory limit for the agent."
+  default     = "1024Mi"
 }

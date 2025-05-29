@@ -159,6 +159,27 @@
               "key": "namespace"
             },
             {
+              "key": "access_key_secret"
+            },
+            {
+              "key": "add_cluster_name"
+            },
+            {
+              "key": "agent_tags"
+            },
+            {
+              "key": "agent_requests_cpu"
+            },
+            {
+              "key": "agent_limits_cpu"
+            },
+            {
+              "key": "agent_requests_memory"
+            },
+            {
+              "key": "agent_limits_memory"
+            },
+            {
               "key": "tolerations"
             },
             {
@@ -173,6 +194,9 @@
                   "value": "private"
                 }
               ]
+            },
+            {
+              "key": "blacklisted_ports"
             },
             {
               "key": "metrics_filter"
