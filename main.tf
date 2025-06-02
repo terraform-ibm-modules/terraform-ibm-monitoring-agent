@@ -65,17 +65,17 @@ resource "helm_release" "cloud_monitoring_agent" {
     name  = "agent.slim.enabled"
     value = true
   }
-  set {
+  set_sensitive {
     name  = "global.sysdig.accessKey"
     type  = "string"
     value = var.access_key
   }
   dynamic "set" {
-    for_each = var.access_key_secret != null && var.access_key_secret != "" ? [1] : []
+    for_each = var.access_key_secret_name != null && var.access_key_secret_name != "" ? [1] : []
     content {
       name  = "global.sysdig.accessKeySecret"
       type  = "string"
-      value = var.access_key_secret
+      value = var.access_key_secret_name
     }
   }
   set {
@@ -135,6 +135,7 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = false
   }
 
+  # Values to be passed to the agent config map, e.g `kubectl describe configmap sysdig-agent -n ibm-observe`
   values = [
     yamlencode({
       agent = {

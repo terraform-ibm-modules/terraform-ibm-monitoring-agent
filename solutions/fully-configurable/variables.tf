@@ -56,9 +56,20 @@ variable "access_key" {
   nullable    = false
 }
 
-variable "access_key_secret" {
+variable "access_key_secret_name" {
   type        = string
-  description = "The name of a Kubernetes/Openshift secret containing an access-key entry."
+  description = <<-EOT
+    The name of a Kubernetes or OpenShift Secret that contains the Sysdig agent access key under the key `access-key`.
+
+    This variable allows you to reference an existing secret in your cluster, rather than providing the access key directly in your Terraform configuration. This is recommended for improved security and to avoid exposing sensitive credentials in your Terraform state files.
+
+    - If set to a non-null value, the agent will use the access key from the specified secret.
+    - If set to `null` (the default), the value from the `access_key` variable will be used instead.
+
+    Example usage:
+      - Set to `"sysdig-agent-access"` if you have a secret named `sysdig-agent-access` in your target namespace.
+      - The secret must contain a data entry named `access-key`.
+  EOT
   default     = null
   nullable    = true
 }
@@ -77,7 +88,7 @@ variable "cloud_monitoring_instance_endpoint_type" {
 
 variable "blacklisted_ports" {
   type        = list(number)
-  description = "To blacklist ports, include the ports you wish to block network traffic and metrics from network ports. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports."
+  description = "To blacklist ports, include the ports you wish to block network traffic and metrics from network ports. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports)."
   default     = []
 }
 
@@ -91,14 +102,14 @@ variable "metrics_filter" {
 }
 
 variable "agent_tags" {
-  description = "Map of tags to associate to all matrics that the agent collects. NOTE: Use the 'add_cluster_name' variable to add the cluster name as a tag, e.g `ibm-containers-kubernetes-cluster-name: cluster_name`."
+  description = "Map of tags to associate to all metrics that the agent collects. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag."
   type        = map(string)
   default     = {}
 }
 
 variable "add_cluster_name" {
   type        = bool
-  description = "If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data."
+  description = "If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data. This tag is added in the format `ibm-containers-kubernetes-cluster-name: cluster_name`."
   default     = true
 }
 

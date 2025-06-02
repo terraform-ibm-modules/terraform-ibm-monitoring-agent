@@ -159,7 +159,7 @@
               "key": "namespace"
             },
             {
-              "key": "access_key_secret"
+              "key": "access_key_secret_name"
             },
             {
               "key": "add_cluster_name"

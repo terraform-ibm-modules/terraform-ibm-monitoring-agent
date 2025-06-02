@@ -22,7 +22,7 @@ module "monitoring_agent" {
   namespace                               = var.namespace
   cloud_monitoring_instance_endpoint_type = var.cloud_monitoring_instance_endpoint_type
   access_key                              = var.access_key
-  access_key_secret                       = var.access_key_secret
+  access_key_secret_name                  = var.access_key_secret_name
   agent_tags                              = var.agent_tags
   add_cluster_name                        = var.add_cluster_name
   blacklisted_ports                       = var.blacklisted_ports
