@@ -66,18 +66,7 @@ variable "access_key" {
 
 variable "access_key_secret_name" {
   type        = string
-  description = <<-EOT
-    The name of a Kubernetes or OpenShift Secret that contains the Sysdig agent access key under the key `access-key`.
-
-    This variable allows you to reference an existing secret in your cluster, rather than providing the access key directly in your Terraform configuration. This is recommended for improved security and to avoid exposing sensitive credentials in your Terraform state files.
-
-    - If set to a non-null value, the agent will use the access key from the specified secret.
-    - If set to `null` (the default), the value from the `access_key` variable will be used instead.
-
-    Example usage:
-      - Set to `"sysdig-agent-access"` if you have a secret named `sysdig-agent-access` in your target namespace.
-      - The secret must contain a data entry named `access-key`.
-  EOT
+  description = "The name of a Kubernetes or OpenShift Secret that contains the Sysdig agent access key under the key `access-key`. This variable allows you to reference an existing secret in your cluster, rather than providing the access key directly in your Terraform configuration. This is recommended for improved security and to avoid exposing sensitive credentials in your Terraform state files."
   default     = null
   nullable    = true
 }
@@ -100,7 +89,7 @@ variable "cloud_monitoring_instance_endpoint_type" {
 
 variable "blacklisted_ports" {
   type        = list(number)
-  description = "To blacklist ports, include the ports you wish to block network traffic and metrics from network ports. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports)."
+  description = "To block network traffic and metrics from network ports, pass the list of ports from which you want to filter out any data. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports)."
   default     = []
 }
 
@@ -128,7 +117,7 @@ variable "container_filter" {
 }
 
 variable "agent_tags" {
-  description = "Map of tags to associate to all metrics that the agent collects. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag."
+  description = "Map of tags to associate to all metrics that the agent collects. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag, e.g `{'ibm-containers-kubernetes-cluster-name': 'cluster_name'}."
   type        = map(string)
   default     = {}
 }
