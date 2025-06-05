@@ -13,15 +13,15 @@ type = list(object({
 
 ### Description
 
-- **Purpose:**  
+- **Purpose:**
   Use `metrics_filter` to specify which metrics to include or exclude from collection. This is useful for reducing noise, focusing on relevant metrics, or optimizing resource usage.
 
-- **How it works:**  
-  Each entry in the list can have an `include` or `exclude` field (or both).  
+- **How it works:**
+  Each entry in the list can have an `include` or `exclude` field (or both).
   - The value should be a string pattern (supports wildcards, e.g., `metricA.*`).
   - `exclude` takes precedence over `include` if both match a metric.
 
-- **Default:**  
+- **Default:**
   ```hcl
   default = []
   ```
@@ -45,5 +45,5 @@ metrics_filter = [
 - [IBM Docs: Filter metrics](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics)
 ---
 
-**Tip:**  
+**Tip:**
 Use `metrics_filter` to optimize your monitoring setup by collecting only the metrics that matter most to your use case. This can help reduce costs and improve performance.
