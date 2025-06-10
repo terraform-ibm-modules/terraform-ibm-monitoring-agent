@@ -65,17 +65,20 @@ resource "helm_release" "cloud_monitoring_agent" {
     name  = "agent.slim.enabled"
     value = true
   }
-  set_sensitive {
-    name  = "global.sysdig.accessKey"
-    type  = "string"
-    value = var.access_key
+  dynamic "set_sensitive" {
+    for_each = var.access_key != null && var.access_key != "" ? [1] : []
+    content {
+      name  = "global.sysdig.accessKey"
+      type  = "string"
+      value = var.access_key
+    }
   }
   dynamic "set" {
-    for_each = var.access_key_secret_name != null && var.access_key_secret_name != "" ? [1] : []
+    for_each = var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "" ? [1] : []
     content {
       name  = "global.sysdig.accessKeySecret"
       type  = "string"
-      value = var.access_key_secret_name
+      value = var.existing_access_key_secret_name
     }
   }
   set {

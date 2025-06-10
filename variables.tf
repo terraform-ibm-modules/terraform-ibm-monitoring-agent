@@ -59,16 +59,19 @@ variable "wait_till_timeout" {
 
 variable "access_key" {
   type        = string
-  description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance"
+  description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required."
   sensitive   = true
-  nullable    = false
+  default     = null
+  validation {
+    condition     = (var.access_key != null && var.existing_access_key_secret_name != null)
+    error_message = "Either `access_key` or `existing_access_key_secret_name` must be provided and non-empty."
+  }
 }
 
-variable "access_key_secret_name" {
+variable "existing_access_key_secret_name" {
   type        = string
-  description = "The name of a Kubernetes or OpenShift Secret that contains the Sysdig agent access key under the key `access-key`. This variable allows you to reference an existing secret in your cluster, rather than providing the access key directly in your Terraform configuration."
+  description = "An alternative to using the Sysdig Agent `access_key`. Specify the name of a Kubernetes secret containing an access-key entry. Either `access_key` or `existing_access_key_secret_name` is required."
   default     = null
-  nullable    = true
 }
 
 variable "cloud_monitoring_instance_region" {

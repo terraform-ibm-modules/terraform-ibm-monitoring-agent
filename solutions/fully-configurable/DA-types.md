@@ -30,7 +30,7 @@ type = list(object({
 ### Example Usage
 
 ```hcl
-metrics_filter = [
+[
   { exclude = "kube_pod_container_status_terminated_reason_oomkilled" },
   { include = "custom_metric_prefix.*" }
 ]

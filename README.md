@@ -83,7 +83,7 @@ You need the following permissions to run this module.
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.15.0, <3.0.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.76.1, <2.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.79.0, <2.0.0 |
 
 ### Modules
 
@@ -102,8 +102,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance | `string` | n/a | yes |
-| <a name="input_access_key_secret_name"></a> [access\_key\_secret\_name](#input\_access\_key\_secret\_name) | The name of a Kubernetes or OpenShift Secret that contains the Sysdig agent access key under the key `access-key`. This variable allows you to reference an existing secret in your cluster, rather than providing the access key directly in your Terraform configuration. | `string` | `null` | no |
+| <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. | `string` | `null` | no |
 | <a name="input_add_cluster_name"></a> [add\_cluster\_name](#input\_add\_cluster\_name) | If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data. This tag is added in the format `ibm-containers-kubernetes-cluster-name: cluster_name`. | `bool` | `true` | no |
 | <a name="input_agent_image_repository"></a> [agent\_image\_repository](#input\_agent\_image\_repository) | The image repository to pull the Cloud Monitoring agent image from. | `string` | `"agent-slim"` | no |
 | <a name="input_agent_image_tag_digest"></a> [agent\_image\_tag\_digest](#input\_agent\_image\_tag\_digest) | The image tag digest to use for the Cloud Monitoring agent. | `string` | `"13.9.2@sha256:0dcdb6d70bab60dae4bf5f70c338f2feb9daeba514f1b8ad513ed24724c2a04d"` | no |
@@ -122,6 +121,7 @@ No modules.
 | <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | The ID of the cluster you wish to deploy the agent in | `string` | n/a | yes |
 | <a name="input_cluster_resource_group_id"></a> [cluster\_resource\_group\_id](#input\_cluster\_resource\_group\_id) | The Resource Group ID of the cluster | `string` | n/a | yes |
 | <a name="input_container_filter"></a> [container\_filter](#input\_container\_filter) | To filter custom containers, specify which containers to include or exclude from metrics collection for the cloud monitoring agent. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_filter_data. | <pre>list(object({<br/>    type      = string<br/>    parameter = string<br/>    name      = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_existing_access_key_secret_name"></a> [existing\_access\_key\_secret\_name](#input\_existing\_access\_key\_secret\_name) | An alternative to using the Sysdig Agent `access_key`. Specify the name of a Kubernetes secret containing an access-key entry. Either `access_key` or `existing_access_key_secret_name` is required. | `string` | `null` | no |
 | <a name="input_image_registry_base_url"></a> [image\_registry\_base\_url](#input\_image\_registry\_base\_url) | The image registry base URL to pull the Cloud Monitoring agent images from. For example `icr.io`, `quay.io`, etc. | `string` | `"icr.io"` | no |
 | <a name="input_image_registry_namespace"></a> [image\_registry\_namespace](#input\_image\_registry\_namespace) | The namespace within the image registry to pull the Cloud Monitoring agent images from. | `string` | `"ext/sysdig"` | no |
 | <a name="input_is_vpc_cluster"></a> [is\_vpc\_cluster](#input\_is\_vpc\_cluster) | Specify true if the target cluster for the monitoring agent is a VPC cluster, false if it is a classic cluster. | `bool` | `true` | no |
