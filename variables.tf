@@ -66,7 +66,7 @@ variable "access_key" {
 
 variable "access_key_secret_name" {
   type        = string
-  description = "The name of a Kubernetes or OpenShift Secret that contains the Sysdig agent access key under the key `access-key`. This variable allows you to reference an existing secret in your cluster, rather than providing the access key directly in your Terraform configuration. This is recommended for improved security and to avoid exposing sensitive credentials in your Terraform state files."
+  description = "The name of a Kubernetes or OpenShift Secret that contains the Sysdig agent access key under the key `access-key`. This variable allows you to reference an existing secret in your cluster, rather than providing the access key directly in your Terraform configuration."
   default     = null
   nullable    = true
 }
@@ -117,7 +117,7 @@ variable "container_filter" {
 }
 
 variable "agent_tags" {
-  description = "Map of tags to associate to all metrics that the agent collects. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag, e.g `{'ibm-containers-kubernetes-cluster-name': 'cluster_name'}."
+  description = "Map of tags to associate to all metrics that the agent collects. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag, e.g `{'environment': 'production'}."
   type        = map(string)
   default     = {}
 }

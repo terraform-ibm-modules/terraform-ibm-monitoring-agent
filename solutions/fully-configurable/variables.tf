@@ -91,7 +91,7 @@ variable "metrics_filter" {
 }
 
 variable "agent_tags" {
-  description = "Map of tags to associate to all metrics that the agent collects. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag, e.g `{'ibm-containers-kubernetes-cluster-name': 'cluster_name'}."
+  description = "Map of tags to associate to all metrics that the agent collects. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag, e.g `{'environment': 'production'}."
   type        = map(string)
   default     = {}
 }

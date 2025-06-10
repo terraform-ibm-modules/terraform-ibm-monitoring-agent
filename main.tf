@@ -124,6 +124,11 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = var.agent_limits_memory
   }
   set {
+    name  = "agent.tolerations"
+    type  = "string"
+    value = var.agent_limits_memory
+  }
+  set {
     name  = "agent.slim.kmoduleImage.digest"
     type  = "string"
     value = regex("@(.*)", var.kernel_module_image_tag_digest)[0]
@@ -143,7 +148,6 @@ resource "helm_release" "cloud_monitoring_agent" {
           settings = {
             blacklisted_ports = var.blacklisted_ports
             metrics_filter    = var.metrics_filter
-            tolerations       = var.tolerations
             container_filter  = var.container_filter
           }
           tags = merge(
@@ -152,7 +156,8 @@ resource "helm_release" "cloud_monitoring_agent" {
               "ibm-containers-kubernetes-cluster-name" = local.cluster_name
             } : {}
           )
-        }
+        },
+        tolerations = var.tolerations
       }
     })
   ]
