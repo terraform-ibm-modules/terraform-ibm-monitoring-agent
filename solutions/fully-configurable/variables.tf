@@ -61,7 +61,10 @@ variable "existing_access_key_secret_name" {
   description = "An alternative to using the Sysdig Agent access key. Specify the name of a Kubernetes secret containing an access-key entry."
   default     = null
   validation {
-    condition     = (var.existing_access_key_secret_name != null && var.access_key != null)
+    condition = (
+      (var.access_key != null && var.access_key != "") ||
+      (var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "")
+    )
     error_message = "Either `access_key` or `existing_access_key_secret_name` must be provided and non-empty."
   }
 }

@@ -63,7 +63,10 @@ variable "access_key" {
   sensitive   = true
   default     = null
   validation {
-    condition     = (var.access_key != null && var.existing_access_key_secret_name != null)
+    condition = (
+      (var.access_key != null && var.access_key != "") ||
+      (var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "")
+    )
     error_message = "Either `access_key` or `existing_access_key_secret_name` must be provided and non-empty."
   }
 }
