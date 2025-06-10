@@ -124,11 +124,6 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = var.agent_limits_memory
   }
   set {
-    name  = "agent.tolerations"
-    type  = "string"
-    value = var.agent_limits_memory
-  }
-  set {
     name  = "agent.slim.kmoduleImage.digest"
     type  = "string"
     value = regex("@(.*)", var.kernel_module_image_tag_digest)[0]
