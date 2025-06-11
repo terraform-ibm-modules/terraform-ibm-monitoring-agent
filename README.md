@@ -102,7 +102,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. | `string` | `null` | no |
+| <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the IBM Cloud Monitoring agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. This value will be stored on a new secret on the cluster if passed. | `string` | `null` | no |
 | <a name="input_add_cluster_name"></a> [add\_cluster\_name](#input\_add\_cluster\_name) | If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data. This tag is added in the format `ibm-containers-kubernetes-cluster-name: cluster_name`. | `bool` | `true` | no |
 | <a name="input_agent_image_repository"></a> [agent\_image\_repository](#input\_agent\_image\_repository) | The image repository to pull the Cloud Monitoring agent image from. | `string` | `"agent-slim"` | no |
 | <a name="input_agent_image_tag_digest"></a> [agent\_image\_tag\_digest](#input\_agent\_image\_tag\_digest) | The image tag digest to use for the Cloud Monitoring agent. | `string` | `"13.9.2@sha256:0dcdb6d70bab60dae4bf5f70c338f2feb9daeba514f1b8ad513ed24724c2a04d"` | no |

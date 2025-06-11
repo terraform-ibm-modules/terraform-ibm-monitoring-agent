@@ -51,7 +51,7 @@ variable "wait_till_timeout" {
 
 variable "access_key" {
   type        = string
-  description = "The access key that is used by the IBM Cloud Monitoring agent to communicate with the instance."
+  description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. This value will be stored on a new secret on the cluster if passed."
   sensitive   = true
   default     = null
 }
