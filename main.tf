@@ -65,10 +65,21 @@ resource "helm_release" "cloud_monitoring_agent" {
     name  = "agent.slim.enabled"
     value = true
   }
-  set {
-    name  = "global.sysdig.accessKey"
-    type  = "string"
-    value = var.access_key
+  dynamic "set_sensitive" {
+    for_each = var.access_key != null && var.access_key != "" ? [1] : []
+    content {
+      name  = "global.sysdig.accessKey"
+      type  = "string"
+      value = var.access_key
+    }
+  }
+  dynamic "set" {
+    for_each = var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "" ? [1] : []
+    content {
+      name  = "global.sysdig.accessKeySecret"
+      type  = "string"
+      value = var.existing_access_key_secret_name
+    }
   }
   set {
     name  = "global.clusterConfig.name"
@@ -96,6 +107,26 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = var.agent_image_tag_digest
   }
   set {
+    name  = "agent.resources.requests.cpu"
+    type  = "string"
+    value = var.agent_requests_cpu
+  }
+  set {
+    name  = "agent.resources.requests.memory"
+    type  = "string"
+    value = var.agent_requests_memory
+  }
+  set {
+    name  = "agent.resources.limits.cpu"
+    type  = "string"
+    value = var.agent_limits_cpu
+  }
+  set {
+    name  = "agent.resources.limits.memory"
+    type  = "string"
+    value = var.agent_limits_memory
+  }
+  set {
     name  = "agent.slim.kmoduleImage.digest"
     type  = "string"
     value = regex("@(.*)", var.kernel_module_image_tag_digest)[0]
@@ -107,13 +138,27 @@ resource "helm_release" "cloud_monitoring_agent" {
     value = false
   }
 
-  values = [yamlencode({
-    metrics_filter = var.metrics_filter
-    }), yamlencode({
-    tolerations = var.tolerations
-    }), yamlencode({
-    container_filter = var.container_filter
-  })]
+  # Values to be passed to the agent config map, e.g `kubectl describe configmap sysdig-agent -n ibm-observe`
+  values = [
+    yamlencode({
+      agent = {
+        sysdig = {
+          settings = {
+            blacklisted_ports = var.blacklisted_ports
+            metrics_filter    = var.metrics_filter
+            container_filter  = var.container_filter
+          }
+          tags = merge(
+            var.agent_tags,
+            var.add_cluster_name ? {
+              "ibm-containers-kubernetes-cluster-name" = local.cluster_name
+            } : {}
+          )
+        },
+        tolerations = var.tolerations
+      }
+    })
+  ]
 
   provisioner "local-exec" {
     command     = "${path.module}/scripts/confirm-rollout-status.sh ${var.name} ${var.namespace}"

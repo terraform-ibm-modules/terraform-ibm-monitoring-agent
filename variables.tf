@@ -59,9 +59,22 @@ variable "wait_till_timeout" {
 
 variable "access_key" {
   type        = string
-  description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance"
+  description = "Access key used by the IBM Cloud Monitoring agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. This value will be stored on a new secret on the cluster if passed."
   sensitive   = true
-  nullable    = false
+  default     = null
+  validation {
+    condition = (
+      (var.access_key != null && var.access_key != "") ||
+      (var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "")
+    )
+    error_message = "Either `access_key` or `existing_access_key_secret_name` must be provided and non-empty."
+  }
+}
+
+variable "existing_access_key_secret_name" {
+  type        = string
+  description = "An alternative to using the Sysdig Agent `access_key`. Specify the name of a Kubernetes secret containing an access-key entry. Either `access_key` or `existing_access_key_secret_name` is required."
+  default     = null
 }
 
 variable "cloud_monitoring_instance_region" {
@@ -80,17 +93,19 @@ variable "cloud_monitoring_instance_endpoint_type" {
   }
 }
 
+variable "blacklisted_ports" {
+  type        = list(number)
+  description = "To block network traffic and metrics from network ports, pass the list of ports from which you want to filter out any data. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_block_ports)."
+  default     = []
+}
+
 variable "metrics_filter" {
   type = list(object({
-    type = string
-    name = string
+    include = optional(string)
+    exclude = optional(string)
   }))
   description = "To filter custom metrics, specify the Cloud Monitoring metrics to include or to exclude. See https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics."
   default     = []
-  validation {
-    condition     = alltrue([for filter in var.metrics_filter : can(regex("^(include|exclude)$", filter.type)) && filter.name != ""])
-    error_message = "The specified `type` for the `metrics_filter` is not valid. Specify either `include` or `exclude`. The `name` field cannot be empty."
-  }
 }
 
 variable "container_filter" {
@@ -105,6 +120,18 @@ variable "container_filter" {
     condition     = length(var.container_filter) == 0 || can(regex("^(include|exclude)$", var.container_filter[0].type))
     error_message = "Invalid input for `container_filter`. Valid options for 'type' are: `include` and `exclude`. If empty, no containers are included or excluded."
   }
+}
+
+variable "agent_tags" {
+  description = "Map of tags to associate to all metrics that the agent collects. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag, e.g `{'environment': 'production'}."
+  type        = map(string)
+  default     = {}
+}
+
+variable "add_cluster_name" {
+  type        = bool
+  description = "If true, configure the cloud monitoring agent to attach a tag containing the cluster name to all metric data. This tag is added in the format `ibm-containers-kubernetes-cluster-name: cluster_name`."
+  default     = true
 }
 
 variable "name" {
@@ -200,4 +227,32 @@ variable "kernal_module_image_repository" {
   type        = string
   default     = "agent-kmodule"
   nullable    = false
+}
+
+########################################################################################################################
+# Resource Management Variables
+########################################################################################################################
+
+variable "agent_requests_cpu" {
+  type        = string
+  description = "Specifies the CPU requested to run in a node for the agent."
+  default     = "1"
+}
+
+variable "agent_limits_cpu" {
+  type        = string
+  description = "Specifies the CPU limit for the agent."
+  default     = "1"
+}
+
+variable "agent_requests_memory" {
+  type        = string
+  description = "Specifies the memory requested to run in a node for the agent."
+  default     = "1024Mi"
+}
+
+variable "agent_limits_memory" {
+  type        = string
+  description = "Specifies the memory limit for the agent."
+  default     = "1024Mi"
 }

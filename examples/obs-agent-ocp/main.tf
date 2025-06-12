@@ -62,7 +62,7 @@ locals {
 
 module "ocp_base" {
   source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version              = "3.49.1"
+  version              = "3.49.2"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   tags                 = var.resource_tags
@@ -104,9 +104,10 @@ module "monitoring_agents" {
   cluster_id                = module.ocp_base.cluster_id
   cluster_resource_group_id = module.resource_group.resource_group_id
   # Monitoring agent
-  access_key = module.cloud_monitoring.access_key
-  # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
-  metrics_filter                   = [{ type = "exclude", name = "metricA.*" }, { type = "include", name = "metricB.*" }]
-  container_filter                 = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
+  access_key                       = module.cloud_monitoring.access_key
   cloud_monitoring_instance_region = var.region
+  # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
+  metrics_filter    = [{ exclude = "metricA.*" }, { include = "metricB.*" }]
+  container_filter  = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
+  blacklisted_ports = [22, 2379, 3306]
 }

@@ -22,6 +22,10 @@ module "monitoring_agent" {
   namespace                               = var.namespace
   cloud_monitoring_instance_endpoint_type = var.cloud_monitoring_instance_endpoint_type
   access_key                              = var.access_key
+  existing_access_key_secret_name         = var.existing_access_key_secret_name
+  agent_tags                              = var.agent_tags
+  add_cluster_name                        = var.add_cluster_name
+  blacklisted_ports                       = var.blacklisted_ports
   metrics_filter                          = var.metrics_filter
   cloud_monitoring_instance_region        = var.cloud_monitoring_instance_region
   tolerations                             = var.tolerations
@@ -34,4 +38,8 @@ module "monitoring_agent" {
   agent_image_tag_digest                  = var.agent_image_tag_digest
   kernel_module_image_tag_digest          = var.kernel_module_image_tag_digest
   kernal_module_image_repository          = var.kernal_module_image_repository
+  agent_limits_cpu                        = var.agent_limits_cpu
+  agent_limits_memory                     = var.agent_limits_memory
+  agent_requests_cpu                      = var.agent_requests_cpu
+  agent_requests_memory                   = var.agent_requests_memory
 }

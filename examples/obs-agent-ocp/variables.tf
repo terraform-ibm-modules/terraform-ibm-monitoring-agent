@@ -7,7 +7,7 @@ variable "ibmcloud_api_key" {
 variable "prefix" {
   type        = string
   description = "A prefix for the name of all resources that are created by this example"
-  default     = "obs-agent-ocp"
+  default     = "mon-agent"
 }
 
 variable "resource_group" {
@@ -31,7 +31,7 @@ variable "access_tags" {
 variable "region" {
   type        = string
   description = "The region where the resources are created."
-  default     = "au-syd"
+  default     = "us-south"
 }
 
 variable "ocp_version" {
