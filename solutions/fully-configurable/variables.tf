@@ -187,7 +187,7 @@ variable "agent_image_repository" {
 variable "agent_image_tag_digest" {
   description = "The namespace within the image registry to pull the Cloud Monitoring agent images from."
   type        = string
-  default     = "13.9.2@sha256:0dcdb6d70bab60dae4bf5f70c338f2feb9daeba514f1b8ad513ed24724c2a04d" # datasource: icr.io/ext/sysdig/agent-slim
+  default     = "14.0.0@sha256:9d668dc0d3fc3db783bdf4ce5c4755c355ff7b3b401b7d0ad4c087d05ba270f9" # datasource: icr.io/ext/sysdig/agent-slim
   nullable    = false
 }
 
