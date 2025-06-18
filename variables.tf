@@ -218,7 +218,7 @@ variable "agent_image_tag_digest" {
 variable "kernel_module_image_tag_digest" {
   description = "The image tag digest to use for the Cloud Monitoring agent kernel module used by the initContainer."
   type        = string
-  default     = "13.9.2@sha256:a6b301f24557c5e14ab5abe62577340e7ab33ce11f33cfcd4797296d1603184a" # datasource: icr.io/ext/sysdig/agent-kmodule
+  default     = "14.0.0@sha256:039af6a889b1d7652f089b624bde566b1d3f3850587e12336e4f2278417aec89" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable    = false
 }
 
