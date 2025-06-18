@@ -31,12 +31,8 @@ type = list(object({
 
 ```hcl
 [
-{
-exclude = "kube_pod_container_status_terminated_reason_oomkilled"
-},
-{
-include = "custom_metric_prefix.*"
-}
+  { exclude = "kube_pod_container_status_terminated_reason_oomkilled" },
+  { include = "custom_metric_prefix.*" }
 ]
 ```
 
