@@ -5,6 +5,7 @@
       "name": "deploy-arch-ibm-monitoring-agent",
       "product_kind": "solution",
       "tags": [
+        "Observability",
         "ibm_created",
         "logging",
         "logging_monitoring",
@@ -30,6 +31,7 @@
         {
           "label": "Fully Configurable",
           "name": "fully-configurable",
+          "index": 1,
           "working_directory": "solutions/fully-configurable",
           "iam_permissions": [
             {
@@ -181,7 +183,13 @@
               "key": "agent_limits_memory"
             },
             {
-              "key": "tolerations"
+              "key": "tolerations",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
             },
             {
               "key": "cloud_monitoring_instance_endpoint_type",
@@ -197,10 +205,22 @@
               ]
             },
             {
-              "key": "blacklisted_ports"
+              "key": "blacklisted_ports",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
             },
             {
-              "key": "metrics_filter"
+              "key": "metrics_filter",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
             },
             {
               "key": "cluster_config_endpoint_type",
