@@ -183,7 +183,7 @@ variable "chart_location" {
 variable "chart_version" {
   description = "The version of the Cloud Monitoring agent helm chart to deploy."
   type        = string
-  default     = "1.87.0" # registryUrl: charts.sysdig.com
+  default     = "1.88.0" # registryUrl: charts.sysdig.com
   nullable    = false
 }
 
@@ -211,7 +211,7 @@ variable "agent_image_repository" {
 variable "agent_image_tag_digest" {
   description = "The image tag digest to use for the Cloud Monitoring agent."
   type        = string
-  default     = "14.0.0@sha256:9d668dc0d3fc3db783bdf4ce5c4755c355ff7b3b401b7d0ad4c087d05ba270f9" # datasource: icr.io/ext/sysdig/agent-slim
+  default     = "14.0.1@sha256:b1f5bf4677632c715e9a5cde9af8d36dd66f5e79c80aadfd4b74dc5cc310a570" # datasource: icr.io/ext/sysdig/agent-slim
   nullable    = false
 }
 
