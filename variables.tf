@@ -257,7 +257,7 @@ variable "agent_limits_memory" {
   default     = "1024Mi"
 }
 
-variable "universal_ebpf" {
+variable "enable_universal_ebpf" {
   type        = bool
   description = "Deploy sysdig agent with universal eBPF enabled. It requires kernel version 5.8+."
   default     = true

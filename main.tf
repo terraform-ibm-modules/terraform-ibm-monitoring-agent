@@ -133,7 +133,7 @@ resource "helm_release" "cloud_monitoring_agent" {
   }
   set {
     name  = "agent.ebpf.enabled"
-    value = var.universal_ebpf
+    value = var.enable_universal_ebpf
   }
 
   set {
