@@ -42,4 +42,5 @@ module "monitoring_agent" {
   agent_limits_memory                     = var.agent_limits_memory
   agent_requests_cpu                      = var.agent_requests_cpu
   agent_requests_memory                   = var.agent_requests_memory
+  universal_ebpf                          = var.universal_ebpf
 }

@@ -259,6 +259,9 @@
             },
             {
               "key": "wait_till_timeout"
+            },
+            {
+              "key": "universal_ebpf"
             }
           ],
           "install_type": "fullstack"

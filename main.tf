@@ -131,6 +131,15 @@ resource "helm_release" "cloud_monitoring_agent" {
     type  = "string"
     value = regex("@(.*)", var.kernel_module_image_tag_digest)[0]
   }
+  set {
+    name  = "agent.ebpf.enabled"
+    value = var.universal_ebpf
+  }
+
+  set {
+    name  = "agent.ebpf.kind"
+    value = "universal_ebpf"
+  }
   # Specific to SCC WP, enabled by default
   set {
     name  = "nodeAnalyzer.enabled"
