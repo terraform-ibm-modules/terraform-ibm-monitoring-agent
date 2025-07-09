@@ -54,7 +54,7 @@ locals {
       subnet_prefix    = "default"
       pool_name        = "default" # ibm_container_vpc_cluster automatically names default pool "default" (See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/2849)
       machine_type     = "bx2.4x16"
-      operating_system = "REDHAT_8_64"
+      operating_system = "RHEL_9_64"
       workers_per_zone = 2 # minimum of 2 is allowed when using single zone
     }
   ]
@@ -107,7 +107,8 @@ module "monitoring_agents" {
   access_key                       = module.cloud_monitoring.access_key
   cloud_monitoring_instance_region = var.region
   # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
-  metrics_filter    = [{ exclude = "metricA.*" }, { include = "metricB.*" }]
-  container_filter  = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
-  blacklisted_ports = [22, 2379, 3306]
+  metrics_filter        = [{ exclude = "metricA.*" }, { include = "metricB.*" }]
+  container_filter      = [{ type = "exclude", parameter = "kubernetes.namespace.name", name = "kube-system" }]
+  blacklisted_ports     = [22, 2379, 3306]
+  enable_universal_ebpf = true
 }

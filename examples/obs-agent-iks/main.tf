@@ -110,4 +110,5 @@ module "monitoring_agents" {
   # # Monitoring agent
   access_key                       = module.cloud_monitoring.access_key
   cloud_monitoring_instance_region = var.region
+  enable_universal_ebpf            = true
 }
