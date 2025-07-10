@@ -29,8 +29,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 locals {
   # LOCALS
-  cluster_name   = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publically documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
-  collector_host = var.cloud_monitoring_instance_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "ingest.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com"
+  cluster_name   = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publicly documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
@@ -46,10 +45,19 @@ resource "helm_release" "cloud_monitoring_agent" {
   force_update     = true
   reset_values     = true
 
+  # Helm values based on docs: https://cloud.ibm.com/docs/workload-protection?topic=workload-protection-agent-deploy-openshift-helm
   set {
     name  = "agent.collectorSettings.collectorHost"
     type  = "string"
-    value = local.collector_host
+    value = var.ingestion_endpoint
+  }
+  set {
+    name  = "agent.sysdig.settings.host_scanner.enabled"
+    value = var.enable_host_scanner
+  }
+  set {
+    name  = "agent.sysdig.settings.kspm_analyzer.enabled"
+    value = var.enable_kspm_analyzer
   }
   set {
     name  = "agent.slim.image.repository"
