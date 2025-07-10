@@ -15,4 +15,3 @@ Set `enable_universal_ebpf` to true if:
 
 - **RHCOS and RHEL9**: Since kernel version **5.14 or later** is used. Default value for variable has been set to true.
 - **RHEL 8**: Although it uses kernel version **4.18**, the necessary kernel headers are pre-installed, so enabling eBPF is safe and has no impact.
-
