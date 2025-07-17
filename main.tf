@@ -31,6 +31,12 @@ locals {
   # LOCALS
   cluster_name   = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publically documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
   collector_host = var.cloud_monitoring_instance_endpoint_type == "private" ? "ingest.private.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com" : "ingest.${var.cloud_monitoring_instance_region}.monitoring.cloud.ibm.com"
+  dynamic_set_access_key_secret = var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "" ? [{
+    name  = "global.sysdig.accessKeySecret"
+    type  = "string"
+    value = var.existing_access_key_secret_name
+  }] : []
+
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
@@ -46,106 +52,97 @@ resource "helm_release" "cloud_monitoring_agent" {
   force_update     = true
   reset_values     = true
 
-  set {
-    name  = "agent.collectorSettings.collectorHost"
-    type  = "string"
-    value = local.collector_host
-  }
-  set {
-    name  = "agent.slim.image.repository"
-    type  = "string"
-    value = var.agent_image_repository
-  }
-  set {
-    name  = "agent.slim.kmoduleImage.repository"
-    type  = "string"
-    value = var.kernal_module_image_repository
-  }
-  set {
-    name  = "agent.slim.enabled"
-    value = true
-  }
-  dynamic "set_sensitive" {
-    for_each = var.access_key != null && var.access_key != "" ? [1] : []
-    content {
-      name  = "global.sysdig.accessKey"
+  set = concat([
+    {
+      name  = "agent.collectorSettings.collectorHost"
       type  = "string"
-      value = var.access_key
-    }
-  }
-  dynamic "set" {
-    for_each = var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "" ? [1] : []
-    content {
-      name  = "global.sysdig.accessKeySecret"
+      value = local.collector_host
+    },
+    {
+      name  = "agent.slim.image.repository"
       type  = "string"
-      value = var.existing_access_key_secret_name
+      value = var.agent_image_repository
+    },
+    {
+      name  = "agent.slim.kmoduleImage.repository"
+      type  = "string"
+      value = var.kernal_module_image_repository
+    },
+    {
+      name  = "agent.slim.enabled"
+      value = true
+    },
+    {
+      name  = "global.clusterConfig.name"
+      type  = "string"
+      value = local.cluster_name
+    },
+    {
+      name  = "agent.image.registry"
+      type  = "string"
+      value = var.image_registry_base_url
+    },
+    {
+      name  = "Values.image.repository"
+      type  = "string"
+      value = var.image_registry_base_url
+    },
+    {
+      name  = "global.imageRegistry"
+      type  = "string"
+      value = "${var.image_registry_base_url}/${var.image_registry_namespace}"
+    },
+    {
+      name  = "agent.image.tag"
+      type  = "string"
+      value = var.agent_image_tag_digest
+    },
+    {
+      name  = "agent.resources.requests.cpu"
+      type  = "string"
+      value = var.agent_requests_cpu
+    },
+    {
+      name  = "agent.resources.requests.memory"
+      type  = "string"
+      value = var.agent_requests_memory
+    },
+    {
+      name  = "agent.resources.limits.cpu"
+      type  = "string"
+      value = var.agent_limits_cpu
+    },
+    {
+      name  = "agent.resources.limits.memory"
+      type  = "string"
+      value = var.agent_limits_memory
+    },
+    {
+      name  = "agent.slim.kmoduleImage.digest"
+      type  = "string"
+      value = regex("@(.*)", var.kernel_module_image_tag_digest)[0]
+    },
+    {
+      name  = "agent.ebpf.enabled"
+      value = var.enable_universal_ebpf
+    },
+    {
+      name  = "agent.ebpf.kind"
+      value = "universal_ebpf"
+    },
+    # Specific to SCC WP, enabled by default
+    {
+      name  = "nodeAnalyzer.enabled"
+      type  = "auto"
+      value = false
     }
-  }
-  set {
-    name  = "global.clusterConfig.name"
-    type  = "string"
-    value = local.cluster_name
-  }
-  set {
-    name  = "agent.image.registry"
-    type  = "string"
-    value = var.image_registry_base_url
-  }
-  set {
-    name  = "Values.image.repository"
-    type  = "string"
-    value = var.image_registry_base_url
-  }
-  set {
-    name  = "global.imageRegistry"
-    type  = "string"
-    value = "${var.image_registry_base_url}/${var.image_registry_namespace}"
-  }
-  set {
-    name  = "agent.image.tag"
-    type  = "string"
-    value = var.agent_image_tag_digest
-  }
-  set {
-    name  = "agent.resources.requests.cpu"
-    type  = "string"
-    value = var.agent_requests_cpu
-  }
-  set {
-    name  = "agent.resources.requests.memory"
-    type  = "string"
-    value = var.agent_requests_memory
-  }
-  set {
-    name  = "agent.resources.limits.cpu"
-    type  = "string"
-    value = var.agent_limits_cpu
-  }
-  set {
-    name  = "agent.resources.limits.memory"
-    type  = "string"
-    value = var.agent_limits_memory
-  }
-  set {
-    name  = "agent.slim.kmoduleImage.digest"
-    type  = "string"
-    value = regex("@(.*)", var.kernel_module_image_tag_digest)[0]
-  }
-  set {
-    name  = "agent.ebpf.enabled"
-    value = var.enable_universal_ebpf
-  }
+  ], local.dynamic_set_access_key_secret)
 
-  set {
-    name  = "agent.ebpf.kind"
-    value = "universal_ebpf"
-  }
-  # Specific to SCC WP, enabled by default
-  set {
-    name  = "nodeAnalyzer.enabled"
-    type  = "auto"
-    value = false
-  }
+  set_sensitive = var.access_key != null && var.access_key != "" ? [{
+    name  = "global.sysdig.accessKey"
+    type  = "string"
+    value = var.access_key
+  }] : []
 
   # Values to be passed to the agent config map, e.g `kubectl describe configmap sysdig-agent -n ibm-observe`
   values = [
