@@ -6,11 +6,12 @@
       "product_kind": "solution",
       "tags": [
         "ibm_created",
+        "target_terraform",
+        "terraform",
+        "solution",
         "logging",
         "logging_monitoring",
-        "terraform",
-        "target_terraform",
-        "solution"
+        "converged_infra"
       ],
       "keywords": [
         "monitoring",
