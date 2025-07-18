@@ -234,6 +234,9 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
 		},
+		IgnoreAdds: testhelper.Exemptions{
+			List: IgnoreAdds,
+		},
 		CloudInfoService: sharedInfoSvc,
 	})
 
@@ -253,6 +256,9 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		ResourceGroup: resourceGroup,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
+		},
+		IgnoreAdds: testhelper.Exemptions{
+			List: IgnoreAdds,
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
