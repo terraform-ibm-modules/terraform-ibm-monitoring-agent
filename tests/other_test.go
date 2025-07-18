@@ -2,8 +2,8 @@
 package test
 
 import (
-	"testing"
 	"math/rand/v2"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
@@ -18,18 +18,18 @@ func TestRunAgentVpcOcp(t *testing.T) {
 		TerraformDir:  terraformDirMonitoringAgentROKS,
 		Prefix:        "obs-agent-ocp",
 		ResourceGroup: resourceGroup,
-		Region: validRegions[rand.IntN(len(validRegions))],
+		Region:        validRegions[rand.IntN(len(validRegions))],
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
 		},
 		IgnoreAdds: testhelper.Exemptions{
-				List: IgnoreAdds,
-			},
+			List: IgnoreAdds,
+		},
 		CloudInfoService: sharedInfoSvc,
 	})
 	options.TerraformVars = map[string]interface{}{
-        "ocp_entitlement":   "cloud_pak",
-    }
+		"ocp_entitlement": "cloud_pak",
+	}
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
