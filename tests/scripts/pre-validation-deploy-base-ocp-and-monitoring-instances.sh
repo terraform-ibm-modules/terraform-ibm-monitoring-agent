@@ -30,7 +30,7 @@ TF_VARS_FILE="terraform.tfvars"
   cluster_id_value=$(terraform output -state=terraform.tfstate -raw cluster_id)
   cluster_resource_group_id_var_name="cluster_resource_group_id"
   cluster_resource_group_id_value=$(terraform output -state=terraform.tfstate -raw cluster_resource_group_id)
-  cloud_monitoring_instance_region_var_name="cloud_monitoring_instance_region"
+  cloud_monitoring_instance_region_var_name="instance_region"
   access_key_var_name="access_key"
   access_key_value=$(terraform output -state=terraform.tfstate -raw access_key)
 

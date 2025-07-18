@@ -6,7 +6,7 @@ terraform {
   required_providers {
     ibm = {
       source  = "ibm-cloud/ibm"
-      version = "1.79.0"
+      version = "1.79.2"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -21,6 +21,11 @@ terraform {
     time = {
       source  = "hashicorp/time"
       version = ">= 0.9.1"
+    }
+    # The restapi provider is not actually required by the module itself, just this example, so OK to use ">=" here instead of locking into a version
+    restapi = {
+      source  = "Mastercard/restapi"
+      version = ">= 2.0.1"
     }
   }
 }

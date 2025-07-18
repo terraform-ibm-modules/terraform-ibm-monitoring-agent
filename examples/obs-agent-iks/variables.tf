@@ -28,8 +28,14 @@ variable "region" {
   default     = "au-syd"
 }
 
-variable "enable_platform_metrics" {
+variable "is_vpc_cluster" {
   type        = bool
-  description = "Enable platform metrics"
-  default     = false
+  description = "Specify true if the target cluster for the observability agents is a VPC cluster, false if it is classic cluster."
+  default     = true
+}
+
+variable "datacenter" {
+  type        = string
+  description = "If creating a classic cluster, the data center where the cluster is created"
+  default     = "syd01"
 }

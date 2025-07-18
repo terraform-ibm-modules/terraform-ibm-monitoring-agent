@@ -1,11 +1,12 @@
-# Monitoring agent
+# Deploy agent in OpenShift cluster
 
-An example that shows how to deploy Monitoring agent in an Red Hat OpenShift container platform cluster to send Logs directly to a Cloud Monitoring instance.
+An example that shows how to deploy the agent in an Red Hat OpenShift container platform cluster.
 
-The example provisions the following resources:
+The following resources are provisioned:
 
 - A new resource group, if an existing one is not passed in.
 - A basic VPC.
 - A Red Hat OpenShift Container Platform VPC cluster.
 - An IBM Cloud Monitoring instance.
-- Monitoring agent
+- An SCC Workload Protection instance.
+- The Monitoring and Workload Protection agent.

@@ -27,14 +27,25 @@ const terraformDirMonitoringAgentROKS = "examples/obs-agent-ocp"
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 
-// Currently only including regions that Event Notification support
 var validRegions = []string{
 	"au-syd",
+	"us-east",
 	"eu-gb",
 	"eu-de",
 	"eu-es",
 	"us-south",
+	"jp-osa",
+	"jp-tok",
+	"br-sao",
+	"ca-tor",
 }
+
+var IgnoreUpdates = []string{
+	"module.monitoring_agent.helm_release.cloud_monitoring_agent",
+}
+
+// workaround for https://github.com/terraform-ibm-modules/terraform-ibm-scc-workload-protection/issues/243
+var IgnoreAdds = []string{"module.scc_wp.restapi_object.cspm"}
 
 // TestMain will be run before any parallel tests, used to set up a shared InfoService object to track region usage
 // for multiple tests
@@ -44,40 +55,15 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.TestOptions {
-
-	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
-		Testing:       t,
-		TerraformDir:  terraformDir,
-		Prefix:        prefix,
-		ResourceGroup: resourceGroup,
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{
-				"module.monitoring_agent.helm_release.cloud_monitoring_agent",
-			},
-		},
-		CloudInfoService: sharedInfoSvc,
-	})
-
-	// add ocp entitlement to keep costs down for tests
-	if terraformDir == terraformDirMonitoringAgentROKS {
-		options.TerraformVars["ocp_entitlement"] = "cloud_pak"
-	}
-
-	options.TerraformVars["enable_platform_metrics"] = false
-
-	return options
-}
-
 func TestFullyConfigurableSolution(t *testing.T) {
 	t.Parallel()
 
 	var region = validRegions[rand.IntN(len(validRegions))]
 	// ------------------------------------------------------------------------------------------------------
-	// Deploy SLZ ROKS Cluster and Monitoring instances since it is needed to deploy Monitoring Agent
+	// Deploy OCP Cluster and Monitoring instance since it is needed to deploy agent
 	// ------------------------------------------------------------------------------------------------------
 
-	prefix := fmt.Sprintf("slz-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("ocp-%s", strings.ToLower(random.UniqueId()))
 	realTerraformDir := "./resources"
 	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
 
@@ -117,9 +103,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 				fullyConfigurableSolutionKubeconfigDir + "/*.*",
 			},
 			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-				List: []string{
-					"module.monitoring_agent.helm_release.cloud_monitoring_agent",
-				},
+				List: IgnoreUpdates,
 			},
 			ResourceGroup:          resourceGroup,
 			TemplateFolder:         fullyConfigurableSolutionDir,
@@ -131,7 +115,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-			{Name: "cloud_monitoring_instance_region", Value: region, DataType: "string"},
+			{Name: "instance_region", Value: region, DataType: "string"},
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "access_key", Value: terraform.Output(t, existingTerraformOptions, "access_key"), DataType: "string", Secure: true},
@@ -160,10 +144,10 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 	var region = validRegions[rand.IntN(len(validRegions))]
 
 	// ------------------------------------------------------------------------------------------------------
-	// Deploy SLZ ROKS Cluster and Monitoring instances since it is needed to deploy Monitoring Agent
+	// Deploy OCP Cluster and Monitoring instance since it is needed to deploy agent
 	// ------------------------------------------------------------------------------------------------------
 
-	prefix := fmt.Sprintf("slz-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("ocp-%s", strings.ToLower(random.UniqueId()))
 	realTerraformDir := "./resources"
 	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
 
@@ -209,15 +193,13 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 			WaitJobCompleteMinutes: 60,
 			Region:                 region,
 			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-				List: []string{
-					"module.monitoring_agent.helm_release.cloud_monitoring_agent",
-				},
+				List: IgnoreUpdates,
 			},
 		})
 
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-			{Name: "cloud_monitoring_instance_region", Value: region, DataType: "string"},
+			{Name: "instance_region", Value: region, DataType: "string"},
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "access_key", Value: terraform.Output(t, existingTerraformOptions, "access_key"), DataType: "string", Secure: true},
@@ -243,16 +225,18 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 func TestRunAgentVpcKubernetes(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "obs-agent-iks", terraformDirMonitoringAgentIKS)
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-}
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  terraformDirMonitoringAgentIKS,
+		Prefix:        "obs-agent-vpc-iks",
+		Region:        validRegions[rand.IntN(len(validRegions))],
+		ResourceGroup: resourceGroup,
+		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreUpdates,
+		},
+		CloudInfoService: sharedInfoSvc,
+	})
 
-func TestRunAgentVpcOcp(t *testing.T) {
-	t.Parallel()
-
-	options := setupOptions(t, "obs-agent-roks", terraformDirMonitoringAgentROKS)
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
@@ -261,7 +245,21 @@ func TestRunAgentVpcOcp(t *testing.T) {
 func TestRunAgentClassicKubernetes(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "obs-agent-iks", terraformDirMonitoringAgentIKS)
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  terraformDirMonitoringAgentIKS,
+		Prefix:        "obs-agent-iks",
+		Region:        "au-syd",
+		ResourceGroup: resourceGroup,
+		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreUpdates,
+		},
+		CloudInfoService: sharedInfoSvc,
+	})
+	options.TerraformVars = map[string]interface{}{
+		"datacenter": "syd01",
+	}
+
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")

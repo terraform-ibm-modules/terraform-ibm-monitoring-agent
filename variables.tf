@@ -60,6 +60,26 @@ variable "wait_till_timeout" {
 # Common agent variables
 ##############################################################################
 
+variable "instance_region" {
+  type        = string
+  description = "The region of the IBM Cloud Monitoring instance that you want to send metrics to. The region value is used to construct the ingestion and api endpoints. If you are only using the agent for security and compliance monitoring, set this to the region of your IBM Cloud Security and Compliance Center Workload Protection instance. If you have both Cloud Monitoring and Security and Compliance Center Workload Protection instances, the instances must be connected and must be in the same region to use the same agent."
+  nullable    = false
+}
+
+variable "use_private_endpoint" {
+  type        = bool
+  description = "Whether send data over a private endpoint or not. To use a private endpoint, you must enable virtual routing and forwarding (VRF) for your account. See https://cloud.ibm.com/docs/account?topic=account-vrf-service-endpoint."
+  default     = true
+  nullable    = false
+}
+
+variable "use_scc_wp_endpoint" {
+  type        = bool
+  description = "By default an IBM Cloud Monitoring endpoint is used and is constructed from the `instance_region` and `use_private_endpoint` inputs. To use an IBM Cloud Security and Compliance Center Workload Protection endpoint instead, set this to true."
+  default     = false
+  nullable    = false
+}
+
 variable "access_key" {
   type        = string
   description = "Access key used by the agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. This value will be stored in a new secret on the cluster if passed. If you want to use this agent for only metrics or metrics with security and compliance, use a manager key scoped to the IBM Cloud Monitoring instance. If you only want to use the agent for security and compliance use a manager key scoped to the Security and Compliance Center Workload Protection instance."
@@ -76,24 +96,18 @@ variable "access_key" {
 
 variable "existing_access_key_secret_name" {
   type        = string
-  description = "An alternative to using `access_key`. Specify the name of a Kubernetes secret containing the access key in the same namespace that is defined in the `namespace` input. Either `access_key` or `existing_access_key_secret_name` is required."
+  description = "An alternative to using `access_key`. Specify the name of an existing Kubernetes secret containing the access key in the same namespace that is defined in the `namespace` input. Either `access_key` or `existing_access_key_secret_name` is required."
   default     = null
 }
 
-variable "ingestion_endpoint" {
-  type        = string
-  description = "The instance ingestion endpoint to use. If you want to use this agent for only metrics or metrics with security and compliance, set this to an IBM Cloud Monitoring ingestion endpoint (see supported values here: https://cloud.ibm.com/docs/monitoring?topic=monitoring-endpoints). If you only want to use the agent for security and compliance use a Security and Compliance Center Workload Protection ingestion endpoint (see supported values here: https://cloud.ibm.com/docs/workload-protection?topic=workload-protection-endpoints#endpoints_ingestion)."
-  nullable    = false
-}
-
 variable "name" {
-  description = "The name to give the helm release."
+  description = "The name to give the agent helm release."
   type        = string
   default     = "sysdig-agent"
 }
 
 variable "agent_tags" {
-  description = "Map of tags to associate to the agent. For example, {'environment': 'production'}. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag."
+  description = "Map of tags to associate to the agent. For example, {\"environment\": \"production\"}. NOTE: Use the `add_cluster_name` boolean variable to add the cluster name as a tag."
   type        = map(string)
   default     = {}
 }
@@ -148,19 +162,19 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default     = "1.88.0" # registryUrl: charts.sysdig.com
-  nullable    = false
+  default  = "1.89.0" # registryUrl: charts.sysdig.com
+  nullable = false
 }
 
 variable "image_registry_base_url" {
-  description = "The image registry base URL to pull the agent images from. For example `icr.io`, `quay.io`, etc."
+  description = "The image registry base URL to pull all images from. For example `icr.io` or `quay.io`."
   type        = string
   default     = "icr.io"
   nullable    = false
 }
 
 variable "image_registry_namespace" {
-  description = "The namespace within the image registry to pull the agent images from."
+  description = "The namespace within the image registry to pull all images from."
   type        = string
   default     = "ext/sysdig"
   nullable    = false
@@ -174,19 +188,19 @@ variable "agent_image_repository" {
 }
 
 variable "agent_image_tag_digest" {
-  description = "The image tag digest of agent image to use."
+  description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default     = "14.0.1@sha256:b1f5bf4677632c715e9a5cde9af8d36dd66f5e79c80aadfd4b74dc5cc310a570" # datasource: icr.io/ext/sysdig/agent-slim
-  nullable    = false
+  default  = "14.0.1@sha256:b1f5bf4677632c715e9a5cde9af8d36dd66f5e79c80aadfd4b74dc5cc310a570" # datasource: icr.io/ext/sysdig/agent-slim
+  nullable = false
 }
 
 variable "kernel_module_image_tag_digest" {
-  description = "The image tag digest to use for the agent kernel module used by the initContainer."
+  description = "The image tag or digest to use for the agent kernel module used by the initContainer. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`"
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default     = "14.0.1@sha256:9b1e900e2cd47cabe31b36f6ed41705b33e849de0639b29b326fb73e67ed8b68" # datasource: icr.io/ext/sysdig/agent-kmodule
-  nullable    = false
+  default  = "14.0.1@sha256:9b1e900e2cd47cabe31b36f6ed41705b33e849de0639b29b326fb73e67ed8b68" # datasource: icr.io/ext/sysdig/agent-kmodule
+  nullable = false
 }
 
 variable "kernal_module_image_repository" {
@@ -220,6 +234,18 @@ variable "agent_limits_memory" {
   default     = "1024Mi"
 }
 
+variable "enable_universal_ebpf" {
+  type        = bool
+  description = "Deploy monitoring agent with universal extended Berkeley Packet Filter (eBPF) enabled. It requires kernel version 5.8+. Learn more: https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#when-to-enable-enable_universal_ebpf"
+  default     = true
+}
+
+variable "deployment_tag" {
+  type        = string
+  description = "Sets a global tag that will be included in the components. It represents the mechanism from where the components have been installed (terraform, local...)."
+  default     = "terraform"
+}
+
 ##############################################################################
 # Metrics related variables
 ##############################################################################
@@ -237,6 +263,7 @@ variable "metrics_filter" {
   }))
   description = "To filter custom metrics you can specify which metrics to include and exclude. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics"
   default     = []
+  # TODO: Add variable validation to ensure only include or exclude is in each item - not both
 }
 
 variable "container_filter" {
@@ -259,13 +286,55 @@ variable "container_filter" {
 
 variable "enable_host_scanner" {
   type        = bool
-  description = "Enable vulnerability host scanning."
+  description = "Enable host scanning to detect vulnerabilities and identify the resolution priority based on available fixed versions and severity. Requires a Security and Compliance Center Workload Protection instance to view results."
   default     = true
 }
 
 variable "enable_kspm_analyzer" {
   type        = bool
-  description = "Enable vulnerability host scanning."
+  description = "Enable Kubernetes Security Posture Management (KSPM) analyzer. Requires a Security and Compliance Center Workload Protection instance to view results."
   default     = true
 }
 
+variable "cluster_shield_deploy" {
+  type        = bool
+  description = "Deploy the Cluster Shield component to provide runtime detection and policy enforcement for Kubernetes workloads. If enabled, a Kubernetes Deployment will be deployed to your cluster using helm."
+  default     = true
+}
+
+variable "cluster_shield_image_tag_digest" {
+  description = "The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
+  type        = string
+  # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
+  default = "1.13.0@sha256:0c8ee65a473e51b2a2c7bddf4e89008299cf203c50cd80fd97503cb121c1230a" # datasource: icr.io/ext/sysdig/cluster-shield
+}
+
+variable "cluster_shield_image_repository" {
+  description = "The image repository to pull the Cluster Shield image from."
+  type        = string
+  default     = "cluster-shield"
+}
+
+variable "cluster_shield_requests_cpu" {
+  type        = string
+  description = "Specify CPU resource requests for the cluster shield pods."
+  default     = "500m"
+}
+
+variable "cluster_shield_limits_cpu" {
+  type        = string
+  description = "Specify CPU resource limits for the cluster shield pods."
+  default     = "1500m"
+}
+
+variable "cluster_shield_requests_memory" {
+  type        = string
+  description = "Specify memory resource requests for the cluster shield pods."
+  default     = "512Mi"
+}
+
+variable "cluster_shield_limits_memory" {
+  type        = string
+  description = "Specify memory resource limits for the cluster shield pods."
+  default     = "1536Mi"
+}

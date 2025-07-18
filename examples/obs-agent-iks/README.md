@@ -1,10 +1,12 @@
-# Monitoring agent on Kubernetes using CSE ingress endpoint with an apikey
+# Deploy agent in IKS cluster
 
-An example that shows how to deploy a Monitoring agent in a Kubernetes cluster to send Logs directly to IBM a Cloud Monitoring instance.
+An example that shows how to deploy the agent in an IKS cluster.
 
-The example provisions the following resources:
+The following resources are provisioned:
+
 - A new resource group, if an existing one is not passed in.
 - A basic VPC (if `is_vpc_cluster` is true).
 - A Kubernetes cluster.
-- An IBM Cloud Monitoring instance
-- Monitoring agent
+- An IBM Cloud Monitoring instance.
+- An SCC Workload Protection instance.
+- The Monitoring and Workload Protection agent.

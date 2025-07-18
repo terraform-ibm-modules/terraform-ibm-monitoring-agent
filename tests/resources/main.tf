@@ -26,12 +26,21 @@ resource "ibm_is_vpc" "vpc" {
   tags                      = var.resource_tags
 }
 
+# Public gateway required when deploying a cluster with public endpoint enabled otherwise ingress goes into degraded state
+resource "ibm_is_public_gateway" "gateway" {
+  name           = "${var.prefix}-gateway-1"
+  vpc            = ibm_is_vpc.vpc.id
+  resource_group = module.resource_group.resource_group_id
+  zone           = "${var.region}-1"
+}
+
 resource "ibm_is_subnet" "subnet_zone_1" {
   name                     = "${var.prefix}-subnet-1"
   vpc                      = ibm_is_vpc.vpc.id
   resource_group           = module.resource_group.resource_group_id
   zone                     = "${var.region}-1"
   total_ipv4_address_count = 256
+  public_gateway           = ibm_is_public_gateway.gateway.id
 }
 
 ########################################################################################################################
@@ -55,14 +64,14 @@ locals {
       pool_name        = "default" # ibm_container_vpc_cluster automatically names default pool "default" (See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/2849)
       machine_type     = "bx2.4x16"
       workers_per_zone = 2 # minimum of 2 is allowed when using single zone
-      operating_system = "REDHAT_8_64"
+      operating_system = "RHCOS"
     }
   ]
 }
 
 module "ocp_base" {
   source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version              = "3.50.3"
+  version              = "3.51.1"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   tags                 = var.resource_tags
@@ -80,12 +89,11 @@ module "ocp_base" {
 ##############################################################################
 
 module "cloud_monitoring" {
-  source                  = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_monitoring"
-  version                 = "3.5.3"
-  instance_name           = "${var.prefix}-cloud-monitoring"
-  resource_group_id       = module.resource_group.resource_group_id
-  region                  = var.region
-  plan                    = "graduated-tier"
-  tags                    = var.resource_tags
-  enable_platform_metrics = false
+  source            = "terraform-ibm-modules/cloud-monitoring/ibm"
+  version           = "1.3.0"
+  instance_name     = "${var.prefix}-cloud-monitoring"
+  resource_group_id = module.resource_group.resource_group_id
+  resource_tags     = var.resource_tags
+  region            = var.region
+  plan              = "graduated-tier"
 }

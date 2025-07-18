@@ -34,20 +34,8 @@ variable "region" {
   default     = "us-south"
 }
 
-variable "ocp_version" {
-  type        = string
-  description = "Version of the OCP cluster to provision"
-  default     = null
-}
-
 variable "ocp_entitlement" {
   type        = string
   description = "Value that is applied to the entitlements for OCP cluster provisioning"
   default     = null
-}
-
-variable "enable_platform_metrics" {
-  type        = bool
-  description = "Enable platform metrics"
-  default     = false
 }

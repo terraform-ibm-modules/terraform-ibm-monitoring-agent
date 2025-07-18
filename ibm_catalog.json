@@ -1,16 +1,18 @@
 {
   "products": [
     {
-      "label": "Cloud automation for Monitoring agent",
+      "label": "Cloud automation for Monitoring and Workload Protection agent",
       "name": "deploy-arch-ibm-monitoring-agent",
       "product_kind": "solution",
       "tags": [
         "ibm_created",
+        "target_terraform",
+        "terraform",
+        "solution",
         "logging",
         "logging_monitoring",
-        "terraform",
-        "target_terraform",
-        "solution"
+        "security",
+        "converged_infra"
       ],
       "keywords": [
         "monitoring",
@@ -21,8 +23,8 @@
         "solution"
       ],
       "provider_name": "IBM",
-      "short_description": "Deploys IBM Monitoring Agent to a cluster",
-      "long_description": "Solution that supports deploying an IBM Monitoring Agent to a cluster. The agent facilitates [IBM Cloud Monitoring](https://www.ibm.com/products/cloud-monitoring) in gaining operational visibility into the performance and health of your applications, services, and platforms.",
+      "short_description": "Deploys an agent to monitor metrics and security data on an IBM Cloud Red Hat OpenShift Container Platform or Kubernetes cluster",
+      "long_description": "This architecture supports the provisioning of an agent to an IBM Cloud Red Hat OpenShift Container Platform or Kubernetes cluster. The agent can be configured for:<li>Metrics monitoring with [IBM Cloud Monitoring](https://cloud.ibm.com/docs/monitoring?topic=monitoring-getting-started)</li><li>Security and compliance with [IBM Cloud Security and Compliance Center Workload Protection](https://cloud.ibm.com/docs/workload-protection?topic=workload-protection-getting-started).</li><h1>Key considerations</h1><li>Multiple instances of the agent cannot be deployed on the same host. However, by creating a connection between instances, a single agent can collect both metrics and security data for each instance.</li><li>You can use the [Cloud automation for Cloud Monitoring](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-monitoring-73debdbf-894f-4c14-81c7-5ece3a70b67d-global) deployable architecture to provision a new instance of IBM Cloud Monitoring</li><li>You can use the [Cloud automation for Security and Compliance Center Workload Protection](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-scc-workload-protection-4322cf44-2289-49aa-a719-dd79e39b14dc-global) deployable architecture to provision a new instance of IBM Cloud Security and Compliance Center Workload Protection. This deployable architecture has an input called `cloud_monitoring_instance_crn` which allows you to create a connection between instances.</li><li>Both instances must be in the same region.</li><li>You can connect only one Monitoring instance to one Workload Protection instance.</li><li>Connections can only be established between two new instances or between one new and one existing instance.<br><br>This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) asset collection, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/main/images/monitoring-icon.svg",
       "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in the repository [https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/issues](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/issues). Please note this product is not supported via the IBM Cloud Support Center.",
@@ -44,22 +46,46 @@
           "architecture": {
             "features": [
               {
-                "title": "Works with any Openshift or k8s cluster",
-                "description": "Yes"
+                "title": "System Metrics Collection",
+                "description": "Collects data on CPU, memory, disk, and network usage from hosts and virtual machines."
               },
               {
-                "title": "Deploys the IBM Monitoring Agent on an existing cluster.",
-                "description": "Yes"
+                "title": "Container & Kubernetes Monitoring",
+                "description": "Tracks performance and resource usage of containers, pods, and Kubernetes clusters."
+              },
+              {
+                "title": "Process & Service Monitoring",
+                "description": "Monitors running processes and system services, providing visibility into their resource consumption."
+              },
+              {
+                "title": "Custom Metrics Support",
+                "description": "Allows you to publish your own application metrics for monitoring and alerting."
+              },
+              {
+                "title": "Vulnerability Scanning",
+                "description": "Allows you to publish your own application metrics for monitoring and alerting."
+              },
+              {
+                "title": "Runtime Protection",
+                "description": "Detects and blocks suspicious processes or behavior at runtime."
+              },
+              {
+                "title": "Compliance Monitoring",
+                "description": "Checks workloads against compliance standards (e.g., CIS Benchmarks) and reports violations."
+              },
+              {
+                "title": "Threat Detection & Alerts",
+                "description": "Provides real-time alerts on suspicious activities and policy violations."
               }
             ],
             "diagrams": [
               {
                 "diagram": {
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/refs/heads/main/reference-architecture/deployable-architecture-monitoring-agent.svg",
-                  "caption": "Monitoring Agent on a cluster",
+                  "caption": "Configure agent on a cluster to monitor metrics and security data",
                   "type": "image/svg+xml"
                 },
-                "description": "Monitoring Agent deployed on a cluster."
+                "description": "Configure agent on a cluster to monitor metrics and security data"
               }
             ]
           },
@@ -69,6 +95,7 @@
               "required": true
             },
             {
+              "display_name": "cluster",
               "key": "cluster_id",
               "custom_config": {
                 "type": "cluster_var",
@@ -78,6 +105,7 @@
               "required": true
             },
             {
+              "display_name": "resource_group",
               "key": "cluster_resource_group_id",
               "custom_config": {
                 "type": "resource_group",
@@ -94,31 +122,47 @@
               "required": true
             },
             {
-              "key": "cloud_monitoring_instance_region",
+              "key": "instance_region",
               "required": true,
               "options": [
                 {
-                  "displayname": "eu-gb",
+                  "displayname": "London (eu-gb)",
                   "value": "eu-gb"
                 },
                 {
-                  "displayname": "eu-de",
+                  "displayname": "Frankfurt (eu-de)",
                   "value": "eu-de"
                 },
                 {
-                  "displayname": "us-east",
+                  "displayname": "Madrid (eu-es)",
+                  "value": "eu-es"
+                },
+                {
+                  "displayname": "Washington (us-east)",
                   "value": "us-east"
                 },
                 {
-                  "displayname": "us-south",
+                  "displayname": "Dallas (us-south)",
                   "value": "us-south"
                 },
                 {
-                  "displayname": "jp-tok",
+                  "displayname": "Tokyo (jp-tok)",
                   "value": "jp-tok"
                 },
                 {
-                  "displayname": "au-syd",
+                  "displayname": "Osaka (jp-osa)",
+                  "value": "jp-osa"
+                },
+                {
+                  "displayname": "Sao Paulo (br-sao)",
+                  "value": "br-sao"
+                },
+                {
+                  "displayname": "Toronto (ca-tor)",
+                  "value": "ca-tor"
+                },
+                {
+                  "displayname": "Sydney (au-syd)",
                   "value": "au-syd"
                 }
               ]
@@ -128,22 +172,19 @@
               "required": true
             },
             {
-              "key": "image_registry_base_url"
+              "key": "cluster_shield_deploy",
+              "required": true
             },
             {
-              "key": "image_registry_namespace"
+              "key": "enable_host_scanner",
+              "required": true
             },
             {
-              "key": "agent_image_repository"
+              "key": "enable_kspm_analyzer",
+              "required": true
             },
             {
-              "key": "agent_image_tag_digest"
-            },
-            {
-              "key": "kernal_module_image_repository"
-            },
-            {
-              "key": "kernel_module_image_tag_digest"
+              "key": "use_private_endpoint"
             },
             {
               "key": "chart"
@@ -161,6 +202,42 @@
               "key": "namespace"
             },
             {
+              "key": "image_registry_base_url"
+            },
+            {
+              "key": "image_registry_namespace"
+            },
+            {
+              "key": "agent_image_repository"
+            },
+            {
+              "key": "agent_image_tag_digest"
+            },
+            {
+              "key": "cluster_shield_image_repository"
+            },
+            {
+              "key": "cluster_shield_image_tag_digest"
+            },
+            {
+              "key": "cluster_shield_limits_cpu"
+            },
+            {
+              "key": "cluster_shield_limits_memory"
+            },
+            {
+              "key": "cluster_shield_requests_cpu"
+            },
+             {
+              "key": "cluster_shield_requests_memory"
+            },
+            {
+              "key": "kernal_module_image_repository"
+            },
+            {
+              "key": "kernel_module_image_tag_digest"
+            },
+            {
               "key": "existing_access_key_secret_name"
             },
             {
@@ -168,6 +245,9 @@
             },
             {
               "key": "agent_tags"
+            },
+            {
+              "key": "deployment_tag"
             },
             {
               "key": "agent_requests_cpu"
@@ -191,23 +271,26 @@
               }
             },
             {
-              "key": "cloud_monitoring_instance_endpoint_type",
-              "options": [
-                {
-                  "displayname": "public",
-                  "value": "public"
-                },
-                {
-                  "displayname": "private",
-                  "value": "private"
+              "key": "blacklisted_ports",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
                 }
-              ]
-            },
-            {
-              "key": "blacklisted_ports"
+              }
             },
             {
               "key": "metrics_filter",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
+            },
+            {
+              "key": "container_filter",
               "type": "array",
               "custom_config": {
                 "type": "textarea",
@@ -259,6 +342,9 @@
             },
             {
               "key": "wait_till_timeout"
+            },
+            {
+              "key": "enable_universal_ebpf"
             }
           ],
           "install_type": "fullstack"

@@ -10,71 +10,89 @@ module "resource_group" {
   existing_resource_group_name = var.resource_group
 }
 
-########################################################################################################################
-# VPC + Subnet + Public Gateway
-#
-# NOTE: This is a very simple VPC with single subnet in a single zone with a public gateway enabled, that will allow
-# all traffic ingress/egress by default.
-# For production use cases this would need to be enhanced by adding more subnets and zones for resiliency, and
-# ACLs/Security Groups for network security.
-########################################################################################################################
+##############################################################################
+# Create VPC and IKS Cluster
+##############################################################################
 
-resource "ibm_is_vpc" "vpc" {
-  name                      = "${var.prefix}-vpc"
-  resource_group            = module.resource_group.resource_group_id
-  address_prefix_management = "auto"
-  tags                      = var.resource_tags
+resource "ibm_is_vpc" "example_vpc" {
+  count          = var.is_vpc_cluster ? 1 : 0
+  name           = "${var.prefix}-vpc"
+  resource_group = module.resource_group.resource_group_id
+  tags           = var.resource_tags
 }
 
-resource "ibm_is_subnet" "subnet_zone_1" {
-  name                     = "${var.prefix}-subnet-1"
-  vpc                      = ibm_is_vpc.vpc.id
-  resource_group           = module.resource_group.resource_group_id
+resource "ibm_is_subnet" "testacc_subnet" {
+  count                    = var.is_vpc_cluster ? 1 : 0
+  name                     = "${var.prefix}-subnet"
+  vpc                      = ibm_is_vpc.example_vpc[0].id
   zone                     = "${var.region}-1"
   total_ipv4_address_count = 256
+  resource_group           = module.resource_group.resource_group_id
 }
 
-########################################################################################################################
-# OCP VPC cluster (single zone)
-########################################################################################################################
+# Lookup the current default kube version
+data "ibm_container_cluster_versions" "cluster_versions" {}
+locals {
+  default_version = data.ibm_container_cluster_versions.cluster_versions.default_kube_version
+}
+
+resource "ibm_container_vpc_cluster" "cluster" {
+  count                = var.is_vpc_cluster ? 1 : 0
+  name                 = var.prefix
+  vpc_id               = ibm_is_vpc.example_vpc[0].id
+  kube_version         = local.default_version
+  flavor               = "bx2.4x16"
+  worker_count         = "2"
+  force_delete_storage = true
+  wait_till            = "IngressReady"
+  zones {
+    subnet_id = ibm_is_subnet.testacc_subnet[0].id
+    name      = "${var.region}-1"
+  }
+  resource_group_id = module.resource_group.resource_group_id
+  tags              = var.resource_tags
+}
+
+resource "ibm_container_cluster" "cluster" {
+  #checkov:skip=CKV2_IBM_7:Public endpoint is required for testing purposes
+  count                = var.is_vpc_cluster ? 0 : 1
+  name                 = var.prefix
+  datacenter           = var.datacenter
+  default_pool_size    = 2
+  hardware             = "shared"
+  kube_version         = local.default_version
+  force_delete_storage = true
+  machine_type         = "b3c.4x16"
+  public_vlan_id       = ibm_network_vlan.public_vlan[0].id
+  private_vlan_id      = ibm_network_vlan.private_vlan[0].id
+  wait_till            = "Normal"
+  resource_group_id    = module.resource_group.resource_group_id
+  tags                 = var.resource_tags
+
+  timeouts {
+    delete = "2h"
+    create = "3h"
+  }
+}
 
 locals {
-  cluster_vpc_subnets = {
-    default = [
-      {
-        id         = ibm_is_subnet.subnet_zone_1.id
-        cidr_block = ibm_is_subnet.subnet_zone_1.ipv4_cidr_block
-        zone       = ibm_is_subnet.subnet_zone_1.zone
-      }
-    ]
-  }
-
-  worker_pools = [
-    {
-      subnet_prefix    = "default"
-      pool_name        = "default" # ibm_container_vpc_cluster automatically names default pool "default" (See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/2849)
-      machine_type     = "bx2.4x16"
-      operating_system = "REDHAT_8_64"
-      workers_per_zone = 2 # minimum of 2 is allowed when using single zone
-    }
-  ]
+  cluster_name_id = var.is_vpc_cluster ? ibm_container_vpc_cluster.cluster[0].id : ibm_container_cluster.cluster[0].id
 }
 
-module "ocp_base" {
-  source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version              = "3.50.3"
-  resource_group_id    = module.resource_group.resource_group_id
-  region               = var.region
-  tags                 = var.resource_tags
-  cluster_name         = var.prefix
-  force_delete_storage = true
-  vpc_id               = ibm_is_vpc.vpc.id
-  vpc_subnets          = local.cluster_vpc_subnets
-  worker_pools         = local.worker_pools
+resource "ibm_network_vlan" "public_vlan" {
+  count      = var.is_vpc_cluster ? 0 : 1
+  datacenter = var.datacenter
+  type       = "PUBLIC"
+}
+
+resource "ibm_network_vlan" "private_vlan" {
+  count      = var.is_vpc_cluster ? 0 : 1
+  datacenter = var.datacenter
+  type       = "PRIVATE"
 }
 
 data "ibm_container_cluster_config" "cluster_config" {
-  cluster_name_id   = module.ocp_base.cluster_id
+  cluster_name_id   = local.cluster_name_id
   resource_group_id = module.resource_group.resource_group_id
 }
 
@@ -85,17 +103,32 @@ resource "time_sleep" "wait_operators" {
 }
 
 ##############################################################################
-# Monitoring Instance
+# Monitoring instance
 ##############################################################################
 
 module "cloud_monitoring" {
-  source                  = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_monitoring"
-  version                 = "3.5.3"
-  instance_name           = "${var.prefix}-cloud-monitoring"
-  resource_group_id       = module.resource_group.resource_group_id
-  region                  = var.region
-  plan                    = "graduated-tier"
-  enable_platform_metrics = var.enable_platform_metrics
+  source            = "terraform-ibm-modules/cloud-monitoring/ibm"
+  version           = "1.3.0"
+  instance_name     = "${var.prefix}-cloud-monitoring"
+  resource_group_id = module.resource_group.resource_group_id
+  resource_tags     = var.resource_tags
+  region            = var.region
+  plan              = "graduated-tier"
+}
+
+##############################################################################
+# SCC Workload Protection instance
+##############################################################################
+
+module "scc_wp" {
+  source                        = "terraform-ibm-modules/scc-workload-protection/ibm"
+  version                       = "1.10.3"
+  name                          = "${var.prefix}-scc-wp"
+  resource_group_id             = module.resource_group.resource_group_id
+  region                        = var.region
+  resource_tags                 = var.resource_tags
+  cloud_monitoring_instance_crn = module.cloud_monitoring.crn
+  cspm_enabled                  = false
 }
 
 ##############################################################################
@@ -103,11 +136,13 @@ module "cloud_monitoring" {
 ##############################################################################
 
 module "monitoring_agents" {
-  source                    = "../.."
-  depends_on                = [time_sleep.wait_operators]
-  cluster_id                = module.ocp_base.cluster_id
+  source = "../.."
+  # remove the above line and uncomment the below 2 lines to consume the module from the registry
+  # source  = "terraform-ibm-modules/monitoring-agent/ibm"
+  # version = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
+  cluster_id                = local.cluster_name_id
   cluster_resource_group_id = module.resource_group.resource_group_id
-  # # Monitoring agent
-  access_key                       = module.cloud_monitoring.access_key
-  cloud_monitoring_instance_region = var.region
+  is_vpc_cluster            = var.is_vpc_cluster
+  access_key                = module.cloud_monitoring.access_key
+  instance_region           = var.region
 }
