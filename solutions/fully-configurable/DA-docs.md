@@ -2,7 +2,7 @@
 
 - Multiple instances of the agent cannot be deployed on the same host. However, by creating a connection between instances, a single agent can collect both metrics and security data for each instance.
 - You can use the [Cloud automation for Cloud Monitoring](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-monitoring-73debdbf-894f-4c14-81c7-5ece3a70b67d-global) deployable architecture to provision a new instance of IBM Cloud Monitoring.
-- You can use the [terraform-ibm-scc-workload-protection](https://github.com/terraform-ibm-modules/terraform-ibm-scc-workload-protection) module to provision a new instance of IBM Cloud Security and Compliance Center Workload Protection. This deployable architecture has an input called `cloud_monitoring_instance_crn` which allows you to create a connection between instances.
+- You can use the [Cloud automation for Security and Compliance Center Workload Protection]([https://github.com/terraform-ibm-modules/terraform-ibm-scc-workload-protection](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-scc-workload-protection-4322cf44-2289-49aa-a719-dd79e39b14dc-global)) deployable architecture to provision a new instance of IBM Cloud Security and Compliance Center Workload Protection. This deployable architecture has an input called `cloud_monitoring_instance_crn` which allows you to create a connection between instances.
 - Both instances must be in the same region.
 - You can connect only one Monitoring instance to one Workload Protection instance.
 - Connections can only be established between two new instances or between one new and one existing instance.
