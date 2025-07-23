@@ -482,6 +482,10 @@
                   "version_input": "cluster_id"
                 },
                 {
+                  "version_input": "is_vpc_cluster",
+                  "value": true
+                },
+                {
                   "dependency_input": "region",
                   "version_input": "cluster_region",
                   "reference_version": true
