@@ -263,6 +263,21 @@
               "required": true
             },
             {
+              "key": "cluster_region",
+              "type": "string",
+              "custom_config": {
+                "config_constraints": {
+                  "generationType": "2"
+                },
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "type": "vpc_region"
+              },
+              "description": "Region in which cluster will be deployed. [Learn More](https://terraform-ibm-modules.github.io/documentation/#/region).",
+              "virtual": true,
+              "default_value": "us-south"
+            },
+            {
               "key": "use_private_endpoint"
             },
             {
@@ -462,7 +477,20 @@
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
-
+                {
+                  "dependency_output": "cluster_id",
+                  "version_input": "cluster_id"
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "cluster_region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "cluster_config_endpoint_type",
+                  "version_input": "cluster_config_endpoint_type",
+                  "reference_version": true
+                }
               ],
               "version": "v3.50.0"
             },
