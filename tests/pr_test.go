@@ -264,7 +264,8 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		CloudInfoService: sharedInfoSvc,
 	})
 	options.TerraformVars = map[string]interface{}{
-		"datacenter": "syd01",
+		"resource_group": resourceGroup,
+		"datacenter":     "syd01",
 	}
 
 	output, err := options.RunTestConsistency()
