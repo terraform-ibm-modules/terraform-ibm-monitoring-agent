@@ -36,6 +36,17 @@ locals {
   base_endpoint           = var.use_scc_wp_endpoint ? local.scc_wp_api_endpoint : local.monitoring_api_endpoint
   ingestion_endpoint      = var.use_private_endpoint ? "ingest.private.${local.base_endpoint}" : "ingest.${local.base_endpoint}"
   api_host                = replace(local.ingestion_endpoint, "ingest.", "")
+  dynamic_set_access_key_secret = var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "" ? [{
+    name  = "global.sysdig.accessKeySecret"
+    type  = "string"
+    value = var.existing_access_key_secret_name
+  }] : []
+  dynamic_agent_tags = [for k, v in var.agent_tags :
+    {
+      name  = "global.sysdig.tags.${k}"
+      value = v
+    }
+  ]
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
@@ -51,132 +62,114 @@ resource "helm_release" "cloud_monitoring_agent" {
   force_update     = true
   reset_values     = true
 
-  # Values
-  set {
-    name  = "Values.image.repository"
-    type  = "string"
-    value = var.image_registry_base_url
-  }
-
-  # Global
-  set {
-    name  = "global.imageRegistry"
-    type  = "string"
-    value = "${var.image_registry_base_url}/${var.image_registry_namespace}"
-  }
-  set {
-    name  = "global.sysdig.apiHost"
-    value = local.api_host
-  }
-  dynamic "set_sensitive" {
-    for_each = var.access_key != null && var.access_key != "" ? [1] : []
-    content {
-      name  = "global.sysdig.accessKey"
+  set = concat([
+    # Values
+    {
+      name  = "Values.image.repository"
       type  = "string"
-      value = var.access_key
-    }
-  }
-  dynamic "set" {
-    for_each = var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "" ? [1] : []
-    content {
-      name  = "global.sysdig.accessKeySecret"
+      value = var.image_registry_base_url
+    },
+    # Global
+    {
+      name  = "global.imageRegistry"
       type  = "string"
-      value = var.existing_access_key_secret_name
+      value = "${var.image_registry_base_url}/${var.image_registry_namespace}"
+    },
+    {
+      name  = "global.sysdig.apiHost"
+      value = local.api_host
+    },
+    {
+      name  = "global.clusterConfig.name"
+      type  = "string"
+      value = local.cluster_name
+    },
+    {
+      name  = "global.sysdig.tags.deployment"
+      type  = "string"
+      value = var.deployment_tag
+    },
+    {
+      name  = "global.sysdig.tags.ibm-containers-kubernetes-cluster-name"
+      type  = "string"
+      value = var.add_cluster_name ? local.cluster_name : null
+    },
+    # Cluster shield
+    {
+      name  = "clusterShield.enabled"
+      value = var.cluster_shield_deploy
+    },
+    {
+      name  = "clusterShield.image.repository"
+      value = var.cluster_shield_image_repository
+    },
+    {
+      name  = "clusterShield.image.tag"
+      value = var.cluster_shield_image_tag_digest
+    },
+    {
+      name  = "clusterShield.resources.requests.cpu"
+      type  = "string"
+      value = var.cluster_shield_requests_cpu
+    },
+    {
+      name  = "clusterShield.resources.requests.memory"
+      type  = "string"
+      value = var.cluster_shield_requests_memory
+    },
+    {
+      name  = "clusterShield.resources.limits.cpu"
+      type  = "string"
+      value = var.cluster_shield_limits_cpu
+    },
+    {
+      name  = "clusterShield.resources.limits.memory"
+      type  = "string"
+      value = var.cluster_shield_limits_memory
+    },
+    {
+      name  = "clusterShield.cluster_shield.sysdig_endpoint.region"
+      type  = "string"
+      value = "custom"
+    },
+    {
+      name  = "clusterShield.cluster_shield.log_level"
+      type  = "string"
+      value = "info"
+    },
+    {
+      name  = "clusterShield.cluster_shield.features.admission_control.enabled"
+      value = var.cluster_shield_deploy
+    },
+    {
+      name  = "clusterShield.cluster_shield.features.container_vulnerability_management.enabled"
+      value = var.cluster_shield_deploy
+    },
+    {
+      name  = "clusterShield.cluster_shield.features.audit.enabled"
+      value = var.cluster_shield_deploy
+    },
+    {
+      name  = "clusterShield.cluster_shield.features.posture.enabled"
+      value = var.cluster_shield_deploy
+    },
+    # nodeAnalyzer has been replaced by the host_scanner and kspm_analyzer functionality of main agent daemonset
+    {
+      name  = "nodeAnalyzer.enabled"
+      value = false
+    },
+    # clusterScanner has been replaced by cluster_shield component
+    {
+      name  = "clusterScanner.enabled"
+      value = false
     }
-  }
-  set {
-    name  = "global.clusterConfig.name"
-    type  = "string"
-    value = local.cluster_name
-  }
-  set {
-    name  = "global.sysdig.tags.deployment"
-    type  = "string"
-    value = var.deployment_tag
-  }
-  set {
-    name  = "global.sysdig.tags.ibm-containers-kubernetes-cluster-name"
-    type  = "string"
-    value = var.add_cluster_name ? local.cluster_name : null
-  }
-  dynamic "set" {
-    for_each = var.agent_tags
-    content {
-      name  = "global.sysdig.tags.${set.key}"
-      value = set.value
-    }
-  }
+  ], local.dynamic_agent_tags, local.dynamic_set_access_key_secret)
 
-  # Cluster shield
-  set {
-    name  = "clusterShield.enabled"
-    value = var.cluster_shield_deploy
-  }
-  set {
-    name  = "clusterShield.image.repository"
-    value = var.cluster_shield_image_repository
-  }
-  set {
-    name  = "clusterShield.image.tag"
-    value = var.cluster_shield_image_tag_digest
-  }
-  set {
-    name  = "clusterShield.resources.requests.cpu"
+  set_sensitive = var.access_key != null && var.access_key != "" ? [{
+    name  = "global.sysdig.accessKey"
     type  = "string"
-    value = var.cluster_shield_requests_cpu
-  }
-  set {
-    name  = "clusterShield.resources.requests.memory"
-    type  = "string"
-    value = var.cluster_shield_requests_memory
-  }
-  set {
-    name  = "clusterShield.resources.limits.cpu"
-    type  = "string"
-    value = var.cluster_shield_limits_cpu
-  }
-  set {
-    name  = "clusterShield.resources.limits.memory"
-    type  = "string"
-    value = var.cluster_shield_limits_memory
-  }
-  set {
-    name  = "clusterShield.cluster_shield.sysdig_endpoint.region"
-    type  = "string"
-    value = "custom"
-  }
-  set {
-    name  = "clusterShield.cluster_shield.log_level"
-    type  = "string"
-    value = "info"
-  }
-  set {
-    name  = "clusterShield.cluster_shield.features.admission_control.enabled"
-    value = var.cluster_shield_deploy
-  }
-  set {
-    name  = "clusterShield.cluster_shield.features.container_vulnerability_management.enabled"
-    value = var.cluster_shield_deploy
-  }
-  set {
-    name  = "clusterShield.cluster_shield.features.audit.enabled"
-    value = var.cluster_shield_deploy
-  }
-  set {
-    name  = "clusterShield.cluster_shield.features.posture.enabled"
-    value = var.cluster_shield_deploy
-  }
-
-  # nodeAnalyzer has been replaced by the host_scanner and kspm_analyzer functionality of main agent daemonset
-  set {
-    name  = "nodeAnalyzer.enabled"
-    value = false
-  }
-  # clusterScanner has been replaced by cluster_shield component
-  set {
-    name  = "clusterScanner.enabled"
-    value = false
-  }
+    value = var.access_key
+  }] : []
 
   # Had to use raw yaml here instead of converting HCL to yaml due to this issue with boolean getting converted to string which sysdig helm chart rejects:
   # https://github.com/hashicorp/terraform-provider-helm/issues/1677
