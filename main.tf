@@ -264,7 +264,14 @@ resource "helm_release" "cloud_monitoring_agent" {
       "name": "tmp-vol"
 %{endif~}
 EOT
-  ]
+,yamlencode({
+  "prometheus": {
+    "file": var.prometheus.file,
+    "yaml": var.prometheus.yaml
+  }
+})
+
+]
 
   provisioner "local-exec" {
     command     = "${path.module}/scripts/confirm-rollout-status.sh ${var.name} ${var.namespace}"
