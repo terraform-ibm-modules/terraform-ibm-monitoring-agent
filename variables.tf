@@ -263,7 +263,17 @@ variable "metrics_filter" {
   }))
   description = "To filter custom metrics you can specify which metrics to include and exclude. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics"
   default     = []
-  # TODO: Add variable validation to ensure only include or exclude is in each item - not both
+  validation {
+    condition = alltrue([
+      for item in var.metrics_filter : (
+        (
+          (!(try(item.include, null) != null && try(item.exclude, null) != null)) &&
+          ((try(item.include, null) != null && try(item.include, "") != "") || (try(item.exclude, null) != null && try(item.exclude, "") != ""))
+        )
+      )
+    ])
+    error_message = "Each item in 'metrics_filter' must have either 'include' or 'exclude' set (not both, not neither), and the value must not be null or empty."
+  }
 }
 
 variable "container_filter" {
