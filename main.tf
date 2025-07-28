@@ -203,8 +203,7 @@ resource "helm_release" "cloud_monitoring_agent" {
   "ebpf":
     "enabled": ${var.enable_universal_ebpf}
     "kind": "universal_ebpf"
-  "sysdig":
-    "tolerations":
+  "tolerations":
 %{for toleration in var.tolerations~}
 %{if toleration.key != null~}
         - "key": ${toleration.key}
@@ -222,6 +221,7 @@ resource "helm_release" "cloud_monitoring_agent" {
         - "tolerationSeconds": ${toleration.tolerationSeconds}
 %{endif~}
 %{endfor~}
+  "sysdig":
     "settings":
       "host_scanner":
         "enabled": ${var.enable_host_scanner}
