@@ -205,21 +205,11 @@ resource "helm_release" "cloud_monitoring_agent" {
     "kind": "universal_ebpf"
   "tolerations":
 %{for toleration in var.tolerations~}
-%{if toleration.key != null~}
-        - "key": ${toleration.key}
-%{endif~}
-%{if toleration.operator != null~}
-        - "operator": ${toleration.operator}
-%{endif~}
-%{if toleration.value != null~}
-        - "value": ${toleration.value}
-%{endif~}
-%{if toleration.effect != null~}
-        - "effect": ${toleration.effect}
-%{endif~}
-%{if toleration.tolerationSeconds != null~}
-        - "tolerationSeconds": ${toleration.tolerationSeconds}
-%{endif~}
+    -%{if toleration.key != null} key: "${toleration.key}"%{endif}
+%{if toleration.operator != null}      operator: "${toleration.operator}"%{endif}
+%{if toleration.value != null}      value: "${toleration.value}"%{endif}
+%{if toleration.effect != null}      effect: "${toleration.effect}"%{endif}
+%{if toleration.tolerationSeconds != null}      tolerationSeconds: ${toleration.tolerationSeconds}%{endif}
 %{endfor~}
   "sysdig":
     "settings":
