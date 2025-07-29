@@ -28,6 +28,7 @@ module "monitoring_agent" {
   blacklisted_ports               = var.blacklisted_ports
   metrics_filter                  = var.metrics_filter
   container_filter                = var.container_filter
+  prometheus                      = var.prometheus
   tolerations                     = var.tolerations
   chart                           = var.chart
   chart_location                  = var.chart_location

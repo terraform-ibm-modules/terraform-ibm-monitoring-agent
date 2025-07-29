@@ -203,6 +203,12 @@ resource "helm_release" "cloud_monitoring_agent" {
   "ebpf":
     "enabled": ${var.enable_universal_ebpf}
     "kind": "universal_ebpf"
+  "prometheus":
+    "file": ${var.prometheus.file}
+    "yaml":
+  %{for line in split("\n", yamlencode(var.prometheus.yaml))~}
+      ${line}
+  %{endfor~}
   "tolerations":
 %{for toleration in var.tolerations~}
     -%{if toleration.key != null} key: "${toleration.key}"%{endif}

@@ -303,6 +303,9 @@
               }
             },
             {
+              "key": "prometheus"
+            },
+            {
               "key": "cluster_config_endpoint_type",
               "options": [
                 {
