@@ -161,7 +161,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.89.3" # registryUrl: charts.sysdig.com
+  default  = "1.90.0" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -198,7 +198,7 @@ variable "kernel_module_image_tag_digest" {
   description = "The image tag or digest to use for the agent kernel module used by the initContainer. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`"
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.0.1@sha256:9b1e900e2cd47cabe31b36f6ed41705b33e849de0639b29b326fb73e67ed8b68" # datasource: icr.io/ext/sysdig/agent-kmodule
+  default  = "14.1.0@sha256:e58ff26bdda75f38b824005a55332cff3c641416e0a43b455e9afe1e059c6416" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable = false
 }
 
