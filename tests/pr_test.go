@@ -266,7 +266,7 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 	options.TerraformVars = map[string]interface{}{
 		"resource_group": resourceGroup,
 		"datacenter":     "syd01",
-		"prefix":     options.Prefix,
+		"prefix":         options.Prefix,
 	}
 
 	output, err := options.RunTestConsistency()
