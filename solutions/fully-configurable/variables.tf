@@ -190,7 +190,7 @@ variable "agent_image_tag_digest" {
   description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.0.1@sha256:b1f5bf4677632c715e9a5cde9af8d36dd66f5e79c80aadfd4b74dc5cc310a570" # datasource: icr.io/ext/sysdig/agent-slim
+  default  = "14.1.0@sha256:2c6401018cfe3f5fcbd0713b64b096c38d47de1b5cd6c11de4691912752263fc" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
