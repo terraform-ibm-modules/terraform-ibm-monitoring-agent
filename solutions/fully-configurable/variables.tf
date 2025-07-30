@@ -125,7 +125,7 @@ variable "namespace" {
 }
 
 variable "tolerations" {
-  description = "List of tolerations to apply to the agent." # TODO: Add learn more doc and ensure use textbox in catalog json
+  description = "List of tolerations to apply to the agent. [Learn more](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)."
   type = list(object({
     key               = optional(string)
     operator          = optional(string)
