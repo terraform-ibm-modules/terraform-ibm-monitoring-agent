@@ -272,7 +272,7 @@ variable "metrics_filter" {
         )
       )
     ])
-    error_message = "Each item in 'metrics_filter' must have either 'include' or 'exclude' set (not both, not neither), and the value must not be null or empty."
+    error_message = "Each metrics_filter item must specify exactly one of 'include' or 'exclude' with a non-empty value. Empty lists [] are allowed."
   }
 }
 
