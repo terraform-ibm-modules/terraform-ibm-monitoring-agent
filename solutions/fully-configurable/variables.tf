@@ -278,24 +278,6 @@ variable "container_filter" {
   }
 }
 
-variable "prometheus" {
-  description = "Prometheus configuration for the agent. If you want to enable Prometheus configuration, set `file` to true and provide the prometheus.yaml file content in `yaml`. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#prometheus)."
-  type = object({
-    file = bool
-    yaml = map(any)
-  })
-  default = {
-    file = false
-    yaml = {}
-  }
-  validation {
-    condition = (
-      var.prometheus.file == false || length(keys(var.prometheus.yaml)) > 0
-    )
-    error_message = "If prometheus.file is true, 'yaml' must be a non-empty map."
-  }
-}
-
 ##############################################################################
 # SCC-WP related variables
 ##############################################################################

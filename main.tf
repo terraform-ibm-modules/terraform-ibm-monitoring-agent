@@ -254,9 +254,9 @@ resource "helm_release" "cloud_monitoring_agent" {
       "name": "tmp-vol"
 %{endif~}
   "prometheus":
-    "file": ${var.prometheus.file}
+    "file": ${length(var.prometheus_config) > 0}
     "yaml":
-%{for line in split("\n", yamlencode(var.prometheus.yaml))~}
+%{for line in split("\n", yamlencode(var.prometheus_config))~}
       ${line}
 %{endfor~}
 EOT
