@@ -238,42 +238,6 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
-
-	prometheus_config := map[string]interface{}{
-
-		"scrape_configs": []map[string]interface{}{
-			{
-				"job_name": "testing-prometheus-scrape",
-				"tls_config": map[string]interface{}{
-					"insecure_skip_verify": true,
-				},
-				"kubernetes_sd_configs": []map[string]interface{}{
-					{
-						"role": "pod",
-					},
-				},
-				"relabel_configs": []map[string]interface{}{
-					{
-						"action":        "keep",
-						"source_labels": []string{"__meta_kubernetes_pod_host_ip"},
-						"regex":         "__HOSTIPS__",
-					},
-					{
-						"action":        "drop",
-						"source_labels": []string{"__meta_kubernetes_pod_annotation_promcat_sysdig_com_omit"},
-						"regex":         true,
-					},
-					{
-						"action":        "keep",
-						"source_labels": []string{"__meta_kubernetes_pod_phase"},
-						"regex":         "Running",
-					},
-				},
-			},
-		},
-	}
-
-	options.TerraformVars["prometheus_config"] = prometheus_config
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")

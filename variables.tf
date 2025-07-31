@@ -291,9 +291,10 @@ variable "container_filter" {
 }
 
 variable "prometheus_config" {
-  description = "Prometheus configuration for the agent. If you want to enable Prometheus configuration provide the prometheus.yaml file content in `hcl` format. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#prometheus)."
+  description = "Prometheus configuration for the agent. If you want to enable Prometheus configuration provide the prometheus.yaml file content in `hcl` format. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#prometheus_config)."
   type        = map(any)
   default     = {}
+  nullable    = false
 }
 
 ##############################################################################
