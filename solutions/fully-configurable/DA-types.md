@@ -65,37 +65,35 @@ object({
 
 ```hcl
 {
-  config = {
-    scrape_configs = [
-      {
-        job_name = "testing-prometheus-scrape"
-        tls_config = {
-          insecure_skip_verify = true
-        }
-        kubernetes_sd_configs = [
-          {
-            role = "pod"
-          }
-        ]
-        relabel_configs = [
-          {
-            action = "keep"
-            source_labels = ["__meta_kubernetes_pod_host_ip"]
-            regex = "__HOSTIPS__"
-          },
-          {
-            action = "drop"
-            source_labels = ["__meta_kubernetes_pod_annotation_promcat_sysdig_com_omit"]
-            regex = "true"
-          },
-          {
-            source_labels = ["__meta_kubernetes_pod_phase"]
-            action = "keep"
-            regex = "Running"
-          }
-        ]
+  scrape_configs = [
+    {
+      job_name = "testing-prometheus-scrape"
+      tls_config = {
+        insecure_skip_verify = true
       }
-    ]
-  }
+      kubernetes_sd_configs = [
+        {
+          role = "pod"
+        }
+      ]
+      relabel_configs = [
+        {
+          action = "keep"
+          source_labels = ["__meta_kubernetes_pod_host_ip"]
+          regex = "__HOSTIPS__"
+        },
+        {
+          action = "drop"
+          source_labels = ["__meta_kubernetes_pod_annotation_promcat_sysdig_com_omit"]
+          regex = "true"
+        },
+        {
+          source_labels = ["__meta_kubernetes_pod_phase"]
+          action = "keep"
+          regex = "Running"
+        }
+      ]
+    }
+  ]
 }
 ```
