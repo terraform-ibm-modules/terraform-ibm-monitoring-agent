@@ -55,10 +55,7 @@ The `prometheus_config` variable allows you to enable sysdig agent to scrape met
 ### Type
 
 ```hcl
-object({
-    file = bool
-    yaml = map(any)
-  })
+map(any)
 ```
 
 ### Example Usage
