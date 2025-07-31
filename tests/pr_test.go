@@ -112,7 +112,6 @@ func TestFullyConfigurableSolution(t *testing.T) {
 			WaitJobCompleteMinutes: 60,
 			Region:                 region,
 		})
-
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 			{Name: "instance_region", Value: region, DataType: "string"},
@@ -239,7 +238,6 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
-
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")

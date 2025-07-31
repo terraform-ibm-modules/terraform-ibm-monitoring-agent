@@ -236,7 +236,7 @@ variable "agent_limits_memory" {
 
 variable "enable_universal_ebpf" {
   type        = bool
-  description = "Deploy monitoring agent with universal extended Berkeley Packet Filter (eBPF) enabled. It requires kernel version 5.8+. Learn more: https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#when-to-enable-enable_universal_ebpf"
+  description = "Deploy monitoring agent with universal extended Berkeley Packet Filter (eBPF) enabled. It requires kernel version 5.8+. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#when-to-enable-enable_universal_ebpf)"
   default     = true
 }
 
@@ -288,6 +288,13 @@ variable "container_filter" {
     condition     = length(var.container_filter) == 0 || can(regex("^(include|exclude)$", var.container_filter[0].type))
     error_message = "Invalid input for 'container_filter'. Valid options for 'type' are: `include` and `exclude`."
   }
+}
+
+variable "prometheus_config" {
+  description = "Prometheus configuration for the agent. If you want to enable Prometheus configuration provide the prometheus.yaml file content in `hcl` format. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#prometheus_config)."
+  type        = map(any)
+  default     = {}
+  nullable    = false
 }
 
 ##############################################################################
