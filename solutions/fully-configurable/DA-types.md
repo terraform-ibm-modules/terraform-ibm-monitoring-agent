@@ -112,14 +112,16 @@ Entries in the list of `tolerations` can have the following fields.
 ### Default
 
 ```hcl
-[{
-  operator = "Exists"
-},
-{
-  operator = "Exists"
-  effect   = "NoSchedule"
-  key      = "node-role.kubernetes.io/master"
-}]
+[
+  {
+    operator = "Exists"
+  },
+  {
+    operator = "Exists"
+    effect   = "NoSchedule"
+    key      = "node-role.kubernetes.io/master"
+  }
+]
 ```
 The default behaviour configures the agent to tolerate any taint and explicitly allows master node taints (`NoSchedule`).
 
