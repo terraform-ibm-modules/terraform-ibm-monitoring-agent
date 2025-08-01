@@ -129,7 +129,7 @@ type = list(object({
 - **Default:**
   ```hcl
   default = [{
-  operator = "Exists"
+    operator = "Exists"
   },
   {
     operator = "Exists"
@@ -142,7 +142,7 @@ type = list(object({
 ### Example Usage
 
 ```hcl
-tolerations = [
+[
   # First toleration
   {
     key      = "example-key"
