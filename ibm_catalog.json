@@ -232,7 +232,7 @@
             {
               "key": "cluster_shield_requests_cpu"
             },
-             {
+            {
               "key": "cluster_shield_requests_memory"
             },
             {
@@ -351,7 +351,8 @@
               "key": "enable_universal_ebpf"
             }
           ],
-          "install_type": "fullstack"
+          "install_type": "fullstack",
+          "terraform_version": "1.10.5"
         }
       ]
     }
