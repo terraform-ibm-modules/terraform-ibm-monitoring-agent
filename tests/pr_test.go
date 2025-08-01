@@ -30,9 +30,10 @@ var sharedInfoSvc *cloudinfo.CloudInfoService
 var validRegions = []string{
 	"au-syd",
 	"us-east",
-	"eu-gb",
-	"eu-de",
-	"eu-es",
+	// Temporarily disabling Europe regions due to IKS error
+	//"eu-gb",
+	//"eu-de",
+	//"eu-es",
 	"us-south",
 	"jp-osa",
 	"jp-tok",
@@ -261,8 +262,9 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		CloudInfoService: sharedInfoSvc,
 	})
 	options.TerraformVars = map[string]interface{}{
-		"datacenter": "syd01",
-		"prefix":     options.Prefix,
+		"resource_group": resourceGroup,
+		"datacenter":     "syd01",
+		"prefix":         options.Prefix,
 	}
 
 	output, err := options.RunTestConsistency()
