@@ -162,7 +162,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.90.0" # registryUrl: charts.sysdig.com
+  default  = "1.91.0" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -191,7 +191,7 @@ variable "agent_image_tag_digest" {
   description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.0.1@sha256:b1f5bf4677632c715e9a5cde9af8d36dd66f5e79c80aadfd4b74dc5cc310a570" # datasource: icr.io/ext/sysdig/agent-slim
+  default  = "14.1.0@sha256:2c6401018cfe3f5fcbd0713b64b096c38d47de1b5cd6c11de4691912752263fc" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
@@ -236,7 +236,7 @@ variable "agent_limits_memory" {
 
 variable "enable_universal_ebpf" {
   type        = bool
-  description = "Deploy monitoring agent with universal extended Berkeley Packet Filter (eBPF) enabled. It requires kernel version 5.8+. Learn more: https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#when-to-enable-enable_universal_ebpf"
+  description = "Deploy monitoring agent with universal extended Berkeley Packet Filter (eBPF) enabled. It requires kernel version 5.8+. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#when-to-enable-enable_universal_ebpf)"
   default     = true
 }
 
@@ -263,7 +263,17 @@ variable "metrics_filter" {
   }))
   description = "To filter custom metrics you can specify which metrics to include and exclude. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics"
   default     = []
-  # TODO: Add variable validation to ensure only include or exclude is in each item - not both
+  validation {
+    condition = alltrue([
+      for item in var.metrics_filter : (
+        (
+          (!(try(item.include, null) != null && try(item.exclude, null) != null)) &&
+          ((try(item.include, null) != null && try(item.include, "") != "") || (try(item.exclude, null) != null && try(item.exclude, "") != ""))
+        )
+      )
+    ])
+    error_message = "Each metrics_filter item must specify exactly one of 'include' or 'exclude' with a non-empty value. Empty lists [] are allowed."
+  }
 }
 
 variable "container_filter" {
@@ -278,6 +288,13 @@ variable "container_filter" {
     condition     = length(var.container_filter) == 0 || can(regex("^(include|exclude)$", var.container_filter[0].type))
     error_message = "Invalid input for 'container_filter'. Valid options for 'type' are: `include` and `exclude`."
   }
+}
+
+variable "prometheus_config" {
+  description = "Prometheus configuration for the agent. If you want to enable Prometheus configuration provide the prometheus.yaml file content in `hcl` format. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#prometheus_config)."
+  type        = map(any)
+  default     = {}
+  nullable    = false
 }
 
 ##############################################################################
@@ -306,7 +323,7 @@ variable "cluster_shield_image_tag_digest" {
   description = "The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default = "1.13.0@sha256:0c8ee65a473e51b2a2c7bddf4e89008299cf203c50cd80fd97503cb121c1230a" # datasource: icr.io/ext/sysdig/cluster-shield
+  default = "1.14.0@sha256:abbff90f7884a91d4558476b7b43bb2ae0c72f486c2cf95e729f699116695e52" # datasource: icr.io/ext/sysdig/cluster-shield
 }
 
 variable "cluster_shield_image_repository" {
