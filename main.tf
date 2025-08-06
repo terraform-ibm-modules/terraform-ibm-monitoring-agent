@@ -203,25 +203,15 @@ resource "helm_release" "cloud_monitoring_agent" {
   "ebpf":
     "enabled": ${var.enable_universal_ebpf}
     "kind": "universal_ebpf"
-  "sysdig":
-    "tolerations":
+  "tolerations":
 %{for toleration in var.tolerations~}
-%{if toleration.key != null~}
-        - "key": ${toleration.key}
-%{endif~}
-%{if toleration.operator != null~}
-        - "operator": ${toleration.operator}
-%{endif~}
-%{if toleration.value != null~}
-        - "value": ${toleration.value}
-%{endif~}
-%{if toleration.effect != null~}
-        - "effect": ${toleration.effect}
-%{endif~}
-%{if toleration.tolerationSeconds != null~}
-        - "tolerationSeconds": ${toleration.tolerationSeconds}
-%{endif~}
+    -%{if toleration.key != null} key: "${toleration.key}"%{endif}
+%{if toleration.operator != null}      operator: "${toleration.operator}"%{endif}
+%{if toleration.value != null}      value: "${toleration.value}"%{endif}
+%{if toleration.effect != null}      effect: "${toleration.effect}"%{endif}
+%{if toleration.tolerationSeconds != null}      tolerationSeconds: ${toleration.tolerationSeconds}%{endif}
 %{endfor~}
+  "sysdig":
     "settings":
       "host_scanner":
         "enabled": ${var.enable_host_scanner}
@@ -263,6 +253,12 @@ resource "helm_release" "cloud_monitoring_agent" {
         "path": "/tmp"
       "name": "tmp-vol"
 %{endif~}
+  "prometheus":
+    "file": ${length(var.prometheus_config) > 0}
+    "yaml":
+%{for line in split("\n", yamlencode(var.prometheus_config))~}
+      ${line}
+%{endfor~}
 EOT
   ]
 
