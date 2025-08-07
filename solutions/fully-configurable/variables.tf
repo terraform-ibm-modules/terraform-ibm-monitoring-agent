@@ -125,7 +125,7 @@ variable "namespace" {
 }
 
 variable "tolerations" {
-  description = "List of tolerations to apply to the agent." # TODO: Add learn more doc and ensure use textbox in catalog json
+  description = "List of tolerations to apply to the agent. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#tolerations)."
   type = list(object({
     key               = optional(string)
     operator          = optional(string)

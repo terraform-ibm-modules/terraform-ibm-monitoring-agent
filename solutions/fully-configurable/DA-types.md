@@ -94,3 +94,55 @@ map(any)
   ]
 }
 ```
+
+## `tolerations`
+
+The `tolerations` setting can be used to define the tolerations that the IBM Cloud Monitoring agent applies to its pods. This variable allows you to define which **node taints** the monitoring agent should **tolerate** when deployed. It ensures that agent pods can be scheduled on nodes with specific taints.
+
+### Options
+
+Entries in the list of `tolerations` can have the following fields.
+
+- `key` (optional): The taint key that the toleration applies to.
+- `operator` (optional): The operator to use for the toleration. Valid values are `Exists` and `Equal`.
+- `value` (optional): The value to match for the taint key.
+- `effect` (optional): The effect of the taint to tolerate. Valid values are `NoSchedule`, `PreferNoSchedule`, and `NoExecute`.
+- `tolerationSeconds` (optional): The duration (in seconds) for which the toleration is valid when the `effect` is `NoExecute`.
+
+### Default
+
+```hcl
+[
+  {
+    operator = "Exists"
+  },
+  {
+    operator = "Exists"
+    effect   = "NoSchedule"
+    key      = "node-role.kubernetes.io/master"
+  }
+]
+```
+The default behaviour configures the agent to tolerate any taint and explicitly allows master node taints (`NoSchedule`).
+
+### Example Usage
+
+```hcl
+[
+  {
+    key      = "example-key"
+    operator = "Equal"
+    value    = "example-value"
+    effect   = "NoSchedule"
+  },
+  {
+    operator = "Exists"
+  }
+]
+```
+- The first toleration applies to any nodes with taint key `example-key` and a value of `example-value`, with the `NoSchedule` effect.
+- The second toleration applies to any taint key regardless of value, due to the `Exists` operator.
+
+### References
+
+- [Kubernetes Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
