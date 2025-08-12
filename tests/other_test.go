@@ -27,8 +27,9 @@ func TestRunAgentVpcOcp(t *testing.T) {
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
-	options.TerraformVars = map[string]interface{}{
+	options.TerraformVars = map[string]any{
 		"ocp_entitlement": "cloud_pak",
+		"prefix":          options.Prefix,
 	}
 
 	output, err := options.RunTestConsistency()

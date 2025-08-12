@@ -260,7 +260,7 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
-	options.TerraformVars = map[string]interface{}{
+	options.TerraformVars = map[string]any{
 		"datacenter": "syd01",
 		"prefix":     options.Prefix,
 	}
