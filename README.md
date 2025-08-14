@@ -120,7 +120,7 @@ No modules.
 | <a name="input_blacklisted_ports"></a> [blacklisted\_ports](#input\_blacklisted\_ports) | To block network traffic and metrics from network ports, pass the list of ports from which you want to filter out any data. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_agent#ports | `list(number)` | `[]` | no |
 | <a name="input_chart"></a> [chart](#input\_chart) | The name of the Helm chart to deploy. Use `chart_location` to specify helm chart location. | `string` | `"sysdig-deploy"` | no |
 | <a name="input_chart_location"></a> [chart\_location](#input\_chart\_location) | The location of the agent helm chart. | `string` | `"https://charts.sysdig.com"` | no |
-| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the agent helm chart to deploy. | `string` | `"1.91.1"` | no |
+| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the agent helm chart to deploy. | `string` | `"1.91.2"` | no |
 | <a name="input_cluster_config_endpoint_type"></a> [cluster\_config\_endpoint\_type](#input\_cluster\_config\_endpoint\_type) | Specify which type of endpoint to use for for cluster config access: 'default', 'private', 'vpe', 'link'. 'default' value will use the default endpoint of the cluster. | `string` | `"default"` | no |
 | <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | The ID of the cluster you wish to deploy the agent in. | `string` | n/a | yes |
 | <a name="input_cluster_resource_group_id"></a> [cluster\_resource\_group\_id](#input\_cluster\_resource\_group\_id) | The resource group ID of the cluster. | `string` | n/a | yes |
