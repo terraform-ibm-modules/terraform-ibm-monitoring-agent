@@ -162,7 +162,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.91.2" # registryUrl: charts.sysdig.com
+  default  = "1.91.5" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -191,7 +191,7 @@ variable "agent_image_tag_digest" {
   description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.1.0@sha256:2c6401018cfe3f5fcbd0713b64b096c38d47de1b5cd6c11de4691912752263fc" # datasource: icr.io/ext/sysdig/agent-slim
+  default  = "14.1.1@sha256:36366b082d8d45dfe44d995830a1c0b0293cb9df9e55c6ab8c389e800596c743" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
