@@ -250,12 +250,23 @@ variable "max_unavailable" {
   type        = string
   description = "Maximum number of pods that can be unavailable during a DaemonSet rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
   default     = "1"
+  validation {
+    condition = can(regex("^\\d+%?$", var.max_unavailable))
+    error_message = "max_unavailable must be a positive integer (e.g., '1') or a percentage (e.g., '10%')"
+  }
 }
 
 variable "max_surge" {
   type        = string
   description = "Maximum number of nodes that can have an extra DaemonSet pod during a rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
   default     = null
+  validation {
+    condition = (
+      var.max_surge == null ||
+      can(regex("^\\d+%?$", var.max_surge))
+    )
+    error_message = "max_surge must be a positive integer (e.g., '1') or a percentage (e.g., '10%'), or null."
+  }
 }
 
 
