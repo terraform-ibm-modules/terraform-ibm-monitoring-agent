@@ -259,6 +259,17 @@ resource "helm_release" "cloud_monitoring_agent" {
 %{for line in split("\n", yamlencode(var.prometheus_config))~}
       ${line}
 %{endfor~}
+  "createPriorityClass": ${var.create_priority_class}
+  "priorityClassName": ${var.priority_class_name}
+  "priorityClassValue": ${var.priority_class_value}
+  "daemonset":
+    "updateStrategy":
+      "type": "RollingUpdate"
+      "rollingUpdate":
+        "maxUnavailable": ${var.max_unavailable}
+%{ if var.max_surge != null }
+        "maxSurge": ${var.max_surge}
+%{ endif }
 EOT
   ]
 
