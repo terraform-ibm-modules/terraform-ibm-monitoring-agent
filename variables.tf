@@ -273,7 +273,7 @@ variable "max_surge" {
 variable "create_priority_class" {
   type        = bool
   description = "Specify whether or not to create a priority class for the agent daemonset."
-  default     = true
+  default     = false
 }
 
 variable "priority_class_name" {
