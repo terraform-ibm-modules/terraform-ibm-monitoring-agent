@@ -251,7 +251,7 @@ variable "max_unavailable" {
   description = "Maximum number of pods that can be unavailable during a DaemonSet rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
   default     = "1"
   validation {
-    condition = can(regex("^\\d+%?$", var.max_unavailable))
+    condition     = can(regex("^\\d+%?$", var.max_unavailable))
     error_message = "max_unavailable must be a positive integer (e.g., '1') or a percentage (e.g., '10%')"
   }
 }

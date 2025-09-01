@@ -260,9 +260,9 @@ resource "helm_release" "cloud_monitoring_agent" {
       "type": "RollingUpdate"
       "rollingUpdate":
         "maxUnavailable": ${var.max_unavailable}
-%{ if var.max_surge != null }
+%{if var.max_surge != null}
         "maxSurge": ${var.max_surge}
-%{ endif }
+%{endif}
 EOT
   ]
 
