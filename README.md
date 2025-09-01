@@ -50,7 +50,7 @@ provider "ibm" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = data.ibm_container_cluster_config.cluster_config.host
     token                  = data.ibm_container_cluster_config.cluster_config.token
     cluster_ca_certificate = data.ibm_container_cluster_config.cluster_config.ca_certificate
@@ -88,7 +88,7 @@ You need the following permissions to run this module.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.15.0, <3.0.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 3.0.0, <4.0.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.79.2, <2.0.0 |
 
 ### Modules
@@ -111,7 +111,7 @@ No modules.
 | <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. This value will be stored in a new secret on the cluster if passed. If you want to use this agent for only metrics or metrics with security and compliance, use a manager key scoped to the IBM Cloud Monitoring instance. If you only want to use the agent for security and compliance use a manager key scoped to the Security and Compliance Center Workload Protection instance. | `string` | `null` | no |
 | <a name="input_add_cluster_name"></a> [add\_cluster\_name](#input\_add\_cluster\_name) | If true, configure the agent to associate a tag containing the cluster name. This tag is added in the format `ibm-containers-kubernetes-cluster-name: cluster_name`. | `bool` | `true` | no |
 | <a name="input_agent_image_repository"></a> [agent\_image\_repository](#input\_agent\_image\_repository) | The image repository to pull the agent image from. | `string` | `"agent-slim"` | no |
-| <a name="input_agent_image_tag_digest"></a> [agent\_image\_tag\_digest](#input\_agent\_image\_tag\_digest) | The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`. | `string` | `"14.1.0@sha256:2c6401018cfe3f5fcbd0713b64b096c38d47de1b5cd6c11de4691912752263fc"` | no |
+| <a name="input_agent_image_tag_digest"></a> [agent\_image\_tag\_digest](#input\_agent\_image\_tag\_digest) | The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`. | `string` | `"14.2.0@sha256:cd9f6c5588280cdb60d07264b812f6635c57557020cdd131757e1c986431cd23"` | no |
 | <a name="input_agent_limits_cpu"></a> [agent\_limits\_cpu](#input\_agent\_limits\_cpu) | Specify CPU resource limits for the agent. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-resource_requirements | `string` | `"1"` | no |
 | <a name="input_agent_limits_memory"></a> [agent\_limits\_memory](#input\_agent\_limits\_memory) | Specify memory resource limits for the agent. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-resource_requirements | `string` | `"1024Mi"` | no |
 | <a name="input_agent_requests_cpu"></a> [agent\_requests\_cpu](#input\_agent\_requests\_cpu) | Specify CPU resource requests for the agent. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-resource_requirements | `string` | `"1"` | no |
@@ -120,13 +120,13 @@ No modules.
 | <a name="input_blacklisted_ports"></a> [blacklisted\_ports](#input\_blacklisted\_ports) | To block network traffic and metrics from network ports, pass the list of ports from which you want to filter out any data. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_agent#ports | `list(number)` | `[]` | no |
 | <a name="input_chart"></a> [chart](#input\_chart) | The name of the Helm chart to deploy. Use `chart_location` to specify helm chart location. | `string` | `"sysdig-deploy"` | no |
 | <a name="input_chart_location"></a> [chart\_location](#input\_chart\_location) | The location of the agent helm chart. | `string` | `"https://charts.sysdig.com"` | no |
-| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the agent helm chart to deploy. | `string` | `"1.91.2"` | no |
+| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of the agent helm chart to deploy. | `string` | `"1.93.0"` | no |
 | <a name="input_cluster_config_endpoint_type"></a> [cluster\_config\_endpoint\_type](#input\_cluster\_config\_endpoint\_type) | Specify which type of endpoint to use for for cluster config access: 'default', 'private', 'vpe', 'link'. 'default' value will use the default endpoint of the cluster. | `string` | `"default"` | no |
 | <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | The ID of the cluster you wish to deploy the agent in. | `string` | n/a | yes |
 | <a name="input_cluster_resource_group_id"></a> [cluster\_resource\_group\_id](#input\_cluster\_resource\_group\_id) | The resource group ID of the cluster. | `string` | n/a | yes |
 | <a name="input_cluster_shield_deploy"></a> [cluster\_shield\_deploy](#input\_cluster\_shield\_deploy) | Deploy the Cluster Shield component to provide runtime detection and policy enforcement for Kubernetes workloads. If enabled, a Kubernetes Deployment will be deployed to your cluster using helm. | `bool` | `true` | no |
 | <a name="input_cluster_shield_image_repository"></a> [cluster\_shield\_image\_repository](#input\_cluster\_shield\_image\_repository) | The image repository to pull the Cluster Shield image from. | `string` | `"cluster-shield"` | no |
-| <a name="input_cluster_shield_image_tag_digest"></a> [cluster\_shield\_image\_tag\_digest](#input\_cluster\_shield\_image\_tag\_digest) | The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`. | `string` | `"1.14.0@sha256:abbff90f7884a91d4558476b7b43bb2ae0c72f486c2cf95e729f699116695e52"` | no |
+| <a name="input_cluster_shield_image_tag_digest"></a> [cluster\_shield\_image\_tag\_digest](#input\_cluster\_shield\_image\_tag\_digest) | The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`. | `string` | `"1.15.0@sha256:a8a733fe8e06fcba0eaeff3d078db74e40197d6e03608efba3bbe3c11990bfe6"` | no |
 | <a name="input_cluster_shield_limits_cpu"></a> [cluster\_shield\_limits\_cpu](#input\_cluster\_shield\_limits\_cpu) | Specify CPU resource limits for the cluster shield pods. | `string` | `"1500m"` | no |
 | <a name="input_cluster_shield_limits_memory"></a> [cluster\_shield\_limits\_memory](#input\_cluster\_shield\_limits\_memory) | Specify memory resource limits for the cluster shield pods. | `string` | `"1536Mi"` | no |
 | <a name="input_cluster_shield_requests_cpu"></a> [cluster\_shield\_requests\_cpu](#input\_cluster\_shield\_requests\_cpu) | Specify CPU resource requests for the cluster shield pods. | `string` | `"500m"` | no |
