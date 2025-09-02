@@ -266,6 +266,21 @@
               "key": "agent_limits_memory"
             },
             {
+              "key": "create_priority_class"
+            },
+            {
+              "key": "max_surge"
+            },
+            {
+              "key": "max_unavailable"
+            },
+            {
+              "key": "priority_class_name"
+            },
+            {
+              "key": "priority_class_value"
+            },
+            {
               "key": "tolerations",
               "type": "array",
               "custom_config": {
