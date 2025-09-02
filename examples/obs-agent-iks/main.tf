@@ -146,7 +146,7 @@ module "monitoring_agents" {
   access_key                = module.cloud_monitoring.access_key
   instance_region           = var.region
   create_priority_class     = true
-  priority_class_name       = "test"
+  priority_class_name       = "sysdig-daemonset-priority"
   prometheus_config = {
     scrape_configs = [
       {
