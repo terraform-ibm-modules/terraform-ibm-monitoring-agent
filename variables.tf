@@ -162,7 +162,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.91.2" # registryUrl: charts.sysdig.com
+  default  = "1.93.0" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -191,7 +191,7 @@ variable "agent_image_tag_digest" {
   description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.1.0@sha256:2c6401018cfe3f5fcbd0713b64b096c38d47de1b5cd6c11de4691912752263fc" # datasource: icr.io/ext/sysdig/agent-slim
+  default  = "14.2.0@sha256:cd9f6c5588280cdb60d07264b812f6635c57557020cdd131757e1c986431cd23" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
@@ -199,7 +199,7 @@ variable "kernel_module_image_tag_digest" {
   description = "The image tag or digest to use for the agent kernel module used by the initContainer. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`"
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.1.1@sha256:339a15d5aec1f1d3a4edd3928e14233f54c1c586f4a45d601a12f8a92da31ae0" # datasource: icr.io/ext/sysdig/agent-kmodule
+  default  = "14.2.0@sha256:3be3966e2bef75364f55d248156a568a222afaba3067f43c5c642c46b690cca9" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable = false
 }
 
@@ -323,7 +323,7 @@ variable "cluster_shield_image_tag_digest" {
   description = "The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default = "1.14.0@sha256:abbff90f7884a91d4558476b7b43bb2ae0c72f486c2cf95e729f699116695e52" # datasource: icr.io/ext/sysdig/cluster-shield
+  default = "1.15.0@sha256:a8a733fe8e06fcba0eaeff3d078db74e40197d6e03608efba3bbe3c11990bfe6" # datasource: icr.io/ext/sysdig/cluster-shield
 }
 
 variable "cluster_shield_image_repository" {
