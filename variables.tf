@@ -269,7 +269,6 @@ variable "max_surge" {
   }
 }
 
-
 variable "create_priority_class" {
   type        = bool
   description = "Specify whether or not to create a priority class for the agent daemonset."
@@ -279,8 +278,12 @@ variable "create_priority_class" {
 variable "priority_class_name" {
   type        = string
   description = "Sets the priority class name for the agent daemonset."
-  default     = "sysdig-daemonset-priority"
-  nullable    = false
+  default     = null
+
+  validation {
+    condition     = var.create_priority_class ? var.priority_class_name == null ? false : true : true
+    error_message = "When 'create_priority_class' is set to true, a value for 'priority_class_name' should be passed."
+  }
 }
 
 variable "priority_class_value" {

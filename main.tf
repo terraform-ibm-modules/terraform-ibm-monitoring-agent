@@ -253,7 +253,7 @@ resource "helm_release" "cloud_monitoring_agent" {
       ${line}
 %{endfor~}
   "createPriorityClass": ${var.create_priority_class}
-  "priorityClassName": ${var.priority_class_name}
+  "priorityClassName": ${var.priority_class_name == null ? "null" : var.priority_class_name}
   "priorityClassValue": ${var.priority_class_value}
   "daemonset":
     "updateStrategy":

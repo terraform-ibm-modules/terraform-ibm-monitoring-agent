@@ -145,6 +145,8 @@ module "monitoring_agents" {
   is_vpc_cluster            = var.is_vpc_cluster
   access_key                = module.cloud_monitoring.access_key
   instance_region           = var.region
+  create_priority_class     = true
+  priority_class_name       = "test"
   prometheus_config = {
     scrape_configs = [
       {
