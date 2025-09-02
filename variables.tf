@@ -279,7 +279,8 @@ variable "create_priority_class" {
 variable "priority_class_name" {
   type        = string
   description = "Sets the priority class name for the agent daemonset."
-  default     = null
+  default     = "sysdig-daemonset-priority"
+  nullable    = false
 }
 
 variable "priority_class_value" {
