@@ -248,7 +248,7 @@ variable "deployment_tag" {
 
 variable "max_unavailable" {
   type        = string
-  description = "Maximum number of pods that can be unavailable during a DaemonSet rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
+  description = "The maximum number of pods that can be unavailable during a DaemonSet rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
   default     = "1"
   validation {
     condition     = can(regex("^\\d+%?$", var.max_unavailable))
@@ -258,7 +258,7 @@ variable "max_unavailable" {
 
 variable "max_surge" {
   type        = string
-  description = "Maximum number of nodes that can have an extra DaemonSet pod during a rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
+  description = "The maximum number of nodes that can have an extra DaemonSet pod during a rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
   default     = null
   validation {
     condition = (
@@ -271,13 +271,13 @@ variable "max_surge" {
 
 variable "create_priority_class" {
   type        = bool
-  description = "Specify whether or not to create a priority class for the agent daemonset."
+  description = "Whether to create a priority class for the sysdig agent daemonset."
   default     = false
 }
 
 variable "priority_class_name" {
   type        = string
-  description = "Sets the priority class name for the agent daemonset."
+  description = "The priority class name for the PriorityClasses assigned to the sysdig daemonset."
   default     = null
 
   validation {
@@ -288,7 +288,7 @@ variable "priority_class_name" {
 
 variable "priority_class_value" {
   type        = number
-  description = "Sets the priority class value for the agent daemonset."
+  description = "The numerical priority assigned to PriorityClass, which determines the importance of sysdig daemonset pod within the cluster for both scheduling and eviction decisions."
   default     = 10
 }
 
