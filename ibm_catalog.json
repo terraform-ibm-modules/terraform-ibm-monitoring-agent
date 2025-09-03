@@ -266,9 +266,6 @@
               "key": "agent_limits_memory"
             },
             {
-              "key": "create_priority_class"
-            },
-            {
               "key": "max_surge"
             },
             {

@@ -250,6 +250,7 @@ variable "max_unavailable" {
   type        = string
   description = "The maximum number of pods that can be unavailable during a DaemonSet rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
   default     = "1"
+  nullable    = false
   validation {
     condition     = can(regex("^\\d+%?$", var.max_unavailable))
     error_message = "max_unavailable must be a positive integer (e.g., '1') or a percentage (e.g., '10%')"
@@ -258,7 +259,7 @@ variable "max_unavailable" {
 
 variable "max_surge" {
   type        = string
-  description = "The maximum number of nodes that can have an extra DaemonSet pod during a rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
+  description = "The number of pods that can be created above the desired amount of daemonset pods during an update. By default, the `max_surge` is set to null. The variable accepts absolute number or percentage value(e.g., '1' or '10%')."
   default     = null
   validation {
     condition = (
@@ -269,26 +270,16 @@ variable "max_surge" {
   }
 }
 
-variable "create_priority_class" {
-  type        = bool
-  description = "Whether to create a priority class for the sysdig agent daemonset."
-  default     = false
-}
-
 variable "priority_class_name" {
   type        = string
-  description = "The priority class name for the PriorityClasses assigned to the sysdig daemonset."
+  description = "The priority class name for the PriorityClasses assigned to the monitoring agent daemonset."
   default     = null
-
-  validation {
-    condition     = var.create_priority_class ? var.priority_class_name == null ? false : true : true
-    error_message = "When 'create_priority_class' is set to true, a value for 'priority_class_name' should be passed."
-  }
 }
 
 variable "priority_class_value" {
   type        = number
-  description = "The numerical priority assigned to PriorityClass, which determines the importance of sysdig daemonset pod within the cluster for both scheduling and eviction decisions."
+  nullable    = false
+  description = "The numerical priority assigned to PriorityClass, which determines the importance of monitoring agent daemonset pod within the cluster for both scheduling and eviction decisions."
   default     = 10
 }
 

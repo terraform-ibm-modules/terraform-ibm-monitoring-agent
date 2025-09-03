@@ -252,9 +252,11 @@ resource "helm_release" "cloud_monitoring_agent" {
 %{for line in split("\n", yamlencode(var.prometheus_config))~}
       ${line}
 %{endfor~}
-  "createPriorityClass": ${var.create_priority_class}
-  "priorityClassName": ${var.priority_class_name == null ? "null" : var.priority_class_name}
+%{if var.priority_class_name != null}
+  "createPriorityClass": true
+  "priorityClassName": ${var.priority_class_name}
   "priorityClassValue": ${var.priority_class_value}
+%{endif}
   "daemonset":
     "updateStrategy":
       "type": "RollingUpdate"
