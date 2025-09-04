@@ -281,7 +281,7 @@
               "key": "tolerations",
               "type": "array",
               "custom_config": {
-                "type": "textarea",
+                "type": "code_editor",
                 "grouping": "deployment",
                 "original_grouping": "deployment"
               }
@@ -300,7 +300,7 @@
               "key": "metrics_filter",
               "type": "array",
               "custom_config": {
-                "type": "textarea",
+                "type": "code_editor",
                 "grouping": "deployment",
                 "original_grouping": "deployment"
               }
@@ -309,7 +309,7 @@
               "key": "container_filter",
               "type": "array",
               "custom_config": {
-                "type": "textarea",
+                "type": "code_editor",
                 "grouping": "deployment",
                 "original_grouping": "deployment"
               }
