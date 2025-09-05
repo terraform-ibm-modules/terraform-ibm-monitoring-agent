@@ -118,6 +118,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "access_key", Value: terraform.Output(t, existingTerraformOptions, "access_key"), DataType: "string", Secure: true},
+			{Name: "priority_class_name", Value: "sysdig-daemonset-priority", DataType: "string"},
 		}
 
 		err := options.RunSchematicTest()
