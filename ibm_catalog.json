@@ -266,10 +266,24 @@
               "key": "agent_limits_memory"
             },
             {
-              "key": "max_surge"
+              "key": "max_surge",
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'max_surge' must be a positive integer (e.g., '1') or a percentage (e.g., '10%'), or null.",
+                  "value": "^__NULL__$|^\\d+%?$"
+                }
+              ]
             },
             {
-              "key": "max_unavailable"
+              "key": "max_unavailable",
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'max_unavailable' must be a positive integer (e.g., '1') or a percentage (e.g., '10%').",
+                  "value": "^\\d+%?$"
+                }
+              ]
             },
             {
               "key": "priority_class_name"

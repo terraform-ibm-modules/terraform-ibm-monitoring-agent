@@ -254,21 +254,21 @@ variable "max_unavailable" {
 
 variable "max_surge" {
   type        = string
-  description = "The number of pods that can be created above the desired amount of daemonset pods during an update. By default, the `max_surge` is set to null. The variable accepts absolute number or percentage value(e.g., '1' or '10%')."
+  description = "The number of pods that can be created above the desired amount of daemonset pods during an update. If `max_surge` is set to null, the `max_surge` setting is ignored.. The variable accepts absolute number or percentage value(e.g., '1' or '10%')."
   default     = null
 }
 
 variable "priority_class_name" {
   type        = string
-  description = "The priority class name for the PriorityClasses assigned to the monitoring agent daemonset."
+  description = "The priority class name for the PriorityClasses assigned to the monitoring agent daemonset. If no value is passed, priority class is not used."
   default     = null
 }
 
 variable "priority_class_value" {
   type        = number
-  description = "The numerical priority assigned to PriorityClass, which determines the importance of monitoring agent daemonset pod within the cluster for both scheduling and eviction decisions."
-  default     = 10
   nullable    = false
+  description = "The numerical priority assigned to PriorityClass, which determines the importance of monitoring agent daemonset pod within the cluster for both scheduling and eviction decisions. The value only applies if a value was passed for `priority_class_name`"
+  default     = 10
 }
 
 ##############################################################################

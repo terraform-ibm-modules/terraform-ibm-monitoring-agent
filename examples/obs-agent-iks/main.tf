@@ -145,7 +145,7 @@ module "monitoring_agents" {
   is_vpc_cluster            = var.is_vpc_cluster
   access_key                = module.cloud_monitoring.access_key
   instance_region           = var.region
-  # priority_class_name       = "sysdig-daemonset-priority"
+  priority_class_name       = "sysdig-daemonset-priority"
   prometheus_config = {
     scrape_configs = [
       {
