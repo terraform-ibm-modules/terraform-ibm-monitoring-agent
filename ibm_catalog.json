@@ -270,8 +270,8 @@
               "value_constraints": [
                 {
                   "type": "regex",
-                  "description": "The value provided for 'max_surge' must be a positive integer (e.g., '1') or a percentage (e.g., '10%').",
-                  "value": "^\\d+%?$"
+                  "description": "The value provided for 'max_surge' must be a positive integer (e.g., '1') or a percentage (e.g., '10%'), or null.",
+                  "value": "^__NULL__$|^\\d+%?$"
                 }
               ]
             },

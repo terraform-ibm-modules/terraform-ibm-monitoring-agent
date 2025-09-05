@@ -259,12 +259,14 @@ variable "max_unavailable" {
 
 variable "max_surge" {
   type        = string
-  description = "The number of pods that can be created above the desired amount of daemonset pods during an update. The variable accepts absolute number or percentage value(e.g., '1' or '10%')."
-  default     = "1"
-  nullable    = false
+  description = "The number of pods that can be created above the desired amount of daemonset pods during an update. If `max_surge` is set to null, the `max_surge` setting is ignored.. The variable accepts absolute number or percentage value(e.g., '1' or '10%')."
+  default     = null
   validation {
-    condition     = can(regex("^\\d+%?$", var.max_surge))
-    error_message = "max_surge must be a positive integer (e.g., '1') or a percentage (e.g., '10%')."
+    condition = (
+      var.max_surge == null ||
+      can(regex("^\\d+%?$", var.max_surge))
+    )
+    error_message = "max_surge must be a positive integer (e.g., '1') or a percentage (e.g., '10%'), or null."
   }
 }
 

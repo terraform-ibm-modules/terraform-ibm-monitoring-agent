@@ -255,8 +255,7 @@ variable "max_unavailable" {
 variable "max_surge" {
   type        = string
   description = "The number of pods that can be created above the desired amount of daemonset pods during an update. If `max_surge` is set to null, the `max_surge` setting is ignored.. The variable accepts absolute number or percentage value(e.g., '1' or '10%')."
-  default     = "1"
-  nullable    = false
+  default     = null
 }
 
 variable "priority_class_name" {
