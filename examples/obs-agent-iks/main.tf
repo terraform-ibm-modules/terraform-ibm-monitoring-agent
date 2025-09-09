@@ -108,7 +108,7 @@ resource "time_sleep" "wait_operators" {
 
 module "cloud_monitoring" {
   source            = "terraform-ibm-modules/cloud-monitoring/ibm"
-  version           = "1.6.9"
+  version           = "1.7.0"
   instance_name     = "${var.prefix}-cloud-monitoring"
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
