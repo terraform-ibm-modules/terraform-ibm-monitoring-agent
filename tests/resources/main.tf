@@ -81,6 +81,10 @@ module "ocp_base" {
   vpc_subnets          = local.cluster_vpc_subnets
   worker_pools         = local.worker_pools
   access_tags          = []
+  timeouts {
+    delete = "2h"
+    create = "3h"
+  }
 }
 
 ##############################################################################
