@@ -471,6 +471,14 @@
               "key": "enable_universal_ebpf"
             },
             {
+              "key": "prefix",
+              "type": "string",
+              "default_value": "__NOT_SET__",
+              "description": "Prefix input which will be added in the front of the name of addon resources selected in this configuration",
+              "required": true,
+              "virtual": true
+            },
+            {
               "key": "secrets_manager_service_plan",
               "required": true,
               "virtual": true,
@@ -542,6 +550,11 @@
                   "reference_version": true
                 },
                 {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
                   "dependency_input": "enable_platform_metrics",
                   "version_input": "enable_platform_metrics",
                   "reference_version": true
@@ -567,6 +580,11 @@
                 {
                   "dependency_input": "region",
                   "version_input": "instance_region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
                   "reference_version": true
                 },
                 {
@@ -602,6 +620,11 @@
                 {
                   "version_input": "is_vpc_cluster",
                   "value": true
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
                 },
                 {
                   "dependency_input": "region",
