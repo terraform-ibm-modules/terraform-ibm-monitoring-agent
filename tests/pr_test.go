@@ -284,7 +284,7 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 
 	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
 		options.Prefix,
-		"deploy-arch-ibm-logs-agent",
+		"deploy-arch-ibm-monitoring-agent",
 		"fully-configurable",
 		map[string]interface{}{
 			"prefix":                       options.Prefix,
