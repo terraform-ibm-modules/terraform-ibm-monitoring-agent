@@ -125,7 +125,7 @@ variable "namespace" {
 }
 
 variable "tolerations" {
-  description = "List of tolerations to apply to the agent." # TODO: Add learn more doc and ensure use textbox in catalog json
+  description = "List of tolerations to apply to the agent. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#tolerations)."
   type = list(object({
     key               = optional(string)
     operator          = optional(string)
@@ -161,7 +161,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.89.3" # registryUrl: charts.sysdig.com
+  default  = "1.93.4" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -190,7 +190,7 @@ variable "agent_image_tag_digest" {
   description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.0.1@sha256:b1f5bf4677632c715e9a5cde9af8d36dd66f5e79c80aadfd4b74dc5cc310a570" # datasource: icr.io/ext/sysdig/agent-slim
+  default  = "14.2.1@sha256:f945768cbdd0672bb635de49622d24f7eba6b170214f9af8a9c3b0f02538548c" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
@@ -198,7 +198,7 @@ variable "kernel_module_image_tag_digest" {
   description = "The image tag or digest to use for the agent kernel module used by the initContainer. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`"
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.0.1@sha256:9b1e900e2cd47cabe31b36f6ed41705b33e849de0639b29b326fb73e67ed8b68" # datasource: icr.io/ext/sysdig/agent-kmodule
+  default  = "14.2.1@sha256:0233bd6d605e1cf6525501e90cb07305b22c0d652a8cb4d294ee080d3219b337" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable = false
 }
 
@@ -235,7 +235,7 @@ variable "agent_limits_memory" {
 
 variable "enable_universal_ebpf" {
   type        = bool
-  description = "Deploy monitoring agent with universal extended Berkeley Packet Filter (eBPF) enabled. It requires kernel version 5.8+. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#when-to-enable-enable_universal_ebpf)"
+  description = "Deploy monitoring agent with universal extended Berkeley Packet Filter (eBPF) enabled. It requires kernel version 5.8+. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#when-to-enable-enable_universal_ebpf)."
   default     = true
 }
 
@@ -243,6 +243,32 @@ variable "deployment_tag" {
   type        = string
   description = "Sets a global tag that will be included in the components. It represents the mechanism from where the components have been installed (terraform, local...)."
   default     = "terraform"
+}
+
+variable "max_unavailable" {
+  type        = string
+  description = "The maximum number of pods that can be unavailable during a DaemonSet rolling update. Accepts absolute number or percentage (e.g., '1' or '10%')."
+  default     = "1"
+  nullable    = false
+}
+
+variable "max_surge" {
+  type        = string
+  description = "The number of pods that can be created above the desired amount of daemonset pods during an update. If `max_surge` is set to null, the `max_surge` setting is ignored. The variable accepts absolute number or percentage value(e.g., '1' or '10%')."
+  default     = null
+}
+
+variable "priority_class_name" {
+  type        = string
+  description = "The priority class name for the PriorityClasses assigned to the monitoring agent daemonset. If no value is passed, priority class is not used."
+  default     = null
+}
+
+variable "priority_class_value" {
+  type        = number
+  nullable    = false
+  description = "The numerical priority assigned to PriorityClass, which determines the importance of monitoring agent daemonset pod within the cluster for both scheduling and eviction decisions. The value only applies if a value was passed for `priority_class_name`"
+  default     = 10
 }
 
 ##############################################################################
@@ -304,7 +330,7 @@ variable "cluster_shield_image_tag_digest" {
   description = "The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default = "1.13.0@sha256:0c8ee65a473e51b2a2c7bddf4e89008299cf203c50cd80fd97503cb121c1230a" # datasource: icr.io/ext/sysdig/cluster-shield
+  default = "1.15.0@sha256:a8a733fe8e06fcba0eaeff3d078db74e40197d6e03608efba3bbe3c11990bfe6" # datasource: icr.io/ext/sysdig/cluster-shield
 }
 
 variable "cluster_shield_image_repository" {

@@ -53,4 +53,8 @@ module "monitoring_agent" {
   cluster_shield_limits_cpu       = var.cluster_shield_limits_cpu
   cluster_shield_requests_memory  = var.cluster_shield_requests_memory
   cluster_shield_limits_memory    = var.cluster_shield_limits_memory
+  max_unavailable                 = var.max_unavailable
+  max_surge                       = var.max_surge
+  priority_class_name             = var.priority_class_name
+  priority_class_value            = var.priority_class_value
 }
