@@ -6,11 +6,11 @@ terraform {
     # Lock DA into an exact provider version - renovate automation will keep it updated
     ibm = {
       source  = "ibm-cloud/ibm"
-      version = "1.80.4"
+      version = "1.82.1"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.17.0"
+      version = "3.0.2"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"

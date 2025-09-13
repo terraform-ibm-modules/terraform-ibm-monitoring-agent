@@ -113,13 +113,13 @@ func TestFullyConfigurableSolution(t *testing.T) {
 			WaitJobCompleteMinutes: 60,
 			Region:                 region,
 		})
-
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 			{Name: "instance_region", Value: region, DataType: "string"},
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "access_key", Value: terraform.Output(t, existingTerraformOptions, "access_key"), DataType: "string", Secure: true},
+			{Name: "priority_class_name", Value: "sysdig-daemonset-priority", DataType: "string"},
 		}
 
 		err := options.RunSchematicTest()
@@ -240,7 +240,6 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
-
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
@@ -263,8 +262,10 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
-	options.TerraformVars = map[string]interface{}{
-		"datacenter": "syd01",
+	options.TerraformVars = map[string]any{
+		"resource_group": resourceGroup,
+		"datacenter":     "syd01",
+		"prefix":         options.Prefix,
 	}
 
 	output, err := options.RunTestConsistency()

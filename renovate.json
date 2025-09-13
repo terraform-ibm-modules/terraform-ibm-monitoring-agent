@@ -20,14 +20,5 @@
       "datasourceTemplate": "helm",
       "registryUrlTemplate": "https://charts.sysdig.com"
     }
-  ],
-  "packageRules": [
-    {
-      "description": "Bundle image + helm chart updates into the same PR",
-      "matchPackageNames": ["icr.io/ext/sysdig/agent", "sysdig-deploy"],
-      "groupName": "Charts and Images",
-      "commitMessageExtra": "to latest",
-      "group": true
-    }
   ]
 }
