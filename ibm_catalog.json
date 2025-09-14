@@ -527,6 +527,24 @@
               "description": "The pricing plan to use when provisioning a Secrets Manager instance for centrally managing ingress certificates for OpenShift cluster. Possible values: `standard`, `trial`. You can create only one Trial instance of Secrets Manager per account. Before you can create a new Trial instance, you must delete the existing Trial instance and its reclamation. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-create-instance&interface=ui#upgrade-instance-standard)."
             },
             {
+              "key": "allow_public_access_to_cluster",
+              "type": "boolean",
+              "default_value": true,
+              "description": "When set to `true`, public endpoint will be enabled for the cluster which will allow access to master node of the cluster from outside the VPC network.",
+              "required": true,
+              "virtual": true,
+              "options": [
+                {
+                  "displayname": "true",
+                  "value": "true"
+                },
+                {
+                  "displayname": "false",
+                  "value": "false"
+                }
+              ]
+            },
+            {
               "key": "enable_platform_metrics",
               "type": "boolean",
               "default_value": false,
@@ -659,6 +677,11 @@
                 {
                   "dependency_input": "region",
                   "version_input": "instance_region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "allow_public_access_to_cluster",
+                  "version_input": "allow_public_access_to_cluster",
                   "reference_version": true
                 },
                 {
