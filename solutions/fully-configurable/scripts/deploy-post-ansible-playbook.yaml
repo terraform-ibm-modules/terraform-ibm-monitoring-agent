@@ -8,7 +8,8 @@
         cluster_id: "{{ lookup('env', 'cluster_id') }}"
         access_key: "{{ lookup('env', 'access_key') }}"
         existing_access_key_secret_name: "{{ lookup('env', 'existing_access_key_secret_name') }}"
-        cluster_resource_group_id: "{{ lookup('env', 'cluster_resource_group_id') }}"
+        use_scc_wp_endpoint: "{{ lookup('env', 'use_scc_wp_endpoint') }}"
+        instance_region: "{{ lookup('env', 'instance_region') }}"
     - name: Creating script
       copy:
         dest: "script.sh"
@@ -20,6 +21,8 @@
           cluster_id="{{ cluster_id }}"
           access_key="{{ access_key }}"
           existing_access_key_secret_name="{{ existing_access_key_secret_name }}"
+          use_scc_wp_endpoint="{{ use_scc_wp_endpoint }}"
+          instance_region="{{ instance_region }}"
 
           attempts=1
           # Expects the environment variable $IBMCLOUD_API_KEY to be set
@@ -29,18 +32,27 @@
               sleep 5
           done
 
-          if [ -n "$access_key" ]; then
-            input=$(ibmcloud resource service-keys -o json | jq -r --arg access_key "$access_key" '.[] | select(.credentials."Sysdig Access Key" == $access_key).source_crn')
-            tmp="${input%%::}"
-            instance_id="${tmp##*:}"
+          if [[ -n "$access_key" && "$use_scc_wp_endpoint" = "true" ]]; then
+            input=$(ibmcloud resource service-keys -o json | jq -r --arg endpoint "$instance_region.security-compliance-secure.cloud.ibm.com" --arg access_key "$access_key" '.[] | select((.credentials."Sysdig Access Key" == $access_key) and (.credentials."Sysdig Collector Endpoint" | contains($endpoint))).source_crn')
+          elif [[ -n "$access_key" && "$use_scc_wp_endpoint" = "false" ]]; then
+            input=$(ibmcloud resource service-keys -o json | jq -r --arg endpoint "$instance_region.monitoring.cloud.ibm.com" --arg access_key "$access_key" '.[] | select((.credentials."Sysdig Access Key" == $access_key) and (.credentials."Sysdig Collector Endpoint" | contains($endpoint))).source_crn')
           elif [  -n "$existing_access_key_secret_name" ]; then
             input=$(ibmcloud resource service-key "$existing_access_key_secret_name" -o json | jq -r --arg name "$existing_access_key_secret_name" '.[] | select(.name == $name).source_crn')
-            tmp="${input%%::}"
-            instance_id="${tmp##*:}"
           fi
 
-          if [ -n "$instance_id" ]; then
+          if [ -n "$input" ]; then
+            tmp_instance="${input%%::}"
+            instance_id="${tmp_instance##*:}"
+            tmp_type="${input#*:*:*:*:}"
+            resource_type="${tmp_type%%:*}"
+          fi
+
+          if [[ -n "$instance_id" && "$resource_type" = "sysdig-monitor" ]]; then
           ibmcloud resource tag-attach --resource-id "$(ibmcloud resource service-instance "$cluster_id" --crn -q)" --tag-names "monitoring-instance:$instance_id,mwp-workspace:$workspace_id"
+          fi
+
+          if [[ -n "$instance_id" && "$resource_type" = "sysdig-secure" ]]; then
+          ibmcloud resource tag-attach --resource-id "$(ibmcloud resource service-instance "$cluster_id" --crn -q)" --tag-names "workload-protection-instance:$instance_id,mwp-workspace:$workspace_id"
           fi
 
     - name: Run the script
