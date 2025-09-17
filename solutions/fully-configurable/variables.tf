@@ -72,11 +72,13 @@ variable "existing_monitoring_crn" {
   default     = null
 
   validation {
-    condition = (
-      (var.existing_monitoring_crn != null && var.existing_monitoring_crn != "") ||
-      (var.existing_scc_wp_crn != null && var.existing_scc_wp_crn != "")
-    )
-    error_message = "Either 'existing_monitoring_crn' or 'existing_scc_wp_crn' must be provided and non-empty."
+    condition = anytrue([
+      var.access_key != null && var.access_key != "",
+      var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "",
+      var.existing_monitoring_crn != null && var.existing_monitoring_crn != "",
+      var.existing_scc_wp_crn != null && var.existing_scc_wp_crn != "",
+    ])
+    error_message = "At least one of access_key, existing_access_key_secret_name, existing_monitoring_crn, or existing_scc_wp_crn must be provided and not empty."
   }
 }
 
@@ -104,13 +106,6 @@ variable "access_key" {
   description = "Access key used by the agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. This value will be stored in a new secret on the cluster if passed. If you want to use this agent for only metrics or metrics with security and compliance, use a manager key scoped to the IBM Cloud Monitoring instance. If you only want to use the agent for security and compliance use a manager key scoped to the Security and Compliance Center Workload Protection instance."
   sensitive   = true
   default     = null
-  validation {
-    condition = (
-      (var.access_key != null && var.access_key != "") ||
-      (var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "")
-    )
-    error_message = "Either 'access_key' or 'existing_access_key_secret_name' must be provided and non-empty."
-  }
 }
 
 variable "existing_access_key_secret_name" {
