@@ -242,6 +242,14 @@
               "required": true
             },
             {
+              "key": "existing_monitoring_crn",
+              "required": true
+            },
+            {
+              "key": "existing_scc_wp_crn",
+              "required": true
+            },
+            {
               "key": "access_key",
               "required": true
             },
@@ -608,8 +616,8 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_output": "cloud_monitoring_access_key",
-                  "version_input": "access_key"
+                  "dependency_output": "cloud_monitoring_crn",
+                  "version_input": "existing_monitoring_crn"
                 }
               ]
             },
@@ -636,8 +644,8 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_output": "scc_workload_protection_access_key",
-                  "version_input": "access_key"
+                  "dependency_output": "scc_workload_protection_crn",
+                  "version_input": "existing_scc_wp_crn"
                 },
                 {
                   "dependency_input": "logs_routing_tenant_regions",

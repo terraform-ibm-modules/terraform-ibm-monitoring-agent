@@ -66,6 +66,26 @@ variable "wait_till_timeout" {
 # Common agent variables
 ##############################################################################
 
+variable "existing_monitoring_crn" {
+  type = string
+  description = "The CRN of the IBM Cloud Monitoring instance that you want to send metrics to. If you are only using the agent for security and compliance monitoring, provide `existing_scc_wp_crn`. If you are using this agent for both `monitoring` and `security and compliance` you can provide any one of `existing_monitoring_crn` or `existing_scc_wp_crn` provided both instances are connected."
+  default = null
+
+  validation {
+    condition = (
+      (var.existing_monitoring_crn != null && var.existing_monitoring_crn != "") ||
+      (var.existing_scc_wp_crn != null && var.existing_scc_wp_crn != "")
+    )
+    error_message = "Either 'existing_monitoring_crn' or 'existing_scc_wp_crn' must be provided and non-empty."
+  }
+}
+
+variable "existing_scc_wp_crn" {
+  type = string
+  description = "The CRN of the IBM Cloud SCC Workload Protection instance that you want to send security and compliance metrics to. If you are only using the agent for monitoring, provide `existing_monitoring_crn`. If you are using this agent for both `monitoring` and `security and compliance` you can provide any one of `existing_monitoring_crn` or `existing_scc_wp_crn` provided both instances are connected."
+  default = null
+}
+
 variable "instance_region" {
   type        = string
   description = "The region of the IBM Cloud Monitoring instance that you want to send metrics to. This is used to construct the ingestion and api endpoints. If you are only using the agent for security and compliance monitoring, set this to the region of your IBM Cloud Security and Compliance Center Workload Protection instance. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#key-considerations)."
