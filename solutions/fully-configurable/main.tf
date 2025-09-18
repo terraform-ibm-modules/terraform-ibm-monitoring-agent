@@ -13,24 +13,17 @@ locals {
   create_access_key = ((var.access_key != null && var.access_key != "") || (var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "")) ? 0 : 1
 }
 
-module "existing_monitoring_crn_parser" {
-  count   = var.existing_monitoring_crn != null ? 1 : 0
+module "instance_crn_parser" {
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
   version = "1.2.0"
-  crn     = var.existing_monitoring_crn
+  crn     = var.instance_crn
 }
 
-module "existing_scc_wp_crn_parser" {
-  count   = var.existing_scc_wp_crn != null ? 1 : 0
-  source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.2.0"
-  crn     = var.existing_scc_wp_crn
-}
 
 resource "ibm_resource_key" "key" {
   count                = local.create_access_key
   name                 = "key-${var.cluster_id}"
-  resource_instance_id = (var.existing_monitoring_crn != null && var.existing_monitoring_crn != "") ? module.existing_monitoring_crn_parser[0].service_instance : module.existing_scc_wp_crn_parser[0].service_instance
+  resource_instance_id = module.instance_crn_parser[0].service_instance
   role                 = "Manager"
 }
 
@@ -41,7 +34,7 @@ module "monitoring_agent" {
   cluster_config_endpoint_type    = var.cluster_config_endpoint_type
   wait_till                       = var.wait_till
   wait_till_timeout               = var.wait_till_timeout
-  instance_region                 = var.instance_region
+  instance_region                 = module.instance_crn_parser[0].region
   use_private_endpoint            = var.use_private_endpoint
   is_vpc_cluster                  = var.is_vpc_cluster
   name                            = var.name

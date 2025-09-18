@@ -66,32 +66,15 @@ variable "wait_till_timeout" {
 # Common agent variables
 ##############################################################################
 
-variable "existing_monitoring_crn" {
+variable "instance_crn" {
   type        = string
-  description = "The CRN of the IBM Cloud Monitoring instance that you want to send metrics to. If you are only using the agent for security and compliance monitoring, provide `existing_scc_wp_crn`. If you are using this agent for both `monitoring` and `security and compliance` you can provide any one of `existing_monitoring_crn` or `existing_scc_wp_crn` provided both instances are connected."
-  default     = null
+  description = "The CRN of the IBM Cloud Monitoring instance that you want to send metrics to. This is used to construct the ingestion and api endpoints. If you are only using the agent for security and compliance monitoring, set this to the crn of your IBM Cloud Security and Compliance Center Workload Protection instance. If you are using this agent for both `monitoring` and `security and compliance` you can provide CRN of any one of them provided they are connected. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#key-considerations)."
+  nullable    = false
 
   validation {
-    condition = anytrue([
-      var.access_key != null && var.access_key != "",
-      var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "",
-      var.existing_monitoring_crn != null && var.existing_monitoring_crn != "",
-      var.existing_scc_wp_crn != null && var.existing_scc_wp_crn != "",
-    ])
-    error_message = "At least one of access_key, existing_access_key_secret_name, existing_monitoring_crn, or existing_scc_wp_crn must be provided and not empty."
+    condition     = var.instance_crn != ""
+    error_message = "Instance CRN can not be empty."
   }
-}
-
-variable "existing_scc_wp_crn" {
-  type        = string
-  description = "The CRN of the IBM Cloud SCC Workload Protection instance that you want to send security and compliance metrics to. If you are only using the agent for monitoring, provide `existing_monitoring_crn`. If you are using this agent for both `monitoring` and `security and compliance` you can provide any one of `existing_monitoring_crn` or `existing_scc_wp_crn` provided both instances are connected."
-  default     = null
-}
-
-variable "instance_region" {
-  type        = string
-  description = "The region of the IBM Cloud Monitoring instance that you want to send metrics to. This is used to construct the ingestion and api endpoints. If you are only using the agent for security and compliance monitoring, set this to the region of your IBM Cloud Security and Compliance Center Workload Protection instance. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-docs.md#key-considerations)."
-  nullable    = false
 }
 
 variable "use_private_endpoint" {
@@ -103,14 +86,14 @@ variable "use_private_endpoint" {
 
 variable "access_key" {
   type        = string
-  description = "Access key used by the agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. This value will be stored in a new secret on the cluster if passed. If you want to use this agent for only metrics or metrics with security and compliance, use a manager key scoped to the IBM Cloud Monitoring instance. If you only want to use the agent for security and compliance use a manager key scoped to the Security and Compliance Center Workload Protection instance."
+  description = "Access key used by the agent to communicate with the instance. This value will be stored in a new secret on the cluster if passed. If you want to use this agent for only metrics or metrics with security and compliance, use a manager key scoped to the IBM Cloud Monitoring instance. If you only want to use the agent for security and compliance use a manager key scoped to the Security and Compliance Center Workload Protection instance. If neither `access_key` nor `existing_access_key_secret_name` is provided a new Manager Key will be created scoped to the instance provided in `instance_crn`."
   sensitive   = true
   default     = null
 }
 
 variable "existing_access_key_secret_name" {
   type        = string
-  description = "An alternative to using `access_key`. Specify the name of an existing Kubernetes secret containing the access key in the same namespace that is defined in the `namespace` input. Either `access_key` or `existing_access_key_secret_name` is required."
+  description = "An alternative to using `access_key`. Specify the name of an existing Kubernetes secret containing the access key in the same namespace that is defined in the `namespace` input. If neither `access_key` nor `existing_access_key_secret_name` is provided a new Manager Key will be created scoped to the instance provided in `instance_crn`."
   default     = null
 }
 

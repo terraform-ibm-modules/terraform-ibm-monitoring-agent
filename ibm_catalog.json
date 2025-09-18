@@ -242,11 +242,7 @@
               "required": true
             },
             {
-              "key": "existing_monitoring_crn",
-              "required": true
-            },
-            {
-              "key": "existing_scc_wp_crn",
+              "key": "instance_crn",
               "required": true
             },
             {
@@ -254,8 +250,11 @@
               "required": true
             },
             {
-              "key": "instance_region",
+              "key": "region",
               "required": true,
+              "virtual": true,
+              "default_value": "us-south",
+              "description": "Region in which all the resources will be deployed. [Learn More](https://terraform-ibm-modules.github.io/documentation/#/region).",
               "options": [
                 {
                   "displayname": "London (eu-gb)",
@@ -512,15 +511,267 @@
               "key": "prefix",
               "type": "string",
               "default_value": "__NOT_SET__",
-              "description": "Prefix input which will be added in the front of the name of addon resources selected in this configuration",
+              "description": "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To skip using a prefix, set this value to `null` or an empty string. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md).",
               "required": true,
               "virtual": true
             },
             {
-              "key": "secrets_manager_service_plan",
+              "key": "default_worker_pool_machine_type",
+              "required": true,
+              "virtual": true,
+              "default_value": "bx2.8x32",
+              "options": [
+                {
+                  "displayname": "bx2.16x64",
+                  "value": "bx2.16x64"
+                },
+                {
+                  "displayname": "bx2.32x128",
+                  "value": "bx2.32x128"
+                },
+                {
+                  "displayname": "bx2.48x192",
+                  "value": "bx2.48x192"
+                },
+                {
+                  "displayname": "bx2.8x32",
+                  "value": "bx2.8x32"
+                },
+                {
+                  "displayname": "bx3d.128x640",
+                  "value": "bx3d.128x640"
+                },
+                {
+                  "displayname": "bx3d.16x80",
+                  "value": "bx3d.16x80"
+                },
+                {
+                  "displayname": "bx3d.24x120",
+                  "value": "bx3d.24x120"
+                },
+                {
+                  "displayname": "bx3d.32x160",
+                  "value": "bx3d.32x160"
+                },
+                {
+                  "displayname": "bx3d.48x240",
+                  "value": "bx3d.48x240"
+                },
+                {
+                  "displayname": "bx3d.64x320",
+                  "value": "bx3d.64x320"
+                },
+                {
+                  "displayname": "bx3d.8x40",
+                  "value": "bx3d.8x40"
+                },
+                {
+                  "displayname": "bx3d.96x480",
+                  "value": "bx3d.96x480"
+                },
+                {
+                  "displayname": "cx2.16x32",
+                  "value": "cx2.16x32"
+                },
+                {
+                  "displayname": "cx2.32x64",
+                  "value": "cx2.32x64"
+                },
+                {
+                  "displayname": "cx2.48x96",
+                  "value": "cx2.48x96"
+                },
+                {
+                  "displayname": "cx3d.128x320",
+                  "value": "cx3d.128x320"
+                },
+                {
+                  "displayname": "cx3d.16x40",
+                  "value": "cx3d.16x40"
+                },
+                {
+                  "displayname": "cx3d.24x60",
+                  "value": "cx3d.24x60"
+                },
+                {
+                  "displayname": "cx3d.32x80",
+                  "value": "cx3d.32x80"
+                },
+                {
+                  "displayname": "cx3d.48x120",
+                  "value": "cx3d.48x120"
+                },
+                {
+                  "displayname": "cx3d.64x160",
+                  "value": "cx3d.64x160"
+                },
+                {
+                  "displayname": "cx3d.96x240",
+                  "value": "cx3d.96x240"
+                },
+                {
+                  "displayname": "mx2.128x1024",
+                  "value": "mx2.128x1024"
+                },
+                {
+                  "displayname": "mx2.16x128",
+                  "value": "mx2.16x128"
+                },
+                {
+                  "displayname": "mx2.32x256",
+                  "value": "mx2.32x256"
+                },
+                {
+                  "displayname": "mx2.48x384",
+                  "value": "mx2.48x384"
+                },
+                {
+                  "displayname": "mx2.64x512",
+                  "value": "mx2.64x512"
+                },
+                {
+                  "displayname": "mx2.8x64",
+                  "value": "mx2.8x64"
+                },
+                {
+                  "displayname": "mx3d.128x1280",
+                  "value": "mx3d.128x1280"
+                },
+                {
+                  "displayname": "mx3d.24x240",
+                  "value": "mx3d.24x240"
+                },
+                {
+                  "displayname": "mx3d.32x320",
+                  "value": "mx3d.32x320"
+                },
+                {
+                  "displayname": "mx3d.48x480",
+                  "value": "mx3d.48x480"
+                },
+                {
+                  "displayname": "mx3d.64x640",
+                  "value": "mx3d.64x640"
+                },
+                {
+                  "displayname": "mx3d.96x960",
+                  "value": "mx3d.96x960"
+                },
+                {
+                  "displayname": "bx2d.metal.96x384 (Only available in Toronto (ca-tor))",
+                  "value": "bx2d.metal.96x384"
+                },
+                {
+                  "displayname": "cx2d.metal.96x192 (Only available in Toronto (ca-tor)) ",
+                  "value": "cx2d.metal.96x192"
+                },
+                {
+                  "displayname": "mx2d.metal.96x768 (Only available in Toronto (ca-tor))) ",
+                  "value": "mx2d.metal.96x768"
+                },
+                {
+                  "displayname": "mx2.16x128.2000gb (Not available in Sao Paulo (br-sao), Montreal (ca-mon), Madrid (eu-es), Osaka (jp-osa))",
+                  "value": "mx2.16x128.2000gb"
+                },
+                {
+                  "displayname": "ox2.128x1024 (Not available in Sao Paulo (br-sao), Montreal (ca-mon))",
+                  "value": "ox2.128x1024"
+                },
+                {
+                  "displayname": "ox2.16x128 (Not available in Sao Paulo (br-sao), Montreal (ca-mon))",
+                  "value": "ox2.16x128"
+                },
+                {
+                  "displayname": "ox2.32x256 (Not available in Sao Paulo (br-sao), Montreal (ca-mon))",
+                  "value": "ox2.32x256"
+                },
+                {
+                  "displayname": "ox2.64x512 (Not available in Sao Paulo (br-sao), Montreal (ca-mon))",
+                  "value": "ox2.64x512"
+                },
+                {
+                  "displayname": "ox2.8x64 (Not available in Sao Paulo (br-sao), Montreal (ca-mon))",
+                  "value": "ox2.8x64"
+                },
+                {
+                  "displayname": "ox2.96x768 (Not available in Sao Paulo (br-sao), Montreal (ca-mon))",
+                  "value": "ox2.96x768"
+                }
+              ],
+              "description": "The machine type for worker nodes.[Learn more](https://cloud.ibm.com/docs/openshift?topic=openshift-vpc-flavors)."
+            },
+            {
+              "key": "default_worker_pool_workers_per_zone",
+              "required": true,
+              "virtual": true,
+              "type": "number",
+              "default_value": 2,
+              "description": "Number of worker nodes in each zone of the cluster."
+            },
+            {
+              "key": "default_worker_pool_operating_system",
               "required": true,
               "virtual": true,
               "type": "string",
+              "default_value": "RHCOS",
+              "options": [
+                {
+                  "displayname": "RHEL 9",
+                  "value": "RHEL_9_64"
+                },
+                {
+                  "displayname": "Red Hat CoreOS",
+                  "value": "RHCOS"
+                },
+                {
+                  "displayname": "RHEL 8",
+                  "value": "REDHAT_8_64"
+                }
+              ],
+              "description": "The operating system installed on the worker nodes. [Learn more](https://cloud.ibm.com/docs/openshift?topic=openshift-vpc-flavors)."
+            },
+            {
+              "key": "allow_public_access_to_cluster",
+              "type": "boolean",
+              "required": true,
+              "virtual": true,
+              "default_value": false,
+              "options": [
+                {
+                  "displayname": "true",
+                  "value": "true"
+                },
+                {
+                  "displayname": "false",
+                  "value": "false"
+                }
+              ],
+              "description": "When set to `true`, public endpoint will be enabled for the cluster which will allow access to master node of the cluster from outside the VPC network."
+            },
+            {
+              "key": "allow_outbound_traffic",
+              "type": "boolean",
+              "required": true,
+              "virtual": true,
+              "default_value": false,
+              "options": [
+                {
+                  "displayname": "true",
+                  "value": "true"
+                },
+                {
+                  "displayname": "false",
+                  "value": "false"
+                }
+              ],
+              "description": "Set to true to allow public outbound access from the cluster workers."
+            },
+            {
+              "key": "secrets_manager_service_plan",
+              "type": "string",
+              "required": true,
+              "virtual": true,
+              "default_value": "standard",
               "options": [
                 {
                   "displayname": "Standard",
@@ -531,26 +782,7 @@
                   "value": "trial"
                 }
               ],
-              "default_value": "__NOT_SET__",
               "description": "The pricing plan to use when provisioning a Secrets Manager instance for centrally managing ingress certificates for OpenShift cluster. Possible values: `standard`, `trial`. You can create only one Trial instance of Secrets Manager per account. Before you can create a new Trial instance, you must delete the existing Trial instance and its reclamation. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-create-instance&interface=ui#upgrade-instance-standard)."
-            },
-            {
-              "key": "allow_public_access_to_cluster",
-              "type": "boolean",
-              "default_value": true,
-              "description": "When set to `true`, public endpoint will be enabled for the cluster which will allow access to master node of the cluster from outside the VPC network.",
-              "required": true,
-              "virtual": true,
-              "options": [
-                {
-                  "displayname": "true",
-                  "value": "true"
-                },
-                {
-                  "displayname": "false",
-                  "value": "false"
-                }
-              ]
             },
             {
               "key": "enable_platform_metrics",
@@ -602,7 +834,7 @@
               "input_mapping": [
                 {
                   "dependency_input": "region",
-                  "version_input": "instance_region",
+                  "version_input": "region",
                   "reference_version": true
                 },
                 {
@@ -635,7 +867,7 @@
               "input_mapping": [
                 {
                   "dependency_input": "region",
-                  "version_input": "instance_region",
+                  "version_input": "region",
                   "reference_version": true
                 },
                 {
@@ -684,12 +916,32 @@
                 },
                 {
                   "dependency_input": "region",
-                  "version_input": "instance_region",
+                  "version_input": "region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "default_worker_pool_machine_type",
+                  "version_input": "default_worker_pool_machine_type",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "default_worker_pool_workers_per_zone",
+                  "version_input": "default_worker_pool_workers_per_zone",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "default_worker_pool_operating_system",
+                  "version_input": "default_worker_pool_operating_system",
                   "reference_version": true
                 },
                 {
                   "dependency_input": "allow_public_access_to_cluster",
                   "version_input": "allow_public_access_to_cluster",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "allow_outbound_traffic",
+                  "version_input": "allow_outbound_traffic",
                   "reference_version": true
                 },
                 {
