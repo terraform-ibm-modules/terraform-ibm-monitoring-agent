@@ -23,7 +23,7 @@ module "instance_crn_parser" {
 resource "ibm_resource_key" "key" {
   count                = local.create_access_key
   name                 = "key-${var.cluster_id}"
-  resource_instance_id = module.instance_crn_parser[0].service_instance
+  resource_instance_id = module.instance_crn_parser.service_instance
   role                 = "Manager"
 }
 
@@ -34,7 +34,7 @@ module "monitoring_agent" {
   cluster_config_endpoint_type    = var.cluster_config_endpoint_type
   wait_till                       = var.wait_till
   wait_till_timeout               = var.wait_till_timeout
-  instance_region                 = module.instance_crn_parser[0].region
+  instance_region                 = module.instance_crn_parser.region
   use_private_endpoint            = var.use_private_endpoint
   is_vpc_cluster                  = var.is_vpc_cluster
   name                            = var.name
