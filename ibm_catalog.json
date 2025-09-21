@@ -922,7 +922,7 @@
                 },
                 {
                   "dependency_output": "cloud_monitoring_crn",
-                  "version_input": "existing_monitoring_crn"
+                  "version_input": "instance_crn"
                 }
               ]
             },
@@ -955,7 +955,7 @@
                 },
                 {
                   "dependency_output": "scc_workload_protection_crn",
-                  "version_input": "existing_scc_wp_crn"
+                  "version_input": "instance_crn"
                 },
                 {
                   "dependency_input": "logs_routing_tenant_regions",
