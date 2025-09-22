@@ -27,3 +27,9 @@ output "access_key" {
   description = "The access key of the provisioned IBM Cloud Monitoring instance."
   sensitive   = true
 }
+
+output "instance_crn" {
+  value       = module.cloud_monitoring.crn
+  description = "The access key of the provisioned IBM Cloud Monitoring instance."
+  sensitive   = true
+}
