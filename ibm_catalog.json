@@ -12,7 +12,7 @@
         "logging",
         "logging_monitoring",
         "security",
-        "converged_infra"
+        "platform_engineering"
       ],
       "keywords": [
         "monitoring",
