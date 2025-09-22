@@ -512,7 +512,7 @@
               "type": "string",
               "required": true,
               "virtual": true,
-              "default_value": "resource",
+              "default_value": "test",
               "description": "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To skip using a prefix, set this value to `null` or an empty string. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md)."
             },
             {
