@@ -277,6 +277,13 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 }
 
 func TestAgentDefaultConfiguration(t *testing.T) {
+
+	/*
+		Skipping this test because auto-approve is not working as expected in projects
+		Config gets stuck in approved state and doesn't move to deployment
+		https://github.ibm.com/epx/projects/issues/4814
+	*/
+	t.Skip("Skipping because of projects issue")
 	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
