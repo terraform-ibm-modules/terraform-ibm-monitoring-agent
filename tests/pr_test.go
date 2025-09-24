@@ -292,6 +292,7 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 		map[string]interface{}{
 			"prefix":                       options.Prefix,
 			"secrets_manager_service_plan": "trial",
+			"region":                       "eu-de",
 		},
 	)
 
