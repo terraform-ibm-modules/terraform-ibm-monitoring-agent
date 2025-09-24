@@ -519,6 +519,24 @@
               "key": "enable_universal_ebpf"
             },
             {
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ],
+              "hidden": true
+            },
+            {
               "key": "cluster_name",
               "type": "string",
               "required": true,
