@@ -255,7 +255,7 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		Testing:       t,
 		TerraformDir:  terraformDirMonitoringAgentIKS,
 		Prefix:        "obs-agent-iks",
-		Region:        "au-syd",
+		Region:        validRegions[rand.IntN(len(validRegions))],
 		ResourceGroup: resourceGroup,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
