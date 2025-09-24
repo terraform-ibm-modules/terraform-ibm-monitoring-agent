@@ -96,7 +96,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 
 		options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 			Testing: t,
-			Prefix:  "monitoring-agent",
+			Prefix:  "mon-agent",
 			TarIncludePatterns: []string{
 				"*.tf",
 				"kubeconfig/*.*",
@@ -116,6 +116,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 		})
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+			{Name: "prefix", Value: options.Prefix, DataType: "string"},
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "instance_crn", Value: terraform.Output(t, existingTerraformOptions, "instance_crn"), DataType: "string", Secure: true},
@@ -180,7 +181,7 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 
 		options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 			Testing: t,
-			Prefix:  "monitoring-agent",
+			Prefix:  "mon-agent",
 			TarIncludePatterns: []string{
 				"*.tf",
 				"kubeconfig/*.*",
@@ -201,6 +202,7 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+			{Name: "prefix", Value: options.Prefix, DataType: "string"},
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "instance_crn", Value: terraform.Output(t, existingTerraformOptions, "instance_crn"), DataType: "string", Secure: true},

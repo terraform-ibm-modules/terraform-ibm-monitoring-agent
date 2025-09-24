@@ -10,6 +10,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 locals {
+  prefix            = var.prefix != null ? trimspace(var.prefix) != "" ? "${var.prefix}-" : "" : ""
   create_access_key = ((var.access_key != null && var.access_key != "") || (var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "")) ? 0 : 1
 }
 
@@ -22,7 +23,7 @@ module "instance_crn_parser" {
 
 resource "ibm_resource_key" "key" {
   count                = local.create_access_key
-  name                 = "key-${var.cluster_id}"
+  name                 = "${local.prefix}-key"
   resource_instance_id = module.instance_crn_parser.service_instance
   role                 = "Manager"
 }
