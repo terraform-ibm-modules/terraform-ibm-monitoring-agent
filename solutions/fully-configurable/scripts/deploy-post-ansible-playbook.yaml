@@ -1,0 +1,63 @@
+- name: post deploy playbook
+  hosts: localhost
+  tasks:
+    - name: get running ansible env variables
+      set_fact:
+        workspace_id: "{{ lookup('env', 'workspace_id') }}"
+        ibmcloud_api_key: "{{ lookup('env', 'ibmcloud_api_key')}}" # pragma: allowlist secret
+        cluster_id: "{{ lookup('env', 'cluster_id') }}"
+        access_key: "{{ lookup('env', 'access_key') }}"
+        existing_access_key_secret_name: "{{ lookup('env', 'existing_access_key_secret_name') }}"
+        use_scc_wp_endpoint: "{{ lookup('env', 'use_scc_wp_endpoint') }}"
+        instance_region: "{{ lookup('env', 'instance_region') }}"
+    - name: Creating script
+      copy:
+        dest: "script.sh"
+        content: |
+          #!/bin/bash
+
+          workspace_id="{{ workspace_id }}"
+          ibmcloud_api_key="{{ ibmcloud_api_key }}" # pragma: allowlist secret
+          cluster_id="{{ cluster_id }}"
+          access_key="{{ access_key }}"
+          existing_access_key_secret_name="{{ existing_access_key_secret_name }}"
+          use_scc_wp_endpoint="{{ use_scc_wp_endpoint }}"
+          instance_region="{{ instance_region }}"
+
+          attempts=1
+          # Expects the environment variable $IBMCLOUD_API_KEY to be set
+          until ibmcloud login --apikey "$ibmcloud_api_key" -q --no-region || [ $attempts -ge 3 ]; do
+              attempts=$((attempts+1))
+              echo "Error logging in to IBM Cloud CLI..." >&2
+              sleep 5
+          done
+
+          if [[ -n "$access_key" && "$use_scc_wp_endpoint" = "true" ]]; then
+            input=$(ibmcloud resource service-keys -o json | jq -r --arg endpoint "$instance_region.security-compliance-secure.cloud.ibm.com" --arg access_key "$access_key" '.[] | select((.credentials."Sysdig Access Key" == $access_key) and (.credentials."Sysdig Collector Endpoint" | contains($endpoint))).source_crn')
+          elif [[ -n "$access_key" && "$use_scc_wp_endpoint" = "false" ]]; then
+            input=$(ibmcloud resource service-keys -o json | jq -r --arg endpoint "$instance_region.monitoring.cloud.ibm.com" --arg access_key "$access_key" '.[] | select((.credentials."Sysdig Access Key" == $access_key) and (.credentials."Sysdig Collector Endpoint" | contains($endpoint))).source_crn')
+          elif [  -n "$existing_access_key_secret_name" ]; then
+            input=$(ibmcloud resource service-key "$existing_access_key_secret_name" -o json | jq -r --arg name "$existing_access_key_secret_name" '.[] | select(.name == $name).source_crn')
+          fi
+
+          if [ -n "$input" ]; then
+            tmp_instance="${input%%::}"
+            instance_id="${tmp_instance##*:}"
+            tmp_type="${input#*:*:*:*:}"
+            resource_type="${tmp_type%%:*}"
+          fi
+
+          if [[ -n "$instance_id" && "$resource_type" = "sysdig-monitor" ]]; then
+          ibmcloud resource tag-attach --resource-id "$(ibmcloud resource service-instance "$cluster_id" --crn -q)" --tag-names "monitoring-instance:$instance_id,mwp-workspace:$workspace_id"
+          fi
+
+          if [[ -n "$instance_id" && "$resource_type" = "sysdig-secure" ]]; then
+          ibmcloud resource tag-attach --resource-id "$(ibmcloud resource service-instance "$cluster_id" --crn -q)" --tag-names "workload-protection-instance:$instance_id,mwp-workspace:$workspace_id"
+          fi
+
+    - name: Run the script
+      ansible.builtin.script:
+        cmd: ./script.sh
+      register: move_list
+      changed_when: false
+      ignore_errors: yes
