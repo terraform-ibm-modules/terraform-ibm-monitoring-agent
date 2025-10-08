@@ -162,7 +162,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.95.2" # registryUrl: charts.sysdig.com
+  default  = "1.95.3" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -191,7 +191,7 @@ variable "agent_image_tag_digest" {
   description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.2.1@sha256:f945768cbdd0672bb635de49622d24f7eba6b170214f9af8a9c3b0f02538548c" # datasource: icr.io/ext/sysdig/agent-slim
+  default  = "14.2.2@sha256:8b9768427392315619c9f14a365e7461bb06c0b8b606a9dfee2e87dd32380c4b" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
@@ -199,7 +199,7 @@ variable "kernel_module_image_tag_digest" {
   description = "The image tag or digest to use for the agent kernel module used by the initContainer. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`"
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.2.1@sha256:0233bd6d605e1cf6525501e90cb07305b22c0d652a8cb4d294ee080d3219b337" # datasource: icr.io/ext/sysdig/agent-kmodule
+  default  = "14.2.2@sha256:934c151ccc3bb12e2d5764ea2211afd052717a70628e7f4ca164ea553e38b373" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable = false
 }
 
