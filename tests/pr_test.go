@@ -3,12 +3,12 @@ package test
 
 import (
 	"fmt"
+	"log"
 	"math/rand/v2"
 	"os"
 	"strings"
 	"testing"
 
-	"github.com/IBM/go-sdk-core/core"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -16,6 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testaddons"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
@@ -26,8 +27,12 @@ const fullyConfigurableSolutionDir = "solutions/fully-configurable"
 const fullyConfigurableSolutionKubeconfigDir = "solutions/fully-configurable/kubeconfig"
 const terraformDirMonitoringAgentIKS = "examples/obs-agent-iks"
 const terraformDirMonitoringAgentROKS = "examples/obs-agent-ocp"
+const terraformVersion = "terraform_v1.10" // This should match the version in the ibm_catalog.json
+// Define a struct with fields that match the structure of the YAML data
+const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
+var permanentResources map[string]interface{}
 
 var validRegions = []string{
 	"au-syd",
@@ -53,6 +58,12 @@ var IgnoreAdds = []string{"module.scc_wp.restapi_object.cspm"}
 // for multiple tests
 func TestMain(m *testing.M) {
 	sharedInfoSvc, _ = cloudinfo.NewCloudInfoServiceFromEnv("TF_VAR_ibmcloud_api_key", cloudinfo.CloudInfoServiceOptions{})
+
+	var err error
+	permanentResources, err = common.LoadMapFromYaml(yamlLocation)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	os.Exit(m.Run())
 }
@@ -113,6 +124,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 			DeleteWorkspaceOnFail:  false,
 			WaitJobCompleteMinutes: 60,
 			Region:                 region,
+			TerraformVersion:       terraformVersion,
 		})
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 			{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
@@ -198,6 +210,8 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 				List: IgnoreUpdates,
 			},
+			TerraformVersion:           terraformVersion,
+			CheckApplyResultForUpgrade: true,
 		})
 
 		options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -278,12 +292,6 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 
 func TestAgentDefaultConfiguration(t *testing.T) {
 
-	/*
-		Skipping this test because auto-approve is not working as expected in projects
-		Config gets stuck in approved state and doesn't move to deployment
-		https://github.ibm.com/epx/projects/issues/4814
-	*/
-	t.Skip("Skipping because of projects issue")
 	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
@@ -297,26 +305,37 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-monitoring-agent",
 		"fully-configurable",
 		map[string]interface{}{
-			"prefix":                       options.Prefix,
-			"secrets_manager_service_plan": "trial",
-			"region":                       "eu-de",
+			"prefix": options.Prefix,
+			"region": "eu-de",
 		},
 	)
 
-	/*
-		Event notifications is manually disabled in this test because event notifications DA creates kms keys and during undeploy the order of key protect and event notifications
-		is not considered by projects as EN is not a direct dependency of VSI DA. So undeploy fails, because
-		key protect instance can't be deleted because of active keys created by EN. Hence for now, we don't want to deploy
-		EN.
-
-		Issue has been created for projects team. https://github.ibm.com/epx/projects/issues/4750
-		Once that is fixed, we can remove the logic to disable EN
-	*/
 	options.AddonConfig.Dependencies = []cloudinfo.AddonConfig{
+		//	use existing secrets manager instance to help prevent hitting trial instance limit in account
 		{
-			OfferingName:   "deploy-arch-ibm-event-notifications",
+			OfferingName:   "deploy-arch-ibm-secrets-manager",
 			OfferingFlavor: "fully-configurable",
-			Enabled:        core.BoolPtr(false), // explicitly disabled
+			Inputs: map[string]interface{}{
+				"existing_secrets_manager_crn":         permanentResources["privateOnlySecMgrCRN"],
+				"service_plan":                         "__NULL__", // no plan value needed when using existing SM
+				"skip_secrets_manager_iam_auth_policy": true,       // since using an existing Secrets Manager instance, attempting to re-create auth policy can cause conflicts if the policy already exists
+				"secret_groups":                        []string{}, // passing empty array for secret groups as default value is creating general group and it will cause conflicts as we are using an existing SM
+			},
+		},
+		// // Disable target / route creation to help prevent hitting quota in account
+		{
+			OfferingName:   "deploy-arch-ibm-cloud-monitoring",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"enable_metrics_routing_to_cloud_monitoring": false,
+			},
+		},
+		{
+			OfferingName:   "deploy-arch-ibm-activity-tracker",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"enable_activity_tracker_event_routing_to_cloud_logs": false,
+			},
 		},
 	}
 
