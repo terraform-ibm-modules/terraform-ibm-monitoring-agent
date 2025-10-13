@@ -408,6 +408,14 @@
               "key": "agent_limits_memory"
             },
             {
+              "key": "prometheus_config",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
+            },
+            {
               "key": "max_surge",
               "value_constraints": [
                 {
