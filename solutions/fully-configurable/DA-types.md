@@ -50,7 +50,7 @@ Use `metrics_filter` to optimize your monitoring setup by collecting only the me
 
 ## `prometheus_config`
 
-The `prometheus_config` variable allows you to enable sysdig agent to scrape metrics from processes that expose Prometheus metric endpoints on its own host and send findings to the Sysdig collector for storing and further processing.
+The `prometheus_config` variable allows you to enable monitoring agent to scrape metrics from processes that expose Prometheus metric endpoints on its own host and send findings to the Sysdig collector for storing and further processing.
 
 ### Type
 
