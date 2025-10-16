@@ -175,6 +175,8 @@ resource "helm_release" "cloud_monitoring_agent" {
   # https://github.com/hashicorp/terraform-provider-helm/issues/1677
   values = [<<EOT
 "agent":
+  "kmodule":
+    "env": ${var.kmodule_env}
   "collectorSettings":
     "collectorHost": ${local.ingestion_endpoint}
   "slim":
