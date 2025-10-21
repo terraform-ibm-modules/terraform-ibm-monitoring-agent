@@ -305,7 +305,6 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-monitoring-agent",
 		"fully-configurable",
 		map[string]interface{}{
-			"prefix": options.Prefix,
 			"region": "eu-de",
 		},
 	)
