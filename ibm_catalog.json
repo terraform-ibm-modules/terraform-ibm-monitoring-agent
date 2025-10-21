@@ -799,7 +799,7 @@
               "type": "boolean",
               "required": true,
               "virtual": true,
-              "default_value": false,
+              "default_value": true,
               "description": "Set to true to access the cluster through a public cloud service endpoint. [Learn More](https://cloud.ibm.com/docs/openshift?topic=openshift-access_cluster)."
             },
             {
@@ -807,7 +807,7 @@
               "type": "boolean",
               "required": true,
               "virtual": true,
-              "default_value": false,
+              "default_value": true,
               "description": "Set to true to allow public outbound access from the cluster workers."
             },
             {
