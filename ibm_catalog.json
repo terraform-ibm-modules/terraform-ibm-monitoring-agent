@@ -237,6 +237,21 @@
               "required": true
             },
             {
+              "key": "existing_resource_group_name",
+              "display_name": "resource_group",
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              },
+              "default_value": "Default",
+              "description": "The name of an existing resource group to provision the resources. [Learn more](https://cloud.ibm.com/docs/account?topic=account-rgs&interface=ui#create_rgs) about how to create a resource group.",
+              "virtual": true
+            },
+            {
               "display_name": "cluster_resource_group",
               "key": "cluster_resource_group_id",
               "custom_config": {
