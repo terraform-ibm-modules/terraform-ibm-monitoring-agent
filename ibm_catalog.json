@@ -1095,7 +1095,7 @@
             }
           ],
           "dependency_version_2": true,
-          "terraform_version": "1.10.5"
+          "terraform_version": "1.12.2"
         }
       ]
     }
