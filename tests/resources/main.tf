@@ -71,7 +71,7 @@ locals {
 
 module "ocp_base" {
   source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version              = "3.69.1"
+  version              = "3.70.0"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   tags                 = var.resource_tags
@@ -90,7 +90,7 @@ module "ocp_base" {
 
 module "cloud_monitoring" {
   source            = "terraform-ibm-modules/cloud-monitoring/ibm"
-  version           = "1.10.5"
+  version           = "1.10.6"
   instance_name     = "${var.prefix}-cloud-monitoring"
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
