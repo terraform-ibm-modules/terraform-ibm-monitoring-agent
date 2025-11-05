@@ -259,7 +259,8 @@ resource "helm_release" "cloud_monitoring_agent" {
 %{endif}
   "daemonset":
     "kmodule":
-      "env": ${var.kmodule_env}
+      "env":
+        "SYSDIG_PROBE_URL": "downloads.security-compliance-secure.cloud.ibm.com"
     "updateStrategy":
       "type": "RollingUpdate"
       "rollingUpdate":

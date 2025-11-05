@@ -240,11 +240,6 @@ variable "enable_universal_ebpf" {
   default     = true
 }
 
-variable "kmodule_env" {
-  type    = string
-  default = "downloads.security-compliance-secure.cloud.ibm.com"
-}
-
 variable "deployment_tag" {
   type        = string
   description = "Sets a global tag that will be included in the components. It represents the mechanism from where the components have been installed (terraform, local...)."
