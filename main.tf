@@ -260,7 +260,7 @@ resource "helm_release" "cloud_monitoring_agent" {
   "daemonset":
     "kmodule":
       "env":
-        "SYSDIG_PROBE_URL": "downloads.security-compliance-secure.cloud.ibm.com"
+        "SYSDIG_PROBE_URL": "https://s3.direct.us-south.cloud-object-storage.appdomain.cloud/agent-asset-prod-us-south/stable"
     "updateStrategy":
       "type": "RollingUpdate"
       "rollingUpdate":
