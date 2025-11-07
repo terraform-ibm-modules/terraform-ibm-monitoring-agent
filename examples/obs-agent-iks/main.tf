@@ -108,7 +108,7 @@ resource "time_sleep" "wait_operators" {
 
 module "cloud_monitoring" {
   source            = "terraform-ibm-modules/cloud-monitoring/ibm"
-  version           = "1.10.6"
+  version           = "1.10.7"
   instance_name     = "${var.prefix}-cloud-monitoring"
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
@@ -122,7 +122,7 @@ module "cloud_monitoring" {
 
 module "scc_wp" {
   source                        = "terraform-ibm-modules/scc-workload-protection/ibm"
-  version                       = "1.15.2"
+  version                       = "1.15.3"
   name                          = "${var.prefix}-scc-wp"
   resource_group_id             = module.resource_group.resource_group_id
   region                        = var.region
