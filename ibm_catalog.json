@@ -606,7 +606,15 @@
               "custom_config": {
                 "type": "worker_node_flavors",
                 "grouping": "deployment",
-                "original_grouping": "deployment"
+                "original_grouping": "deployment",
+                "associations": {
+                  "parameters": [
+                    {
+                      "name": "region",
+                      "optionsRefresh": true
+                    }
+                  ]
+                }
               },
               "virtual": true
             },
