@@ -90,7 +90,7 @@ module "ocp_base" {
 
 module "cloud_monitoring" {
   source            = "terraform-ibm-modules/cloud-monitoring/ibm"
-  version           = "1.10.7"
+  version           = "1.10.8"
   instance_name     = "${var.prefix}-cloud-monitoring"
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
