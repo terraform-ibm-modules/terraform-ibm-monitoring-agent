@@ -23,8 +23,8 @@ This module supports the provisioning of an agent to an IBM Cloud Red Hat OpenSh
 ## Overview
 * [terraform-ibm-monitoring-agent](#terraform-ibm-monitoring-agent)
 * [Examples](./examples)
-    * [Deploy agent in IKS cluster](./examples/obs-agent-iks)
-    * [Deploy agent in OpenShift cluster](./examples/obs-agent-ocp)
+    * <div style="display: inline-block;"><a href="./examples/obs-agent-iks">Deploy agent in IKS cluster</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=ma-obs-agent-iks-example&repository=github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/examples/obs-agent-iks" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
+    * <div style="display: inline-block;"><a href="./examples/obs-agent-ocp">Deploy agent in OpenShift cluster</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=ma-obs-agent-ocp-example&repository=github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/examples/obs-agent-ocp" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
