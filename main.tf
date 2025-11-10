@@ -29,7 +29,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 locals {
   cluster_name         = var.is_vpc_cluster ? data.ibm_container_vpc_cluster.cluster[0].resource_name : data.ibm_container_cluster.cluster[0].resource_name # Not publicly documented in provider. See https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4485
-  use_container_filter = length(var.container_filter) < 0 || var.container_filter == null ? false : true
+  use_container_filter = var.container_filter != null && length(var.container_filter) > 0 ? true : false
   # construct ingestion and api endpoints based on inputs
   monitoring_api_endpoint = "${var.instance_region}.monitoring.cloud.ibm.com"
   scc_wp_api_endpoint     = "${var.instance_region}.security-compliance-secure.cloud.ibm.com"
@@ -265,6 +265,9 @@ resource "helm_release" "cloud_monitoring_agent" {
 %{if var.max_surge != null}
         "maxSurge": ${var.max_surge}
 %{endif}
+%{~if length(var.node_selector) > 0}
+    "nodeSelector": ${jsonencode(var.node_selector)}
+%{~endif}
 EOT
   ]
 
