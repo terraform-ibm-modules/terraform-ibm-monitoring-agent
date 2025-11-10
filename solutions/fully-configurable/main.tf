@@ -77,4 +77,5 @@ module "monitoring_agent" {
   max_surge                       = var.max_surge
   priority_class_name             = var.priority_class_name
   priority_class_value            = var.priority_class_value
+  node_selector                   = var.node_selector
 }

@@ -461,6 +461,11 @@
               "key": "priority_class_value"
             },
             {
+              "key": "node_selector",
+              "type": "object",
+              "default_value": {}
+            },
+            {
               "key": "tolerations",
               "type": "array",
               "custom_config": {
