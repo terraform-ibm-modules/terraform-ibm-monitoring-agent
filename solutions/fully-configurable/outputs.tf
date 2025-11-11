@@ -26,7 +26,7 @@ output "next_step_secondary_label" {
 }
 
 output "next_step_secondary_url" {
-  value       = "https://cloud.ibm.com/docs/monitoring?topic=monitoring-getting-started"
+  value       = "https://cloud.ibm.com/docs/monitoring?topic=monitoring-mng_metrics"
   description = "Secondary URL"
 }
 
