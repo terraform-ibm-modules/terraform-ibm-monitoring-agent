@@ -283,6 +283,13 @@ variable "priority_class_value" {
   default     = 10
 }
 
+variable "node_selector" {
+  type        = map(string)
+  nullable    = false
+  description = "Map of node selector labels for the DaemonSet pods. Defaults to empty map."
+  default     = {}
+}
+
 ##############################################################################
 # Metrics related variables
 ##############################################################################

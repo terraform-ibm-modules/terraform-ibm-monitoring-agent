@@ -16,7 +16,7 @@ locals {
 
 module "instance_crn_parser" {
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.2.0"
+  version = "1.3.0"
   crn     = var.instance_crn
 }
 
@@ -77,4 +77,5 @@ module "monitoring_agent" {
   max_surge                       = var.max_surge
   priority_class_name             = var.priority_class_name
   priority_class_value            = var.priority_class_value
+  node_selector                   = var.node_selector
 }
