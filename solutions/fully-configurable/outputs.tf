@@ -6,12 +6,12 @@
 ##############################################################################
 
 output "next_steps_text" {
-  value       = "Your Monitoring Instance Environment is ready."
+  value       = "Your Monitoring agent is ready to send metrics to the instance."
   description = "Next steps text"
 }
 
 output "next_step_primary_label" {
-  value       = "Go to Monitoring Instance Dashboard"
+  value       = "Go to Cloud Monitoring dashboard"
   description = "Primary label"
 }
 
