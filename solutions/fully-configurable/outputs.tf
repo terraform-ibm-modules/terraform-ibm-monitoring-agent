@@ -21,7 +21,7 @@ output "next_step_primary_url" {
 }
 
 output "next_step_secondary_label" {
-  value       = "Learn more about IBM Cloud Monitoring"
+  value       = "Learn more about working with metrics"
   description = "Secondary label"
 }
 
