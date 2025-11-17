@@ -399,3 +399,17 @@ variable "cluster_shield_limits_memory" {
   description = "Specify memory resource limits for the cluster shield pods."
   default     = "1536Mi"
 }
+
+variable "cluster_shield_excluded_namespaces" {
+  type        = list(string)
+  description = "List of namespaces to exclude from Cluster Shield admission control and audit webhooks. It is recommended to exclude critical system namespaces to prevent interference with cluster operations. For more information, see https://cloud.ibm.com/docs/openshift?topic=openshift-access_webhooks#webhook-best-practice"
+  default = [
+    "kube-system",
+    "calico-system",
+    "openshift-kube-apiserver",
+    "openshift-kube-controller-manager",
+    "openshift-kube-scheduler",
+    "openshift-etcd",
+    "openshift-network-operator"
+  ]
+}
