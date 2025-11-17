@@ -395,6 +395,20 @@ variable "cluster_shield_limits_memory" {
   default     = "1536Mi"
 }
 
+variable "cluster_shield_excluded_namespaces" {
+  type        = list(string)
+  description = "List of namespaces to exclude from Cluster Shield admission control and audit webhooks. Corresponds to cluster_shield.features.admission_control.excluded_namespaces and cluster_shield.features.audit.excluded_namespaces in the cluster-shield Helm chart. It is recommended to exclude critical system namespaces to prevent interference with cluster operations. For more information, see https://cloud.ibm.com/docs/openshift?topic=openshift-access_webhooks#webhook-best-practice"
+  default = [
+    "kube-system",
+    "ibm-system",
+    "ibm-operators",
+    "calico-apiserver",
+    "calico-system",
+    "tigera-operator",
+    "openshift-*"
+  ]
+}
+
 variable "prometheus_config" {
   description = "Prometheus configuration for the agent. If you want to enable Prometheus configuration provide the prometheus.yaml file content in `hcl` format. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#prometheus_config)."
   type        = map(any)

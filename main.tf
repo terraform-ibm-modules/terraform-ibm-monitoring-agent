@@ -153,6 +153,14 @@ resource "helm_release" "cloud_monitoring_agent" {
       name  = "clusterShield.cluster_shield.features.posture.enabled"
       value = var.cluster_shield_deploy
     },
+    {
+      name  = "clusterShield.cluster_shield.features.admission_control.excluded_namespaces"
+      value = "{${join(",", var.cluster_shield_excluded_namespaces)}}"
+    },
+    {
+      name  = "clusterShield.cluster_shield.features.audit.excluded_namespaces"
+      value = "{${join(",", var.cluster_shield_excluded_namespaces)}}"
+    },
     # nodeAnalyzer has been replaced by the host_scanner and kspm_analyzer functionality of main agent daemonset
     {
       name  = "nodeAnalyzer.enabled"

@@ -397,6 +397,9 @@
               "key": "cluster_shield_requests_memory"
             },
             {
+              "key": "cluster_shield_excluded_namespaces"
+            },
+            {
               "key": "kernal_module_image_repository"
             },
             {
