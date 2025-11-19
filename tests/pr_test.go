@@ -29,17 +29,6 @@ const fullyConfigurableSolutionKubeconfigDir = "solutions/fully-configurable/kub
 const terraformDirMonitoringAgentIKS = "examples/obs-agent-iks"
 const terraformDirMonitoringAgentROKS = "examples/obs-agent-ocp"
 
-// verifyPodRollout validates that pods have rolled out successfully and are running with expected image digests.
-// This would catch issues like the kmodule image digest mismatch where pods fail to start due to incorrect images.
-// Example implementation would:
-//  1. Wait for daemonset to have desired number of pods ready: kubectl rollout status daemonset/<name> -n <namespace> --timeout=5m
-//  2. Get pod details and validate:
-//     - Pod phase is "Running" and containers are "Ready"
-//     - Actual container image digests match expected values
-//     - Check init container (kmodule) has different digest than main agent container
-//  3. Use kubectl get pods -o jsonpath to extract and compare image digest fields
-//
-// This would have caught the bug where both kmodule and agent received same image digest instead of separate ones.
 const terraformVersion = "terraform_v1.12.2" // This should match the version in the ibm_catalog.json
 // Define a struct with fields that match the structure of the YAML data
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
