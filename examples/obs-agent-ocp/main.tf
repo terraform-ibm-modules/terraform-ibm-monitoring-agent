@@ -132,7 +132,6 @@ module "monitoring_agents" {
   is_vpc_cluster            = true
   access_key                = module.cloud_monitoring.access_key
   instance_region           = var.region
-  enable_universal_ebpf     = var.enable_universal_ebpf
   # example of how to include / exclude metrics - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_log_metrics
   metrics_filter = [{ exclude = "metricA.*" }, { include = "metricB.*" }]
   # example of how to include / exclude container filter - more info https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_filter_data
