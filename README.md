@@ -23,8 +23,8 @@ This module supports the provisioning of an agent to an IBM Cloud Red Hat OpenSh
 ## Overview
 * [terraform-ibm-monitoring-agent](#terraform-ibm-monitoring-agent)
 * [Examples](./examples)
-    * [Deploy agent in IKS cluster](./examples/obs-agent-iks)
-    * [Deploy agent in OpenShift cluster](./examples/obs-agent-ocp)
+    * <div style="display: inline-block;"><a href="./examples/obs-agent-iks">Deploy agent in IKS cluster</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=ma-obs-agent-iks-example&repository=github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/examples/obs-agent-iks" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
+    * <div style="display: inline-block;"><a href="./examples/obs-agent-ocp">Deploy agent in OpenShift cluster</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=ma-obs-agent-ocp-example&repository=github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/examples/obs-agent-ocp" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
@@ -148,6 +148,7 @@ No modules.
 | <a name="input_metrics_filter"></a> [metrics\_filter](#input\_metrics\_filter) | To filter custom metrics you can specify which metrics to include and exclude. For more info, see https://cloud.ibm.com/docs/monitoring?topic=monitoring-change_kube_agent#change_kube_agent_inc_exc_metrics | <pre>list(object({<br/>    include = optional(string)<br/>    exclude = optional(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name to give the agent helm release. | `string` | `"sysdig-agent"` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace to deploy the agent to. | `string` | `"ibm-observe"` | no |
+| <a name="input_node_selector"></a> [node\_selector](#input\_node\_selector) | Map of node selector labels for the DaemonSet pods. Defaults to empty map. | `map(string)` | `{}` | no |
 | <a name="input_priority_class_name"></a> [priority\_class\_name](#input\_priority\_class\_name) | The priority class name for the PriorityClasses assigned to the monitoring agent daemonset. If no value is passed, priority class is not used. | `string` | `null` | no |
 | <a name="input_priority_class_value"></a> [priority\_class\_value](#input\_priority\_class\_value) | The numerical priority assigned to PriorityClass, which determines the importance of monitoring agent daemonset pod within the cluster for both scheduling and eviction decisions. The value only applies if a value was passed for `priority_class_name` | `number` | `10` | no |
 | <a name="input_prometheus_config"></a> [prometheus\_config](#input\_prometheus\_config) | Prometheus configuration for the agent. If you want to enable Prometheus configuration provide the prometheus.yaml file content in `hcl` format. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#prometheus_config). | `map(any)` | `{}` | no |
