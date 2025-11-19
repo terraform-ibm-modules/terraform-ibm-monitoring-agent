@@ -64,5 +64,5 @@ if [ -n "$init_container_failures" ]; then
   exit 1
 fi
 
-echo "✓ All pods are healthy and running"
-echo "✓ All init containers completed successfully"
+echo "All pods are healthy and running"
+echo "All init containers completed successfully"

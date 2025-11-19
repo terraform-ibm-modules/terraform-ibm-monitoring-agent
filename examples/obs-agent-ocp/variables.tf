@@ -39,3 +39,9 @@ variable "ocp_entitlement" {
   description = "Value that is applied to the entitlements for OCP cluster provisioning"
   default     = null
 }
+
+variable "enable_universal_ebpf" {
+  type        = bool
+  description = "Enable universal eBPF for kernel monitoring instead of kmodule"
+  default     = true
+}
