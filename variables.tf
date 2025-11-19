@@ -203,8 +203,8 @@ variable "kernel_module_image_tag_digest" {
   nullable = false
 }
 
-variable "kernal_module_image_repository" {
-  description = "The image repository to pull the agent kernal module initContainer image from."
+variable "kernel_module_image_repository" {
+  description = "The image repository to pull the agent kernel module initContainer image from."
   type        = string
   default     = "agent-kmodule"
   nullable    = false
