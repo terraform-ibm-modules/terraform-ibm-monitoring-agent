@@ -196,7 +196,7 @@ variable "agent_image_tag_digest" {
 }
 
 variable "kernel_module_image_tag_digest" {
-  description = "The image tag or digest to use for the agent kernel module used by the initContainer. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`"
+  description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`"
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
   default  = "14.2.3@sha256:78c87643d1336efa62f4af8af80290f76097fde51c8d8204a5eb38d73363489d" # datasource: icr.io/ext/sysdig/agent-kmodule
