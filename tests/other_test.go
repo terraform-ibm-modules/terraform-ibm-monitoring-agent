@@ -2,7 +2,6 @@
 package test
 
 import (
-	"math/rand/v2"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -18,7 +17,7 @@ func TestRunAgentVpcOcp(t *testing.T) {
 		TerraformDir:  terraformDirMonitoringAgentROKS,
 		Prefix:        "obs-agent-ocp",
 		ResourceGroup: resourceGroup,
-		Region:        validRegions[rand.IntN(len(validRegions))],
+		Region:        validRegions[randInt(len(validRegions))],
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
 		},

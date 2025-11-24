@@ -2,9 +2,10 @@
 package test
 
 import (
+	"crypto/rand"
 	"fmt"
 	"log"
-	"math/rand/v2"
+	"math/big"
 	"os"
 	"strings"
 	"testing"
@@ -27,6 +28,7 @@ const fullyConfigurableSolutionDir = "solutions/fully-configurable"
 const fullyConfigurableSolutionKubeconfigDir = "solutions/fully-configurable/kubeconfig"
 const terraformDirMonitoringAgentIKS = "examples/obs-agent-iks"
 const terraformDirMonitoringAgentROKS = "examples/obs-agent-ocp"
+
 const terraformVersion = "terraform_v1.12.2" // This should match the version in the ibm_catalog.json
 // Define a struct with fields that match the structure of the YAML data
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
@@ -54,6 +56,15 @@ var IgnoreUpdates = []string{
 // workaround for https://github.com/terraform-ibm-modules/terraform-ibm-scc-workload-protection/issues/243
 var IgnoreAdds = []string{"module.scc_wp.restapi_object.cspm"}
 
+// randInt returns a cryptographically secure random integer in the range [0, max)
+func randInt(max int) int {
+	n, err := rand.Int(rand.Reader, big.NewInt(int64(max)))
+	if err != nil {
+		log.Fatal(err)
+	}
+	return int(n.Int64())
+}
+
 // TestMain will be run before any parallel tests, used to set up a shared InfoService object to track region usage
 // for multiple tests
 func TestMain(m *testing.M) {
@@ -71,7 +82,7 @@ func TestMain(m *testing.M) {
 func TestFullyConfigurableSolution(t *testing.T) {
 	t.Parallel()
 
-	var region = validRegions[rand.IntN(len(validRegions))]
+	var region = validRegions[randInt(len(validRegions))]
 	// ------------------------------------------------------------------------------------------------------
 	// Deploy OCP Cluster and Monitoring instance since it is needed to deploy agent
 	// ------------------------------------------------------------------------------------------------------
@@ -156,7 +167,7 @@ func TestFullyConfigurableSolution(t *testing.T) {
 func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 	t.Parallel()
 
-	var region = validRegions[rand.IntN(len(validRegions))]
+	var region = validRegions[randInt(len(validRegions))]
 
 	// ------------------------------------------------------------------------------------------------------
 	// Deploy OCP Cluster and Monitoring instance since it is needed to deploy agent
@@ -247,7 +258,7 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		Testing:       t,
 		TerraformDir:  terraformDirMonitoringAgentIKS,
 		Prefix:        "obs-agent-vpc-iks",
-		Region:        validRegions[rand.IntN(len(validRegions))],
+		Region:        validRegions[randInt(len(validRegions))],
 		ResourceGroup: resourceGroup,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
@@ -269,7 +280,7 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		Testing:       t,
 		TerraformDir:  terraformDirMonitoringAgentIKS,
 		Prefix:        "obs-agent-iks",
-		Region:        validRegions[rand.IntN(len(validRegions))],
+		Region:        validRegions[randInt(len(validRegions))],
 		ResourceGroup: resourceGroup,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
