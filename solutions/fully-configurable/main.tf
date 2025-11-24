@@ -56,7 +56,7 @@ module "monitoring_agent" {
   agent_image_repository          = var.agent_image_repository
   agent_image_tag_digest          = var.agent_image_tag_digest
   kernel_module_image_tag_digest  = var.kernel_module_image_tag_digest
-  kernal_module_image_repository  = var.kernal_module_image_repository
+  kernel_module_image_repository  = var.kernel_module_image_repository
   agent_limits_cpu                = var.agent_limits_cpu
   agent_limits_memory             = var.agent_limits_memory
   agent_requests_cpu              = var.agent_requests_cpu
