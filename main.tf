@@ -181,8 +181,8 @@ resource "helm_release" "cloud_monitoring_agent" {
     "image":
       "repository": ${var.agent_image_repository}
     "kmoduleImage":
-      "repository": ${var.kernal_module_image_repository}
-      "tag": ${var.kernel_module_image_tag_digest}
+      "repository": ${var.kernel_module_image_repository}
+      "digest": ${var.kernel_module_image_tag_digest}
   "image":
     "registry": ${var.image_registry_base_url}
     "tag": ${var.agent_image_tag_digest}

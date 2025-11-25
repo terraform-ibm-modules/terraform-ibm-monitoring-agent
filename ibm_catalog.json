@@ -397,7 +397,7 @@
               "key": "cluster_shield_requests_memory"
             },
             {
-              "key": "kernal_module_image_repository"
+              "key": "kernel_module_image_repository"
             },
             {
               "key": "kernel_module_image_tag_digest"
