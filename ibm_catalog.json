@@ -349,6 +349,12 @@
               "required": true
             },
             {
+              "key": "enable_app_checks"
+            },
+            {
+              "key": "enable_jmx"
+            },
+            {
               "key": "use_private_endpoint"
             },
             {

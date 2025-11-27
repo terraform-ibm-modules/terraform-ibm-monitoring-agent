@@ -357,6 +357,18 @@ variable "enable_kspm_analyzer" {
   default     = true
 }
 
+variable "enable_app_checks" {
+  type        = bool
+  description = "Enable application checks to collect metrics from specific applications like MongoDB, Redis, etc. Set to false to reduce error logs in environments where these applications are not present or monitored."
+  default     = true
+}
+
+variable "enable_jmx" {
+  type        = bool
+  description = "Enable JMX metrics collection from Java Virtual Machines. Set to false to reduce resource usage and error logs in environments without Java applications."
+  default     = true
+}
+
 variable "cluster_shield_deploy" {
   type        = bool
   description = "Deploy the Cluster Shield component to provide runtime detection and policy enforcement for Kubernetes workloads. If enabled, a Kubernetes Deployment will be deployed to your cluster using helm."

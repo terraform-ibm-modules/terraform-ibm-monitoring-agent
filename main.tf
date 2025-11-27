@@ -210,6 +210,9 @@ resource "helm_release" "cloud_monitoring_agent" {
         "enabled": ${var.enable_host_scanner}
       "kspm_analyzer":
         "enabled": ${var.enable_kspm_analyzer}
+      "app_checks_enabled": ${var.enable_app_checks}
+      "jmx":
+        "enabled": ${var.enable_jmx}
       "sysdig_api_endpoint": ${local.api_host}
       "blacklisted_ports":
 %{for port in var.blacklisted_ports~}
