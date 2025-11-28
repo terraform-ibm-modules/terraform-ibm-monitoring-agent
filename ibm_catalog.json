@@ -359,19 +359,23 @@
               "options": [
                 {
                   "displayname": "Default",
-                  "value": "__NULL__"
+                  "value": "__NULL__",
+                  "description": "Use the agent's default operational mode"
                 },
                 {
                   "displayname": "Monitor",
-                  "value": "monitor"
+                  "value": "monitor",
+                  "description": "Standard monitoring mode with full metrics collection"
                 },
                 {
                   "displayname": "Monitor Light",
-                  "value": "monitor_light"
+                  "value": "monitor_light",
+                  "description": "Reduced metrics collection for lower resource usage"
                 },
                 {
                   "displayname": "Troubleshooting",
-                  "value": "troubleshooting"
+                  "value": "troubleshooting",
+                  "description": "Enhanced metrics including HTTP request data for debugging"
                 }
               ]
             },
