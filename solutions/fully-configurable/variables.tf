@@ -364,6 +364,16 @@ variable "enable_jmx" {
   default     = true
 }
 
+variable "agent_mode" {
+  type        = string
+  description = "The operational mode for the monitoring agent. [Learn more](https://docs.sysdig.com/en/docs/sysdig-on-prem/administration/configuration-parameters/#agent-mode)."
+  default     = null
+  validation {
+    condition     = var.agent_mode == null ? true : contains(["monitor", "monitor_light", "troubleshooting"], var.agent_mode)
+    error_message = "agent_mode must be one of 'monitor', 'monitor_light', 'troubleshooting', or null."
+  }
+}
+
 variable "cluster_shield_deploy" {
   type        = bool
   description = "Deploy the Cluster Shield component to provide runtime detection and policy enforcement for Kubernetes workloads. If enabled, a Kubernetes Deployment will be deployed to your cluster using helm."

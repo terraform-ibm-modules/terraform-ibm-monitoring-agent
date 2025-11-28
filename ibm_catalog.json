@@ -355,6 +355,27 @@
               "key": "enable_jmx"
             },
             {
+              "key": "agent_mode",
+              "options": [
+                {
+                  "displayname": "Default",
+                  "value": "__NULL__"
+                },
+                {
+                  "displayname": "Monitor",
+                  "value": "monitor"
+                },
+                {
+                  "displayname": "Monitor Light",
+                  "value": "monitor_light"
+                },
+                {
+                  "displayname": "Troubleshooting",
+                  "value": "troubleshooting"
+                }
+              ]
+            },
+            {
               "key": "use_private_endpoint"
             },
             {

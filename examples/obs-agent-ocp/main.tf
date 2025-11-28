@@ -140,4 +140,6 @@ module "monitoring_agents" {
   blacklisted_ports = [22, 2379, 3306]
   # example of adding agent tag
   agent_tags = { "environment" : "test", "custom" : "value" }
+  # example of setting agent mode to troubleshooting for additional metrics
+  agent_mode = "troubleshooting"
 }
