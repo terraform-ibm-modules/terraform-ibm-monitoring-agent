@@ -56,7 +56,7 @@ module "monitoring_agent" {
   agent_image_repository          = var.agent_image_repository
   agent_image_tag_digest          = var.agent_image_tag_digest
   kernel_module_image_tag_digest  = var.kernel_module_image_tag_digest
-  kernal_module_image_repository  = var.kernal_module_image_repository
+  kernel_module_image_repository  = var.kernel_module_image_repository
   agent_limits_cpu                = var.agent_limits_cpu
   agent_limits_memory             = var.agent_limits_memory
   agent_requests_cpu              = var.agent_requests_cpu
@@ -65,6 +65,8 @@ module "monitoring_agent" {
   deployment_tag                  = var.deployment_tag
   enable_host_scanner             = var.enable_host_scanner
   enable_kspm_analyzer            = var.enable_kspm_analyzer
+  enable_app_checks               = var.enable_app_checks
+  enable_jmx                      = var.enable_jmx
   cluster_shield_deploy           = var.cluster_shield_deploy
   cluster_shield_image_tag_digest = var.cluster_shield_image_tag_digest
   cluster_shield_image_repository = var.cluster_shield_image_repository

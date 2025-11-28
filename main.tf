@@ -181,8 +181,8 @@ resource "helm_release" "cloud_monitoring_agent" {
     "image":
       "repository": ${var.agent_image_repository}
     "kmoduleImage":
-      "repository": ${var.kernal_module_image_repository}
-      "tag": ${var.kernel_module_image_tag_digest}
+      "repository": ${var.kernel_module_image_repository}
+      "digest": ${var.kernel_module_image_tag_digest}
   "image":
     "registry": ${var.image_registry_base_url}
     "tag": ${var.agent_image_tag_digest}
@@ -210,6 +210,9 @@ resource "helm_release" "cloud_monitoring_agent" {
         "enabled": ${var.enable_host_scanner}
       "kspm_analyzer":
         "enabled": ${var.enable_kspm_analyzer}
+      "app_checks_enabled": ${var.enable_app_checks}
+      "jmx":
+        "enabled": ${var.enable_jmx}
       "sysdig_api_endpoint": ${local.api_host}
       "blacklisted_ports":
 %{for port in var.blacklisted_ports~}

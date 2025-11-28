@@ -349,6 +349,12 @@
               "required": true
             },
             {
+              "key": "enable_app_checks"
+            },
+            {
+              "key": "enable_jmx"
+            },
+            {
               "key": "use_private_endpoint"
             },
             {
@@ -397,7 +403,7 @@
               "key": "cluster_shield_requests_memory"
             },
             {
-              "key": "kernal_module_image_repository"
+              "key": "kernel_module_image_repository"
             },
             {
               "key": "kernel_module_image_tag_digest"
