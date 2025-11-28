@@ -371,7 +371,7 @@ variable "enable_jmx" {
 
 variable "agent_mode" {
   type        = string
-  description = "The operational mode for the monitoring agent. [Learn more](https://docs.sysdig.com/en/docs/sysdig-on-prem/administration/configuration-parameters/#agent-mode)."
+  description = "The operational mode for the monitoring agent. [Learn more](https://docs.sysdig.com/en/docs/administration/configure-agent-modes/)."
   default     = null
   validation {
     condition     = var.agent_mode == null ? true : contains(["monitor", "monitor_light", "troubleshooting"], var.agent_mode)
