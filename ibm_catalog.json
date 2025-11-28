@@ -355,6 +355,31 @@
               "key": "enable_jmx"
             },
             {
+              "key": "agent_mode",
+              "options": [
+                {
+                  "displayname": "Default",
+                  "value": "__NULL__",
+                  "description": "Use the agent's default operational mode"
+                },
+                {
+                  "displayname": "Monitor",
+                  "value": "monitor",
+                  "description": "Standard monitoring mode with full metrics collection"
+                },
+                {
+                  "displayname": "Monitor Light",
+                  "value": "monitor_light",
+                  "description": "Reduced metrics collection for lower resource usage"
+                },
+                {
+                  "displayname": "Troubleshooting",
+                  "value": "troubleshooting",
+                  "description": "Enhanced metrics including HTTP request data for debugging"
+                }
+              ]
+            },
+            {
               "key": "use_private_endpoint"
             },
             {

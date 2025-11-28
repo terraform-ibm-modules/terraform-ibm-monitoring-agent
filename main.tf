@@ -213,6 +213,10 @@ resource "helm_release" "cloud_monitoring_agent" {
       "app_checks_enabled": ${var.enable_app_checks}
       "jmx":
         "enabled": ${var.enable_jmx}
+%{if var.agent_mode != null~}
+      "feature":
+        "mode": ${var.agent_mode}
+%{endif~}
       "sysdig_api_endpoint": ${local.api_host}
       "blacklisted_ports":
 %{for port in var.blacklisted_ports~}
