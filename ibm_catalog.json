@@ -431,7 +431,7 @@
               "key": "kernel_module_image_repository"
             },
             {
-              "key": "kernel_module_image_tag_digest"
+              "key": "kernel_module_image_digest"
             },
             {
               "key": "existing_access_key_secret_name"

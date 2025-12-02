@@ -195,7 +195,7 @@ variable "agent_image_tag_digest" {
   nullable = false
 }
 
-variable "kernel_module_image_tag_digest" {
+variable "kernel_module_image_digest" {
   description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`"
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
