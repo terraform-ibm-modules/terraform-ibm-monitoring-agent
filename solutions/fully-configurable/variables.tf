@@ -355,13 +355,13 @@ variable "enable_kspm_analyzer" {
 variable "enable_app_checks" {
   type        = bool
   description = "Enable application checks to collect metrics from specific applications like MongoDB, Redis, etc. Set to false to reduce error logs in environments where these applications are not present or monitored."
-  default     = true
+  default     = false
 }
 
 variable "enable_jmx" {
   type        = bool
   description = "Enable JMX metrics collection from Java Virtual Machines. Set to false to reduce resource usage and error logs in environments without Java applications."
-  default     = true
+  default     = false
 }
 
 variable "agent_mode" {

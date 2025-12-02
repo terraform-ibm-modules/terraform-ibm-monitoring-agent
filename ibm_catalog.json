@@ -431,7 +431,14 @@
               "key": "kernel_module_image_repository"
             },
             {
-              "key": "kernel_module_image_digest"
+              "key": "kernel_module_image_digest",
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The image digest must be in the format 'X.Y.Z@sha256:xxxxx' (64 hex characters). Only digest format is supported; image tag is not supported.",
+                  "value": "^\\d+\\.\\d+\\.\\d+@sha256:[a-f0-9]{64}$"
+                }
+              ]
             },
             {
               "key": "existing_access_key_secret_name"
