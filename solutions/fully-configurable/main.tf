@@ -67,6 +67,7 @@ module "monitoring_agent" {
   enable_kspm_analyzer            = var.enable_kspm_analyzer
   enable_app_checks               = var.enable_app_checks
   enable_jmx                      = var.enable_jmx
+  agent_mode                      = var.agent_mode
   cluster_shield_deploy           = var.cluster_shield_deploy
   cluster_shield_image_tag_digest = var.cluster_shield_image_tag_digest
   cluster_shield_image_repository = var.cluster_shield_image_repository
