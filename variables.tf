@@ -188,7 +188,7 @@ variable "agent_image_repository" {
 }
 
 variable "agent_image_tag_digest" {
-  description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
+  description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `kernel_module_image_digest`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
   default  = "14.2.5@sha256:64b9d77bbd1bb22f97a74198144dcfea62bb5cee7629091252694e9040058035" # datasource: icr.io/ext/sysdig/agent-slim
@@ -196,7 +196,7 @@ variable "agent_image_tag_digest" {
 }
 
 variable "kernel_module_image_digest" {
-  description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`. Note: Only digest format is supported; image tag is not supported."
+  description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `agent_image_tag_digest`. Note: Only digest format is supported; image tag is not supported."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
   default  = "14.2.5@sha256:0345968a77f8eb64a00f2b06af3c40bf3df78d34125b46c9788a9e73f8ddbb1a" # datasource: icr.io/ext/sysdig/agent-kmodule

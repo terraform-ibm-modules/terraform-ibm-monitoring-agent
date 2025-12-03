@@ -36,7 +36,9 @@ locals {
   base_endpoint           = var.use_scc_wp_endpoint ? local.scc_wp_api_endpoint : local.monitoring_api_endpoint
   ingestion_endpoint      = var.use_private_endpoint ? "ingest.private.${local.base_endpoint}" : "ingest.${local.base_endpoint}"
   api_host                = replace(local.ingestion_endpoint, "ingest.", "")
-  kernel_module_digest    = split("@", var.kernel_module_image_digest)[1]
+  # The Sysdig Helm chart automatically appends the '@' symbol to the digest,
+  # so we strip it from the input variable to avoid duplication.
+  kernel_module_digest = split("@", var.kernel_module_image_digest)[1]
   dynamic_set_access_key_secret = var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "" ? [{
     name  = "global.sysdig.accessKeySecret"
     type  = "string"
