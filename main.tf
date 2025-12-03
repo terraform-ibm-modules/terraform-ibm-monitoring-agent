@@ -38,6 +38,7 @@ locals {
   api_host                = replace(local.ingestion_endpoint, "ingest.", "")
   # The Sysdig Helm chart automatically appends the '@' symbol to the digest,
   # so we strip it from the input variable to avoid duplication.
+  # See: https://github.com/sysdiglabs/charts/blob/75862bc8939ee7431a38c04ecea36652a8d3035d/charts/agent/templates/_helpers.tpl#L163
   kernel_module_digest = split("@", var.kernel_module_image_digest)[1]
   dynamic_set_access_key_secret = var.existing_access_key_secret_name != null && var.existing_access_key_secret_name != "" ? [{
     name  = "global.sysdig.accessKeySecret"
