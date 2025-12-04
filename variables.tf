@@ -188,19 +188,23 @@ variable "agent_image_repository" {
 }
 
 variable "agent_image_tag_digest" {
-  description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
+  description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `kernel_module_image_digest`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
   default  = "14.2.5@sha256:64b9d77bbd1bb22f97a74198144dcfea62bb5cee7629091252694e9040058035" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
-variable "kernel_module_image_tag_digest" {
-  description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`"
+variable "kernel_module_image_digest" {
+  description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `agent_image_tag_digest`. Note: Only digest format is supported; image tag is not supported."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
   default  = "14.2.5@sha256:0345968a77f8eb64a00f2b06af3c40bf3df78d34125b46c9788a9e73f8ddbb1a" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable = false
+  validation {
+    condition     = can(regex("^\\d+\\.\\d+\\.\\d+@sha256:[a-f0-9]{64}$", var.kernel_module_image_digest))
+    error_message = "kernel_module_image_digest must be in the format 'X.Y.Z@sha256:xxxxx' (64 hex characters). Only digest format is supported; image tag is not supported."
+  }
 }
 
 variable "kernel_module_image_repository" {
@@ -360,13 +364,13 @@ variable "enable_kspm_analyzer" {
 variable "enable_app_checks" {
   type        = bool
   description = "Enable application checks to collect metrics from specific applications like MongoDB, Redis, etc. Set to false to reduce error logs in environments where these applications are not present or monitored."
-  default     = true
+  default     = false
 }
 
 variable "enable_jmx" {
   type        = bool
   description = "Enable JMX metrics collection from Java Virtual Machines. Set to false to reduce resource usage and error logs in environments without Java applications."
-  default     = true
+  default     = false
 }
 
 variable "agent_mode" {
