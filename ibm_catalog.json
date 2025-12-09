@@ -32,7 +32,7 @@
         {
           "label": "Fully configurable",
           "name": "fully-configurable",
-          "short_description": "Fully configurable Monitoring and Workload Protection agent deployment for OpenShift or Kubernetes clusters",
+          "short_description": "Ideal for users who want a fully configurable Monitoring and Workload Protection agent deployment for OpenShift or Kubernetes clusters.",
           "index": 1,
           "working_directory": "solutions/fully-configurable",
           "iam_permissions": [
