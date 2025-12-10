@@ -16,7 +16,7 @@ locals {
 
 module "instance_crn_parser" {
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.3.0"
+  version = "1.3.3"
   crn     = var.instance_crn
 }
 
