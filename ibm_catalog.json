@@ -34,6 +34,7 @@
           "name": "fully-configurable",
           "index": 1,
           "working_directory": "solutions/fully-configurable",
+          "short_description": "Deploys monitoring and workload protection agent to monitor metrics and security data on an IBM Cloud Red Hat OpenShift Container Platform or Kubernetes cluster.",
           "iam_permissions": [
             {
               "service_name": "containers-kubernetes",
@@ -447,7 +448,17 @@
               "key": "add_cluster_name"
             },
             {
-              "key": "agent_tags"
+              "key": "agent_tags",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             },
             {
               "key": "deployment_tag"
@@ -506,7 +517,17 @@
             {
               "key": "node_selector",
               "type": "object",
-              "default_value": {}
+              "default_value": {},
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             },
             {
               "key": "tolerations",
