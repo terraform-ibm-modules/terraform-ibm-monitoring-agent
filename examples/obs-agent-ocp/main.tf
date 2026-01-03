@@ -4,7 +4,7 @@
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
-  version = "1.4.6"
+  version = "1.4.7"
   # if an existing resource group is not set (null) create a new one using prefix
   resource_group_name          = var.resource_group == null ? "${var.prefix}-resource-group" : null
   existing_resource_group_name = var.resource_group
@@ -71,7 +71,7 @@ locals {
 
 module "ocp_base" {
   source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version              = "3.75.3"
+  version              = "3.76.3"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   tags                 = var.resource_tags
@@ -95,7 +95,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 module "cloud_monitoring" {
   source            = "terraform-ibm-modules/cloud-monitoring/ibm"
-  version           = "1.12.1"
+  version           = "1.12.15"
   instance_name     = "${var.prefix}-cloud-monitoring"
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
@@ -109,7 +109,7 @@ module "cloud_monitoring" {
 
 module "scc_wp" {
   source                        = "terraform-ibm-modules/scc-workload-protection/ibm"
-  version                       = "1.16.5"
+  version                       = "1.16.17"
   name                          = "${var.prefix}-scc-wp"
   resource_group_id             = module.resource_group.resource_group_id
   region                        = var.region
