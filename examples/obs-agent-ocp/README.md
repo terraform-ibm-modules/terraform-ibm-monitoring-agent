@@ -1,5 +1,10 @@
 # Deploy agent in OpenShift cluster
 
+<!-- BEGIN SCHEMATICS DEPLOY HOOK -->
+<a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=monitoring-agent-obs-agent-ocp-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/examples/obs-agent-ocp"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom;"></a>
+<!-- END SCHEMATICS DEPLOY HOOK -->
+
+
 An example that shows how to deploy the agent in an Red Hat OpenShift container platform cluster.
 
 The following resources are provisioned:
@@ -10,3 +15,7 @@ The following resources are provisioned:
 - An IBM Cloud Monitoring instance.
 - An SCC Workload Protection instance.
 - The Monitoring and Workload Protection agent.
+
+<!-- BEGIN SCHEMATICS DEPLOY TIP HOOK -->
+:information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
+<!-- END SCHEMATICS DEPLOY TIP HOOK -->
