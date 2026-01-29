@@ -186,7 +186,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.99.7" # registryUrl: charts.sysdig.com
+  default  = "1.100.3" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
