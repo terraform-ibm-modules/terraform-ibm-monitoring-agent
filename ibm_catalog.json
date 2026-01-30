@@ -287,52 +287,17 @@
               "virtual": true,
               "default_value": "us-south",
               "description": "Region in which all the resources will be deployed. [Learn More](https://terraform-ibm-modules.github.io/documentation/#/region).",
-              "options": [
-                {
-                  "displayname": "London (eu-gb)",
-                  "value": "eu-gb"
-                },
-                {
-                  "displayname": "Frankfurt (eu-de)",
-                  "value": "eu-de"
-                },
-                {
-                  "displayname": "Madrid (eu-es)",
-                  "value": "eu-es"
-                },
-                {
-                  "displayname": "Washington (us-east)",
-                  "value": "us-east"
-                },
-                {
-                  "displayname": "Dallas (us-south)",
-                  "value": "us-south"
-                },
-                {
-                  "displayname": "Tokyo (jp-tok)",
-                  "value": "jp-tok"
-                },
-                {
-                  "displayname": "Osaka (jp-osa)",
-                  "value": "jp-osa"
-                },
-                {
-                  "displayname": "Sao Paulo (br-sao)",
-                  "value": "br-sao"
-                },
-                {
-                  "displayname": "Toronto (ca-tor)",
-                  "value": "ca-tor"
-                },
-                {
-                  "displayname": "Sydney (au-syd)",
-                  "value": "au-syd"
-                },
-                {
-                  "displayname": "Montreal (ca-mon)",
-                  "value": "ca-mon"
+              "custom_config": {
+                "type": "region",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "filterString": "service:sysdig-monitor",
+                  "showKinds": [
+                    "region"
+                  ]
                 }
-              ]
+              }
             },
             {
               "key": "is_vpc_cluster",
@@ -1016,7 +981,7 @@
                   "reference_version": true
                 }
               ],
-              "version": "v3.76.4"
+              "version": "v3.78.7"
             }
           ],
           "dependency_version_2": true,
