@@ -51,9 +51,22 @@ locals {
       value = v
     }
   ]
+  binaries_path = "/tmp"
+}
+
+resource "terraform_data" "install_required_binaries" {
+  count = var.install_required_binaries ? 1 : 0
+  triggers_replace = {
+    always_run = timestamp()
+  }
+  provisioner "local-exec" {
+    command     = "${path.module}/scripts/install-binaries.sh ${local.binaries_path}"
+    interpreter = ["/bin/bash", "-c"]
+  }
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
+  depends_on       = [terraform_data.install_required_binaries]
   name             = var.name
   chart            = var.chart
   repository       = var.chart_location
@@ -283,7 +296,7 @@ EOT
   ]
 
   provisioner "local-exec" {
-    command     = "${path.module}/scripts/confirm-rollout-status.sh ${var.name} ${var.namespace}"
+    command     = "${path.module}/scripts/confirm-rollout-status.sh ${var.name} ${var.namespace} ${local.binaries_path}"
     interpreter = ["/bin/bash", "-c"]
     environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
