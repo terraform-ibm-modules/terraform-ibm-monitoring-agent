@@ -37,8 +37,6 @@ rm -f "${TMP_DIR}/common-bash.tar.gz"
 # shellcheck disable=SC1091,SC1090
 source "${TMP_DIR}/common-bash-library-${TAG#v}/common/common.sh"
 
-echo "Installing jq."
-install_jq "latest" "${DIRECTORY}" "true"
 echo "Installing kubectl."
 install_kubectl "latest" "${DIRECTORY}" "true"
 
