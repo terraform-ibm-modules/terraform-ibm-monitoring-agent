@@ -51,6 +51,11 @@ var validRegions = []string{
 
 var IgnoreUpdates = []string{
 	"module.monitoring_agent.helm_release.cloud_monitoring_agent",
+	"module.monitoring_agent.terraform_data.install_required_binaries[0]",
+}
+
+var IgnoreDestroys = []string{
+	"module.monitoring_agent.terraform_data.install_required_binaries[0]",
 }
 
 // workaround for https://github.com/terraform-ibm-modules/terraform-ibm-scc-workload-protection/issues/243
@@ -131,6 +136,9 @@ func TestFullyConfigurableSolution(t *testing.T) {
 			},
 			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 				List: IgnoreUpdates,
+			},
+			IgnoreDestroys: testhelper.Exemptions{
+				List: IgnoreDestroys,
 			},
 			ResourceGroup:          resourceGroup,
 			TemplateFolder:         fullyConfigurableSolutionDir,
@@ -224,6 +232,9 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 				List: IgnoreUpdates,
 			},
+			IgnoreDestroys: testhelper.Exemptions{
+				List: IgnoreDestroys,
+			},
 			TerraformVersion:           terraformVersion,
 			CheckApplyResultForUpgrade: true,
 		})
@@ -266,6 +277,9 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
 		},
+		IgnoreDestroys: testhelper.Exemptions{
+			List: IgnoreDestroys,
+		},
 		IgnoreAdds: testhelper.Exemptions{
 			List: IgnoreAdds,
 		},
@@ -287,6 +301,9 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		ResourceGroup: resourceGroup,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
+		},
+		IgnoreDestroys: testhelper.Exemptions{
+			List: IgnoreDestroys,
 		},
 		IgnoreAdds: testhelper.Exemptions{
 			List: IgnoreAdds,
