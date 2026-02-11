@@ -195,7 +195,7 @@ variable "agent_image_tag_digest" {
   nullable = false
 }
 
-variable "image_pull_secrets" {
+variable "global_image_pull_secrets" {
   type        = list(string)
   description = "List of names of imagePullSecrets to use for pulling container images from custom registry. Kubelet will use these secrets in order to authenticate to the container registry namespace. These secrets have to be created outside of this terraform configuration as this helm release doesn't create registry secrets."
   default     = []
@@ -212,6 +212,20 @@ variable "kernel_module_image_digest" {
     condition     = can(regex("^\\d+\\.\\d+\\.\\d+@sha256:[a-f0-9]{64}$", var.kernel_module_image_digest))
     error_message = "kernel_module_image_digest must be in the format 'X.Y.Z@sha256:xxxxx' (64 hex characters). Only digest format is supported; image tag is not supported."
   }
+}
+
+variable "agent_image_pull_secrets" {
+  type        = list(string)
+  description = "List of names of imagePullSecrets to use for the agent. These secrets take precedence over global pull secrets."
+  default     = []
+  nullable    = false
+}
+
+variable "cluster_shield_image_pull_secrets" {
+  type        = list(string)
+  description = "List of names of imagePullSecrets to use for the Cluster Shield. These secrets take precedence over global pull secrets."
+  default     = []
+  nullable    = false
 }
 
 variable "kernel_module_image_repository" {

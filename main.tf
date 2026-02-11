@@ -181,8 +181,13 @@ resource "helm_release" "cloud_monitoring_agent" {
 "global":
   "image":
     "pullSecrets":
-%{for secret in var.image_pull_secrets~}
+%{for secret in var.global_image_pull_secrets~}
       - "name": "${secret}"
+%{endfor~}
+"clusterShield":
+  "imagePullSecrets":
+%{for secret in var.cluster_shield_image_pull_secrets~}
+    - "name": "${secret}"
 %{endfor~}
 "agent":
   "collectorSettings":
@@ -196,6 +201,10 @@ resource "helm_release" "cloud_monitoring_agent" {
   "image":
     "registry": ${var.image_registry_base_url}
     "tag": ${var.agent_image_tag_digest}
+    "pullSecrets":
+%{for secret in var.agent_image_pull_secrets~}
+      - "name": "${secret}"
+%{endfor~}
   "resources":
     "requests":
       "cpu": ${var.agent_requests_cpu}
