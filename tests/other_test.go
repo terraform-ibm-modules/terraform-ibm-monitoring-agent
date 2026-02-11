@@ -21,15 +21,15 @@ func TestRunAgentVpcOcp(t *testing.T) {
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
 		},
-		IgnoreAdds: testhelper.Exemptions{
-			List: IgnoreAdds,
-		},
 		CloudInfoService: sharedInfoSvc,
 	})
 	options.TerraformVars = map[string]any{
 		"ocp_entitlement": "cloud_pak",
 		"prefix":          options.Prefix,
 	}
+
+	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
+	createContainersApikey(t, options.Region, resourceGroup)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
