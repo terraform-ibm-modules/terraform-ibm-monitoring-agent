@@ -195,6 +195,13 @@ variable "agent_image_tag_digest" {
   nullable = false
 }
 
+variable "image_pull_secrets" {
+  type        = list(string)
+  description = "List of names of imagePullSecrets to use for pulling container images from custom registry. Kubelet will use these secrets in order to authenticate to the container registry namespace. These secrets have to be created outside of this terraform configuration as this helm release doesn't create registry secrets."
+  default     = []
+  nullable    = false
+}
+
 variable "kernel_module_image_digest" {
   description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `agent_image_tag_digest`. Note: Only digest format is supported; image tag is not supported."
   type        = string
@@ -213,6 +220,7 @@ variable "kernel_module_image_repository" {
   default     = "agent-kmodule"
   nullable    = false
 }
+
 
 variable "agent_requests_cpu" {
   type        = string

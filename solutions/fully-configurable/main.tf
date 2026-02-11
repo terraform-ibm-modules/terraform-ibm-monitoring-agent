@@ -55,6 +55,7 @@ module "monitoring_agent" {
   image_registry_namespace        = var.image_registry_namespace
   agent_image_repository          = var.agent_image_repository
   agent_image_tag_digest          = var.agent_image_tag_digest
+  image_pull_secrets              = var.image_pull_secrets
   kernel_module_image_digest      = var.kernel_module_image_digest
   kernel_module_image_repository  = var.kernel_module_image_repository
   agent_limits_cpu                = var.agent_limits_cpu

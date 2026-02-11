@@ -178,6 +178,12 @@ resource "helm_release" "cloud_monitoring_agent" {
   # Had to use raw yaml here instead of converting HCL to yaml due to this issue with boolean getting converted to string which sysdig helm chart rejects:
   # https://github.com/hashicorp/terraform-provider-helm/issues/1677
   values = [<<EOT
+"global":
+  "image":
+    "pullSecrets":
+%{for secret in var.image_pull_secrets~}
+      - "name": "${secret}"
+%{endfor~}
 "agent":
   "collectorSettings":
     "collectorHost": ${local.ingestion_endpoint}
