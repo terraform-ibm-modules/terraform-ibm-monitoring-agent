@@ -2,11 +2,13 @@
 package test
 
 import (
+	"bytes"
 	"crypto/rand"
 	"fmt"
 	"log"
 	"math/big"
 	"os"
+	"os/exec"
 	"strings"
 	"testing"
 
@@ -54,9 +56,6 @@ var IgnoreUpdates = []string{
 	"module.monitoring_agent.helm_release.cloud_monitoring_agent",
 }
 
-// workaround for https://github.com/terraform-ibm-modules/terraform-ibm-scc-workload-protection/issues/243
-var IgnoreAdds = []string{"module.scc_wp.restapi_object.cspm"}
-
 // randInt returns a cryptographically secure random integer in the range [0, max)
 func randInt(max int) int {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(max)))
@@ -83,6 +82,31 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+func validateEnvVariable(t *testing.T, varName string) string {
+	val, present := os.LookupEnv(varName)
+	require.True(t, present, "%s environment variable not set", varName)
+	require.NotEqual(t, "", val, "%s environment variable is empty", varName)
+	return val
+}
+
+func createContainersApikey(t *testing.T, region string, rg string) {
+
+	err := os.Setenv("IBMCLOUD_API_KEY", validateEnvVariable(t, "TF_VAR_ibmcloud_api_key"))
+	require.NoError(t, err, "Failed to set IBMCLOUD_API_KEY environment variable")
+	scriptPath := "../common-dev-assets/scripts/iks-api-key-reset/reset_iks_api_key.sh"
+	cmd := exec.Command("bash", scriptPath, region, rg)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	// Execute the command
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("Failed to execute script: %v\nStderr: %s", err, stderr.String())
+	}
+	// Print script output
+	fmt.Println(stdout.String())
+}
+
 func TestFullyConfigurableSolution(t *testing.T) {
 	t.Parallel()
 
@@ -105,19 +129,23 @@ func TestFullyConfigurableSolution(t *testing.T) {
 	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: tempTerraformDir,
 		Vars: map[string]any{
-			"prefix": prefix,
-			"region": region,
+			"prefix":         prefix,
+			"region":         region,
+			"resource_group": resourceGroup,
 		},
 		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
 		// This is the same as setting the -upgrade=true flag with terraform.
 		Upgrade: true,
 	})
 
+	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
+	createContainersApikey(t, region, resourceGroup)
+
 	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
 	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
 
 	if existErr != nil {
-		assert.True(t, existErr == nil, "Init and Apply of temp resources (SLZ-ROKS and Monitoring Instances) failed")
+		assert.True(t, existErr == nil, "Init and Apply of pre-req resources failed")
 	} else {
 
 		options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -191,19 +219,23 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: tempTerraformDir,
 		Vars: map[string]any{
-			"prefix": prefix,
-			"region": region,
+			"prefix":         prefix,
+			"region":         region,
+			"resource_group": resourceGroup,
 		},
 		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
 		// This is the same as setting the -upgrade=true flag with terraform.
 		Upgrade: true,
 	})
 
+	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
+	createContainersApikey(t, region, resourceGroup)
+
 	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
 	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
 
 	if existErr != nil {
-		assert.True(t, existErr == nil, "Init and Apply of temp resources (SLZ-ROKS and Monitoring Instances) failed")
+		assert.True(t, existErr == nil, "Init and Apply of pre-req resources failed")
 	} else {
 
 		options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -267,11 +299,12 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
 		},
-		IgnoreAdds: testhelper.Exemptions{
-			List: IgnoreAdds,
-		},
 		CloudInfoService: sharedInfoSvc,
 	})
+
+	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
+	createContainersApikey(t, options.Region, resourceGroup)
+
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
@@ -288,9 +321,6 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		ResourceGroup: resourceGroup,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
-		},
-		IgnoreAdds: testhelper.Exemptions{
-			List: IgnoreAdds,
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
@@ -309,6 +339,8 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 
 	t.Parallel()
 
+	region := "eu-de"
+
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:               t,
 		Prefix:                "ma-def",
@@ -321,7 +353,8 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-monitoring-agent",
 		"fully-configurable",
 		map[string]interface{}{
-			"region": "eu-de",
+			"region":                       region,
+			"existing_resource_group_name": resourceGroup,
 		},
 	)
 
@@ -337,7 +370,7 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 				"secret_groups":                        []string{}, // passing empty array for secret groups as default value is creating general group and it will cause conflicts as we are using an existing SM
 			},
 		},
-		// // Disable target / route creation to help prevent hitting quota in account
+		// Disable target / route creation to help prevent hitting quota in account
 		{
 			OfferingName:   "deploy-arch-ibm-cloud-monitoring",
 			OfferingFlavor: "fully-configurable",
@@ -353,6 +386,9 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 			},
 		},
 	}
+
+	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
+	createContainersApikey(t, region, resourceGroup)
 
 	err := options.RunAddonTest()
 	require.NoError(t, err)
