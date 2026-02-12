@@ -312,9 +312,6 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		IgnoreDestroys: testhelper.Exemptions{
 			List: IgnoreDestroys,
 		},
-		IgnoreAdds: testhelper.Exemptions{
-			List: IgnoreAdds,
-		},
 		CloudInfoService: sharedInfoSvc,
 	})
 
@@ -340,9 +337,6 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		},
 		IgnoreDestroys: testhelper.Exemptions{
 			List: IgnoreDestroys,
-		},
-		IgnoreAdds: testhelper.Exemptions{
-			List: IgnoreAdds,
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
