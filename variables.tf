@@ -209,7 +209,7 @@ variable "kernel_module_image_digest" {
 
 variable "global_image_pull_secrets" {
   type        = list(string)
-  description = "List of names of imagePullSecrets to use for pulling agent or cluster shield images. These secrets are used only if `agent_image_pull_secrets` or `cluster_shield_image_pull_secrets` are not specified. If no value is provided, container images must be public otherwise kubelet will not be able to pull them."
+  description = "List of names of imagePullSecrets to use for pulling agent or cluster shield images. These secrets are used only if `agent_image_pull_secrets` or `cluster_shield_image_pull_secrets` are not specified."
   default     = []
   nullable    = false
 }
