@@ -197,7 +197,7 @@ variable "agent_image_tag_digest" {
 
 variable "global_image_pull_secrets" {
   type        = list(string)
-  description = "List of names of imagePullSecrets to use for pulling container images from custom registry. Kubelet will use these secrets in order to authenticate to the container registry namespace. These secrets have to be created outside of this terraform configuration as this helm release doesn't create registry secrets."
+  description = "List of names of imagePullSecrets to use for pulling agent or cluster shield images. These secrets are used only if `agent_image_pull_secrets` or `cluster_shield_image_pull_secrets` are not specified. If no value is provided, container images must be public otherwise kubelet will not be able to pull them."
   default     = []
   nullable    = false
 }
@@ -216,14 +216,14 @@ variable "kernel_module_image_digest" {
 
 variable "agent_image_pull_secrets" {
   type        = list(string)
-  description = "List of names of imagePullSecrets to use for the agent. These secrets take precedence over global pull secrets."
+  description = "List of names of imagePullSecrets to use for pulling the agent image. These secrets take precedence over global pull secrets."
   default     = []
   nullable    = false
 }
 
 variable "cluster_shield_image_pull_secrets" {
   type        = list(string)
-  description = "List of names of imagePullSecrets to use for the Cluster Shield. These secrets take precedence over global pull secrets."
+  description = "List of names of imagePullSecrets to use for pulling the cluster shield image. These secrets take precedence over global pull secrets."
   default     = []
   nullable    = false
 }
