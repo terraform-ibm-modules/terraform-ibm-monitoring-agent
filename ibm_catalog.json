@@ -377,15 +377,6 @@
               "key": "agent_image_tag_digest"
             },
             {
-              "key": "global_image_pull_secrets"
-            },
-            {
-              "key": "agent_image_pull_secrets"
-            },
-            {
-              "key": "cluster_shield_image_pull_secrets"
-            },
-            {
               "key": "cluster_shield_image_repository"
             },
             {

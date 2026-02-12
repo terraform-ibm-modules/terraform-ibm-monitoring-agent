@@ -185,14 +185,14 @@ resource "helm_release" "cloud_monitoring_agent" {
 %{for secret in var.global_image_pull_secrets~}
       - "name": "${secret}"
 %{endfor~}
-%{ endif ~}
+%{endif~}
 %{if length(var.cluster_shield_image_pull_secrets) > 0~}
 "clusterShield":
   "imagePullSecrets":
 %{for secret in var.cluster_shield_image_pull_secrets~}
     - "name": "${secret}"
 %{endfor~}
-%{ endif ~}
+%{endif~}
 "agent":
   "collectorSettings":
     "collectorHost": ${local.ingestion_endpoint}
