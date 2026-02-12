@@ -195,13 +195,6 @@ variable "agent_image_tag_digest" {
   nullable = false
 }
 
-variable "global_image_pull_secrets" {
-  type        = list(string)
-  description = "List of names of imagePullSecrets to use for pulling agent or cluster shield images. These secrets are used only if `agent_image_pull_secrets` or `cluster_shield_image_pull_secrets` are not specified. If no value is provided, container images must be public otherwise kubelet will not be able to pull them."
-  default     = []
-  nullable    = false
-}
-
 variable "kernel_module_image_digest" {
   description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `agent_image_tag_digest`. Note: Only digest format is supported; image tag is not supported."
   type        = string
@@ -214,16 +207,23 @@ variable "kernel_module_image_digest" {
   }
 }
 
+variable "global_image_pull_secrets" {
+  type        = list(string)
+  description = "List of names of imagePullSecrets to use for pulling agent or cluster shield images. These secrets are used only if `agent_image_pull_secrets` or `cluster_shield_image_pull_secrets` are not specified. If no value is provided, container images must be public otherwise kubelet will not be able to pull them."
+  default     = []
+  nullable    = false
+}
+
 variable "agent_image_pull_secrets" {
   type        = list(string)
-  description = "List of names of imagePullSecrets to use for pulling the agent image. These secrets take precedence over global pull secrets."
+  description = "List of names of imagePullSecrets to use for pulling the agent image. These secrets take precedence over `global_image_pull_secrets`."
   default     = []
   nullable    = false
 }
 
 variable "cluster_shield_image_pull_secrets" {
   type        = list(string)
-  description = "List of names of imagePullSecrets to use for pulling the cluster shield image. These secrets take precedence over global pull secrets."
+  description = "List of names of imagePullSecrets to use for pulling the cluster shield image. These secrets take precedence over `global_image_pull_secrets`."
   default     = []
   nullable    = false
 }
@@ -234,7 +234,6 @@ variable "kernel_module_image_repository" {
   default     = "agent-kmodule"
   nullable    = false
 }
-
 
 variable "agent_requests_cpu" {
   type        = string
