@@ -60,7 +60,7 @@ var IgnoreUpdates = []string{
 
 var IgnoreDestroys = []string{
 	"module.monitoring_agents.terraform_data.install_required_binaries[0]",
-	"module.monitoring_agents.terraform_data.install_required_binaries[0]",
+	"module.monitoring_agent.terraform_data.install_required_binaries[0]",
 }
 
 // randInt returns a cryptographically secure random integer in the range [0, max)
