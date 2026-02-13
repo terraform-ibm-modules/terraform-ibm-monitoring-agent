@@ -207,6 +207,27 @@ variable "kernel_module_image_digest" {
   }
 }
 
+variable "global_image_pull_secrets" {
+  type        = list(string)
+  description = "List of names of imagePullSecrets to use for pulling agent or cluster shield images. These secrets are used only if `agent_image_pull_secrets` or `cluster_shield_image_pull_secrets` are not specified."
+  default     = []
+  nullable    = false
+}
+
+variable "agent_image_pull_secrets" {
+  type        = list(string)
+  description = "List of names of imagePullSecrets to use for pulling the agent image. These secrets take precedence over `global_image_pull_secrets`."
+  default     = []
+  nullable    = false
+}
+
+variable "cluster_shield_image_pull_secrets" {
+  type        = list(string)
+  description = "List of names of imagePullSecrets to use for pulling the cluster shield image. These secrets take precedence over `global_image_pull_secrets`."
+  default     = []
+  nullable    = false
+}
+
 variable "kernel_module_image_repository" {
   description = "The image repository to pull the agent kernel module initContainer image from."
   type        = string
