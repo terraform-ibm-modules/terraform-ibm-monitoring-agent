@@ -104,6 +104,21 @@ module "cloud_monitoring" {
 }
 
 ##############################################################################
+# App Config instance
+##############################################################################
+
+module "app_config" {
+  source                       = "terraform-ibm-modules/app-configuration/ibm"
+  version                      = "1.15.7"
+  resource_group_id            = module.resource_group.resource_group_id
+  region                       = var.region
+  app_config_name              = "${var.prefix}-app-config"
+  app_config_plan              = "lite"
+  app_config_service_endpoints = "public"
+  app_config_tags              = var.resource_tags
+}
+
+##############################################################################
 # SCC Workload Protection instance
 ##############################################################################
 
@@ -115,7 +130,8 @@ module "scc_wp" {
   region                        = var.region
   resource_tags                 = var.resource_tags
   cloud_monitoring_instance_crn = module.cloud_monitoring.crn
-  cspm_enabled                  = false
+  cspm_enabled                  = true
+  app_config_crn                = module.app_config.app_config_crn
 }
 
 ##############################################################################
@@ -142,4 +158,38 @@ module "monitoring_agents" {
   agent_tags = { "environment" : "test", "custom" : "value" }
   # example of setting agent mode to troubleshooting for additional metrics
   agent_mode = "troubleshooting"
+}
+
+########################################################################################################################
+# SCC WP Zone (https://cloud.ibm.com/docs/workload-protection?topic=workload-protection-posture-zones)
+# - create a new zone which only contains FedRAMP policies
+########################################################################################################################
+
+# lookup all posture policies
+data "sysdig_secure_posture_policies" "posture_policies" {
+  depends_on = [module.scc_wp]
+}
+
+# extract out all FedRAMP policies
+locals {
+  fedramp_policies = [
+    for p in data.sysdig_secure_posture_policies.posture_policies.policies :
+    p if length(regexall(".*FedRAMP.*", p.name)) > 0
+  ]
+}
+
+# create a new zone and add the FedRAMP policies to it
+resource "sysdig_secure_posture_zone" "zones" {
+  name        = "${var.prefix}-zone"
+  description = "Zone description"
+  policy_ids  = [for p in local.fedramp_policies : p.id]
+
+  scopes {
+    scope {
+      target_type = "ibm"
+    }
+    scope {
+      target_type = "kubernetes"
+    }
+  }
 }
