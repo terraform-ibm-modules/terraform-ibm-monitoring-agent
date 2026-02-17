@@ -113,7 +113,7 @@ module "app_config" {
   resource_group_id            = module.resource_group.resource_group_id
   region                       = var.region
   app_config_name              = "${var.prefix}-app-config"
-  app_config_plan              = "lite"
+  app_config_plan              = "basic"
   app_config_service_endpoints = "public"
   app_config_tags              = var.resource_tags
 }
