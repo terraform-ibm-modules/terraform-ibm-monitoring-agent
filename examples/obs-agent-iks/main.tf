@@ -136,15 +136,16 @@ module "app_config" {
 ##############################################################################
 
 module "scc_wp" {
-  source                        = "terraform-ibm-modules/scc-workload-protection/ibm"
-  version                       = "1.17.4"
-  name                          = "${var.prefix}-scc-wp"
-  resource_group_id             = module.resource_group.resource_group_id
-  region                        = var.region
-  resource_tags                 = var.resource_tags
-  cloud_monitoring_instance_crn = module.cloud_monitoring.crn
-  cspm_enabled                  = true
-  app_config_crn                = module.app_config.app_config_crn
+  source                                       = "terraform-ibm-modules/scc-workload-protection/ibm"
+  version                                      = "1.17.4"
+  name                                         = "${var.prefix}-scc-wp"
+  resource_group_id                            = module.resource_group.resource_group_id
+  region                                       = var.region
+  resource_tags                                = var.resource_tags
+  cloud_monitoring_instance_crn                = module.cloud_monitoring.crn
+  cspm_enabled                                 = true
+  app_config_crn                               = module.app_config.app_config_crn
+  scc_workload_protection_trusted_profile_name = "tp-name"
 }
 
 ##############################################################################
