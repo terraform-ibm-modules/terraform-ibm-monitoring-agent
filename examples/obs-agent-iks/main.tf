@@ -127,7 +127,7 @@ module "app_config" {
   region                       = var.region
   app_config_name              = "${var.prefix}-app-config"
   app_config_plan              = "basic"
-  app_config_service_endpoints = "public"
+  app_config_service_endpoints = "public-and-private"
   app_config_tags              = var.resource_tags
 }
 
@@ -145,7 +145,7 @@ module "scc_wp" {
   cloud_monitoring_instance_crn                = module.cloud_monitoring.crn
   cspm_enabled                                 = true
   app_config_crn                               = module.app_config.app_config_crn
-  scc_workload_protection_trusted_profile_name = "tp-name"
+  scc_workload_protection_trusted_profile_name = "${var.prefix}-tp"
 }
 
 ##############################################################################
@@ -226,7 +226,7 @@ resource "sysdig_secure_posture_zone" "zones" {
       target_type = "ibm"
     }
     scope {
-      target_type = "kubernetes"
+      target_type = "kubernetes" # this is required to view security metrics from the kubernetes cluster
     }
   }
 }
