@@ -26,6 +26,8 @@ This module supports the provisioning of an agent to an IBM Cloud Red Hat OpenSh
 :information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
     * <a href="./examples/obs-agent-iks">Deploy agent in IKS cluster</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=monitoring-agent-obs-agent-iks-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/examples/obs-agent-iks"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
     * <a href="./examples/obs-agent-ocp">Deploy agent in OpenShift cluster</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=monitoring-agent-obs-agent-ocp-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/tree/main/examples/obs-agent-ocp"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+* [Deployable Architectures](./solutions)
+    * <a href="./solutions/fully-configurable">Cloud automation for Monitoring and Workload Protection agent (Fully configurable)</a>
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
