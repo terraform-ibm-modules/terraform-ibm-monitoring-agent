@@ -13,8 +13,10 @@ The following resources are provisioned:
 - A basic VPC (if `is_vpc_cluster` is true).
 - A Kubernetes cluster.
 - An IBM Cloud Monitoring instance.
+- An App Configuration instance.
 - An SCC Workload Protection instance.
 - The Monitoring and Workload Protection agent.
+- Zones for specific policy.
 
 <!-- BEGIN SCHEMATICS DEPLOY TIP HOOK -->
 :information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
