@@ -20,5 +20,9 @@ terraform {
       source  = "Mastercard/restapi"
       version = ">= 2.0.1"
     }
+    sysdig = {
+      source  = "sysdiglabs/sysdig"
+      version = ">= 3.3.1, <4.0.0"
+    }
   }
 }
