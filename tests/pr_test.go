@@ -58,11 +58,6 @@ var IgnoreUpdates = []string{
 	"module.monitoring_agent.terraform_data.install_required_binaries[0]",
 }
 
-var IgnoreDestroys = []string{
-	"module.monitoring_agents.terraform_data.install_required_binaries[0]",
-	"module.monitoring_agent.terraform_data.install_required_binaries[0]",
-}
-
 // randInt returns a cryptographically secure random integer in the range [0, max)
 func randInt(max int) int {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(max)))
@@ -168,9 +163,6 @@ func TestFullyConfigurableSolution(t *testing.T) {
 			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 				List: IgnoreUpdates,
 			},
-			IgnoreDestroys: testhelper.Exemptions{
-				List: IgnoreDestroys,
-			},
 			ResourceGroup:          resourceGroup,
 			TemplateFolder:         fullyConfigurableSolutionDir,
 			Tags:                   []string{"test-schematic"},
@@ -267,9 +259,6 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 				List: IgnoreUpdates,
 			},
-			IgnoreDestroys: testhelper.Exemptions{
-				List: IgnoreDestroys,
-			},
 			TerraformVersion:           terraformVersion,
 			CheckApplyResultForUpgrade: true,
 		})
@@ -312,9 +301,6 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
 		},
-		IgnoreDestroys: testhelper.Exemptions{
-			List: IgnoreDestroys,
-		},
 		CloudInfoService: sharedInfoSvc,
 	})
 
@@ -337,9 +323,6 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		ResourceGroup: resourceGroup,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
-		},
-		IgnoreDestroys: testhelper.Exemptions{
-			List: IgnoreDestroys,
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
