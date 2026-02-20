@@ -54,7 +54,6 @@ var validRegions = []string{
 
 var IgnoreUpdates = []string{
 	"module.monitoring_agent.helm_release.cloud_monitoring_agent",
-	"module.monitoring_agents.terraform_data.install_required_binaries[0]",
 	"module.monitoring_agent.terraform_data.install_required_binaries[0]",
 }
 
