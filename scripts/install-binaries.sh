@@ -2,6 +2,7 @@
 
 set -o errexit
 set -o pipefail
+set -o nounset
 
 DIRECTORY=${1:-"/tmp"}
 export PATH=$PATH:$DIRECTORY
