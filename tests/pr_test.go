@@ -54,6 +54,7 @@ var validRegions = []string{
 
 var IgnoreUpdates = []string{
 	"module.monitoring_agent.helm_release.cloud_monitoring_agent",
+	"module.monitoring_agent.terraform_data.install_required_binaries[0]",
 }
 
 // randInt returns a cryptographically secure random integer in the range [0, max)

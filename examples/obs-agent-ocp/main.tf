@@ -139,7 +139,7 @@ module "scc_wp" {
 # Monitoring Agents
 ##############################################################################
 
-module "monitoring_agents" {
+module "monitoring_agent" {
   source = "../.."
   # remove the above line and uncomment the below 2 lines to consume the module from the registry
   # source  = "terraform-ibm-modules/monitoring-agent/ibm"
