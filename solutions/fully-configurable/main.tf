@@ -24,7 +24,7 @@ module "instance_crn_parser" {
 resource "ibm_resource_key" "key" {
   count                = local.create_access_key
   name                 = "${local.prefix}key"
-  resource_instance_id = module.instance_crn_parser.service_instance
+  resource_instance_id = var.instance_crn
   role                 = "Manager"
 }
 
