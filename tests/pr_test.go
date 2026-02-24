@@ -268,7 +268,6 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 			{Name: "cluster_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_id"), DataType: "string"},
 			{Name: "cluster_resource_group_id", Value: terraform.Output(t, existingTerraformOptions, "cluster_resource_group_id"), DataType: "string"},
 			{Name: "instance_crn", Value: terraform.Output(t, existingTerraformOptions, "instance_crn"), DataType: "string", Secure: true},
-			{Name: "access_key", Value: terraform.Output(t, existingTerraformOptions, "access_key"), DataType: "string", Secure: true},
 		}
 
 		err := options.RunSchematicUpgradeTest()
