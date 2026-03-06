@@ -122,7 +122,7 @@ module "cloud_monitoring" {
 
 module "app_config" {
   source                       = "terraform-ibm-modules/app-configuration/ibm"
-  version                      = "1.15.12"
+  version                      = "1.15.13"
   resource_group_id            = module.resource_group.resource_group_id
   region                       = var.region
   app_config_name              = "${var.prefix}-app-config"
@@ -137,7 +137,7 @@ module "app_config" {
 
 module "scc_wp" {
   source                                       = "terraform-ibm-modules/scc-workload-protection/ibm"
-  version                                      = "1.17.6"
+  version                                      = "1.18.0"
   name                                         = "${var.prefix}-scc-wp"
   resource_group_id                            = module.resource_group.resource_group_id
   region                                       = var.region
