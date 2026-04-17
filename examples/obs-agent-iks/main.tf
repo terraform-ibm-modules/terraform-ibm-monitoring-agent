@@ -153,7 +153,8 @@ module "scc_wp" {
 ##############################################################################
 
 module "monitoring_agent" {
-  source = "../.."
+  depends_on = [time_sleep.wait_operators]
+  source     = "../.."
   # remove the above line and uncomment the below 2 lines to consume the module from the registry
   # source  = "terraform-ibm-modules/monitoring-agent/ibm"
   # version = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release

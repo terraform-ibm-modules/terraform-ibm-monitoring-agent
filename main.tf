@@ -66,19 +66,19 @@ resource "terraform_data" "install_required_binaries" {
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
-  depends_on       = [terraform_data.install_required_binaries]
+  depends_on       = [terraform_data.install_required_binaries, data.ibm_container_cluster_config.cluster_config]
   name             = var.name
   chart            = var.chart
   repository       = var.chart_location
   version          = var.chart_version
   namespace        = var.namespace
   create_namespace = true
-  timeout          = 1200
+  timeout          = 2400
   wait             = true
   recreate_pods    = true
   force_update     = true
   reset_values     = true
-  atomic           = true
+  atomic           = false
 
   set = concat([
     # Values
@@ -149,6 +149,16 @@ resource "helm_release" "cloud_monitoring_agent" {
       name  = "clusterShield.cluster_shield.sysdig_endpoint.region"
       type  = "string"
       value = "custom"
+    },
+    {
+      name  = "clusterShield.cluster_shield.sysdig_endpoint.collector"
+      type  = "string"
+      value = "${local.ingestion_endpoint}:6443"
+    },
+    {
+      name  = "clusterShield.cluster_shield.sysdig_endpoint.api_url"
+      type  = "string"
+      value = "https://${local.api_host}"
     },
     {
       name  = "clusterShield.cluster_shield.log_level"
