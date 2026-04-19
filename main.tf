@@ -73,12 +73,12 @@ resource "helm_release" "cloud_monitoring_agent" {
   version          = var.chart_version
   namespace        = var.namespace
   create_namespace = true
-  timeout          = 2400
+  timeout          = 1200
   wait             = true
   recreate_pods    = true
   force_update     = true
   reset_values     = true
-  atomic           = false
+  atomic           = true
 
   set = concat([
     # Values
