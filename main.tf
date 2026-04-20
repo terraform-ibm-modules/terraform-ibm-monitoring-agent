@@ -66,7 +66,7 @@ resource "terraform_data" "install_required_binaries" {
 }
 
 resource "helm_release" "cloud_monitoring_agent" {
-  depends_on       = [terraform_data.install_required_binaries, data.ibm_container_cluster_config.cluster_config]
+  depends_on       = [terraform_data.install_required_binaries]
   name             = var.name
   chart            = var.chart
   repository       = var.chart_location
