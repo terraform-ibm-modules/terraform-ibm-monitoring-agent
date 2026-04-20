@@ -75,6 +75,7 @@ module "monitoring_agent" {
   cluster_shield_limits_cpu       = var.cluster_shield_limits_cpu
   cluster_shield_requests_memory  = var.cluster_shield_requests_memory
   cluster_shield_limits_memory    = var.cluster_shield_limits_memory
+  cluster_shield_collector_port   = var.cluster_shield_collector_port
   prometheus_config               = var.prometheus_config
   max_unavailable                 = var.max_unavailable
   max_surge                       = var.max_surge

@@ -153,7 +153,7 @@ resource "helm_release" "cloud_monitoring_agent" {
     {
       name  = "clusterShield.cluster_shield.sysdig_endpoint.collector"
       type  = "string"
-      value = "${local.ingestion_endpoint}:6443"
+      value = "${local.ingestion_endpoint}:${var.cluster_shield_collector_port}"
     },
     {
       name  = "clusterShield.cluster_shield.sysdig_endpoint.api_url"

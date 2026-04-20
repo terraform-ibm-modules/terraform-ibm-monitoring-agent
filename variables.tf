@@ -404,6 +404,17 @@ variable "agent_mode" {
   }
 }
 
+variable "cluster_shield_collector_port" {
+  type        = string
+  description = "The port used by the cluster-shield collector endpoint. Use '443' for VPE (Virtual Private Endpoint) connections, or '6443' for CSE (Cloud Service Endpoint) connections."
+  default     = "6443"
+  nullable    = false
+  validation {
+    condition     = contains(["443", "6443"], var.cluster_shield_collector_port)
+    error_message = "`cluster_shield_collector_port` must be either '443' (for VPE) or '6443' (for CSE)."
+  }
+}
+
 variable "cluster_shield_deploy" {
   type        = bool
   description = "Deploy the Cluster Shield component to provide runtime detection and policy enforcement for Kubernetes workloads. If enabled, a Kubernetes Deployment will be deployed to your cluster using helm."

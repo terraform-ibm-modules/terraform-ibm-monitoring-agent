@@ -383,6 +383,9 @@
               "key": "cluster_shield_image_tag_digest"
             },
             {
+              "key": "cluster_shield_collector_port"
+            },
+            {
               "key": "cluster_shield_limits_cpu"
             },
             {

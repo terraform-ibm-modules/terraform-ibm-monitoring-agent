@@ -421,6 +421,17 @@ variable "cluster_shield_limits_memory" {
   default     = "1536Mi"
 }
 
+variable "cluster_shield_collector_port" {
+  type        = string
+  description = "The port used by the cluster-shield collector endpoint. Use '443' for VPE (Virtual Private Endpoint) connections, or '6443' for CSE (Cloud Service Endpoint) connections."
+  default     = "6443"
+  nullable    = false
+  validation {
+    condition     = contains(["443", "6443"], var.cluster_shield_collector_port)
+    error_message = "cluster_shield_collector_port must be either '443' (for VPE) or '6443' (for CSE)."
+  }
+}
+
 variable "prometheus_config" {
   description = "Prometheus configuration for the agent. If you want to enable Prometheus configuration provide the prometheus.yaml file content in `hcl` format. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#prometheus_config)."
   type        = map(any)
