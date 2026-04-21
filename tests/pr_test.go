@@ -336,7 +336,6 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 }
 
 func TestAgentDefaultConfiguration(t *testing.T) {
-
 	t.Parallel()
 
 	region := "eu-de"
