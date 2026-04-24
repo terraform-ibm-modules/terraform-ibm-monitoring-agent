@@ -78,7 +78,7 @@ resource "helm_release" "cloud_monitoring_agent" {
   recreate_pods    = true
   force_update     = true
   reset_values     = true
-  atomic           = true
+  atomic           = var.rollback_on_failure
 
   set = concat([
     # Values
