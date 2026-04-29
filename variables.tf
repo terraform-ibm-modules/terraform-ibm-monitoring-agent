@@ -168,7 +168,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.109.6" # registryUrl: charts.sysdig.com
+  default  = "1.110.0" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -197,7 +197,7 @@ variable "agent_image_tag_digest" {
   description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `kernel_module_image_digest`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.5.1@sha256:5bf984e15b7b4c6f183e2da891dfdfa2364086d40afc9f1dad8db9cb14dce266" # datasource: icr.io/ext/sysdig/agent-slim
+  default  = "14.5.2@sha256:bd8395584ac718449ac6e68ba62eaff7efa55b1fe68c3e2ce47a358144e5c812" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
@@ -205,7 +205,7 @@ variable "kernel_module_image_digest" {
   description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `agent_image_tag_digest`. Note: Only digest format is supported; image tag is not supported."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.5.1@sha256:bb6217cdc89b2bdfe2f81860caf3c60a460a3a4f6fda9210a42094a9564151be" # datasource: icr.io/ext/sysdig/agent-kmodule
+  default  = "14.5.2@sha256:eb3c4f9b6c8b057a2f63d28ff6d2d69e0cfa497e39f1058e05bf6ed9e2882866" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable = false
   validation {
     condition     = can(regex("^\\d+\\.\\d+\\.\\d+@sha256:[a-f0-9]{64}$", var.kernel_module_image_digest))
@@ -431,7 +431,7 @@ variable "cluster_shield_image_tag_digest" {
   description = "The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default = "1.21.0@sha256:5207fa470d02aa994d916feba04feaca06f4caf4b299b7c849813f92ee0111ba" # datasource: icr.io/ext/sysdig/cluster-shield
+  default = "1.22.0@sha256:015bee96958311728cef5c8117a2fd6f00b0710048703bee3556a7e71f05e1bc" # datasource: icr.io/ext/sysdig/cluster-shield
 }
 
 variable "cluster_shield_image_repository" {
