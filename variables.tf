@@ -168,7 +168,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.111.0" # registryUrl: charts.sysdig.com
+  default  = "1.112.0" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -431,7 +431,7 @@ variable "cluster_shield_image_tag_digest" {
   description = "The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default = "1.22.0@sha256:015bee96958311728cef5c8117a2fd6f00b0710048703bee3556a7e71f05e1bc" # datasource: icr.io/ext/sysdig/cluster-shield
+  default = "1.23.0@sha256:36a93fcb9c9056a600275c6d8d2aa2c0488d7a2381b0cee49665509856eae6fb" # datasource: icr.io/ext/sysdig/cluster-shield
 }
 
 variable "cluster_shield_image_repository" {
