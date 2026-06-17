@@ -168,7 +168,7 @@ variable "chart_version" {
   description = "The version of the agent helm chart to deploy."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the registryUrl comment on next line
-  default  = "1.113.2" # registryUrl: charts.sysdig.com
+  default  = "1.113.3" # registryUrl: charts.sysdig.com
   nullable = false
 }
 
@@ -197,7 +197,7 @@ variable "agent_image_tag_digest" {
   description = "The image tag or digest of agent image to use. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `kernel_module_image_digest`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.6.1@sha256:113ffe1072f1ae3b39476d17fca03147af83dd43bf566f7135b90c1bc2aedd01" # datasource: icr.io/ext/sysdig/agent-slim
+  default  = "14.6.2@sha256:1843e6b24e5207beae84b0985e33387f9160f7d31a46d7a49af3724d3569b6f6" # datasource: icr.io/ext/sysdig/agent-slim
   nullable = false
 }
 
@@ -205,7 +205,7 @@ variable "kernel_module_image_digest" {
   description = "The image digest to use for the agent kernel module used by the initContainer. Must be in the format of `X.Y.Z@sha256:xxxxx`. This version must match the version being used in the `agent_image_tag_digest`. Note: Only digest format is supported; image tag is not supported."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default  = "14.6.1@sha256:0bde8123d02676ac819600c0ad262fe65772c9528dc4861c2dd106b82694ac6f" # datasource: icr.io/ext/sysdig/agent-kmodule
+  default  = "14.6.2@sha256:658273d33c2678258b209b61f48e346d4e4e53a63bb1a89f70fd4924deeba985" # datasource: icr.io/ext/sysdig/agent-kmodule
   nullable = false
   validation {
     condition     = can(regex("^\\d+\\.\\d+\\.\\d+@sha256:[a-f0-9]{64}$", var.kernel_module_image_digest))
