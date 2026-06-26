@@ -137,7 +137,7 @@ module "app_config" {
 
 module "scc_wp" {
   source                                       = "terraform-ibm-modules/scc-workload-protection/ibm"
-  version                                      = "1.19.4"
+  version                                      = "1.20.0"
   name                                         = "${var.prefix}-scc-wp"
   resource_group_id                            = module.resource_group.resource_group_id
   region                                       = var.region
