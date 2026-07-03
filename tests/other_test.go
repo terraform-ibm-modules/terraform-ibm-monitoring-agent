@@ -26,6 +26,7 @@ func TestRunAgentVpcOcp(t *testing.T) {
 	options.TerraformVars = map[string]any{
 		"ocp_entitlement": "cloud_pak",
 		"prefix":          options.Prefix,
+		"resource_group":  resourceGroup,
 	}
 
 	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
