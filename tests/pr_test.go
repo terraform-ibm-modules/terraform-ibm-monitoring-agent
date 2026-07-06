@@ -302,6 +302,10 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		},
 		CloudInfoService: sharedInfoSvc,
 	})
+	options.TerraformVars = map[string]any{
+		"resource_group": resourceGroup,
+		"prefix":         options.Prefix,
+	}
 
 	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
 	createContainersApikey(t, options.Region, resourceGroup)
