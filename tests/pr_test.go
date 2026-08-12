@@ -259,6 +259,11 @@ func TestFullyConfigurableUpgradeSolution(t *testing.T) {
 			IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 				List: IgnoreUpdates,
 			},
+			IgnoreDestroys: testhelper.Exemptions{ // install_required_binaries is replaced when the script SHA changes between releases.
+				List: []string{
+					"module.monitoring_agent.terraform_data.install_required_binaries[0]",
+				},
+			},
 			TerraformVersion:           terraformVersion,
 			CheckApplyResultForUpgrade: true,
 		})
