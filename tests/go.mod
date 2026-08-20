@@ -5,7 +5,7 @@ go 1.26.1
 require (
 	github.com/IBM/go-sdk-core/v5 v5.23.2
 	github.com/gruntwork-io/terratest v1.0.1
-	github.com/stretchr/testify v1.12.0
+	github.com/stretchr/testify v1.12.1
 	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.77.4
 )
 
@@ -88,6 +88,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.43.0 // indirect
 	go.opentelemetry.io/otel/trace v1.43.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.55.0 // indirect
 	golang.org/x/mod v0.38.0 // indirect
 	golang.org/x/net v0.57.0 // indirect
