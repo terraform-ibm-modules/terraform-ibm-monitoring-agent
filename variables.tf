@@ -431,7 +431,7 @@ variable "cluster_shield_image_tag_digest" {
   description = "The image tag or digest to pull for the Cluster Shield component. If using digest, it must be in the format of `X.Y.Z@sha256:xxxxx`."
   type        = string
   # This version is automatically managed by renovate automation - do not remove the datasource comment on next line
-  default = "1.25.0@sha256:c1150c8e7d1cfa46b99bed0f4f351ea10d48335f946d429b4aff473084c04d5e" # datasource: icr.io/ext/sysdig/cluster-shield
+  default = "1.25.1@sha256:a1e37554b326ca4ec053df3877fc747d5de60ad035b82b082ef47b46476f3efe" # datasource: icr.io/ext/sysdig/cluster-shield
 }
 
 variable "cluster_shield_image_repository" {
