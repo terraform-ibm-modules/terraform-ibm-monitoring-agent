@@ -795,6 +795,19 @@
               "virtual": true,
               "default_value": "scc-workload-protection",
               "description": "The name of the SCC Workload Protection Instance."
+            },
+            {
+              "key": "node_affinity",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             }
           ],
           "install_type": "fullstack",

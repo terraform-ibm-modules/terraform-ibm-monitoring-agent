@@ -439,6 +439,13 @@ variable "prometheus_config" {
   nullable    = false
 }
 
+variable "node_affinity" {
+  description = "A map to define the node affinity for the agents when deployed to the cluster."
+  type        = map(any)
+  default     = {}
+  nullable    = false
+}
+
 variable "provider_visibility" {
   description = "Set the visibility value for the IBM terraform provider. Supported values are `public`, `private`, `public-and-private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
   type        = string

@@ -470,3 +470,10 @@ variable "install_required_binaries" {
   description = "When set to true, a script will run to check if `kubectl` exists on the runtime and if not attempt to download it from the public internet and install it to /tmp. Set to false to skip running this script."
   nullable    = false
 }
+
+variable "node_affinity" {
+  description = "A map to define the node affinity for the agents when deployed to the cluster."
+  type        = map(any)
+  default     = {}
+  nullable    = false
+}
