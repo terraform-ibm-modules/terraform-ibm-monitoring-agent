@@ -472,8 +472,12 @@ variable "install_required_binaries" {
 }
 
 variable "affinity" {
-  description = "A map to define the affinity for the agents when deployed to the cluster."
-  type        = map(any)
-  default     = {}
-  nullable    = false
+  description = "An object to define the affinity for the agents when deployed to the cluster. Only the keys `nodeAffinity`, `podAffinity`, and `podAntiAffinity` are supported. Default to empty configuration."
+  type = object({
+    nodeAffinity    = optional(any, null)
+    podAffinity     = optional(any, null)
+    podAntiAffinity = optional(any, null)
+  })
+  default  = {}
+  nullable = false
 }

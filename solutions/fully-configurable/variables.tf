@@ -440,10 +440,14 @@ variable "prometheus_config" {
 }
 
 variable "affinity" {
-  description = "A map to define the affinity for the agents when deployed to the cluster. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#affinity)."
-  type        = map(any)
-  default     = {}
-  nullable    = false
+  description = "An object to define the affinity for the agents when deployed to the cluster. Only the keys `nodeAffinity`, `podAffinity`, and `podAntiAffinity` are supported. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#affinity)."
+  type = object({
+    nodeAffinity    = optional(any, null)
+    podAffinity     = optional(any, null)
+    podAntiAffinity = optional(any, null)
+  })
+  default  = {}
+  nullable = false
 }
 
 variable "provider_visibility" {
