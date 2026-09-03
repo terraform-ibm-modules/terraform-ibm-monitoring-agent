@@ -146,3 +146,65 @@ The default behaviour configures the agent to tolerate any taint and explicitly 
 ### References
 
 - [Kubernetes Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
+
+
+---
+
+## `affinity`
+
+The `affinity` variable allows you to define [Kubernetes affinity rules](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) for the IBM Cloud Monitoring agent pods. Affinity rules give you fine-grained control over which nodes the agent pods are scheduled on, beyond what simple node selectors allow.
+
+### Type
+
+```hcl
+type = map(any)
+```
+
+### Default
+
+```hcl
+default = {}
+```
+
+By default, no affinity rules are applied and the agent pods can be scheduled on any available node.
+
+### Description
+
+- **Purpose:**
+  Use `affinity` to constrain which nodes the monitoring agent pods are placed on. This is useful for co-locating agents with specific workloads, isolating agents to dedicated nodes, or avoiding certain nodes entirely.
+
+- **Supported affinity types:**
+  - `nodeAffinity` — schedule pods based on node labels.
+  - `podAffinity` — schedule pods near other pods that match a label selector.
+  - `podAntiAffinity` — prevent pods from being scheduled near other pods that match a label selector.
+
+- **How it works:**
+  The map is serialised to YAML and injected directly into the agent's Helm values under the `affinity` key. Any valid Kubernetes affinity object is accepted.
+
+### Example Usage
+
+```hcl
+{
+  nodeAffinity = {
+    requiredDuringSchedulingIgnoredDuringExecution = {
+      nodeSelectorTerms = [
+        {
+          matchExpressions = [
+            {
+              key      = "kubernetes.io/os"
+              operator = "In"
+              values   = ["linux"]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+The above configuration schedules agent pods only on Linux nodes.
+
+### References
+
+- [Kubernetes: Affinity and anti-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)

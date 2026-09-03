@@ -439,8 +439,8 @@ variable "prometheus_config" {
   nullable    = false
 }
 
-variable "node_affinity" {
-  description = "A map to define the node affinity for the agents when deployed to the cluster."
+variable "affinity" {
+  description = "A map to define the affinity for the agents when deployed to the cluster. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#affinity)."
   type        = map(any)
   default     = {}
   nullable    = false

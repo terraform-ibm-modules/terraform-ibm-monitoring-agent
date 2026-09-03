@@ -471,8 +471,8 @@ variable "install_required_binaries" {
   nullable    = false
 }
 
-variable "node_affinity" {
-  description = "A map to define the node affinity for the agents when deployed to the cluster."
+variable "affinity" {
+  description = "A map to define the affinity for the agents when deployed to the cluster."
   type        = map(any)
   default     = {}
   nullable    = false

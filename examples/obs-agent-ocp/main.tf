@@ -159,6 +159,24 @@ module "monitoring_agent" {
   agent_tags = { "environment" : "test", "custom" : "value" }
   # example of setting agent mode to troubleshooting for additional metrics
   agent_mode = "troubleshooting"
+  # example of node affinity - schedule agent only on nodes in the "default" worker pool
+  affinity = {
+    nodeAffinity = {
+      requiredDuringSchedulingIgnoredDuringExecution = {
+        nodeSelectorTerms = [
+          {
+            matchExpressions = [
+              {
+                key      = "ibm-cloud.kubernetes.io/worker-pool-name"
+                operator = "In"
+                values   = ["default"]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
 }
 
 ########################################################################################################################
