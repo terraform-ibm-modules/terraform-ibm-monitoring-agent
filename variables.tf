@@ -470,3 +470,14 @@ variable "install_required_binaries" {
   description = "When set to true, a script will run to check if `kubectl` exists on the runtime and if not attempt to download it from the public internet and install it to /tmp. Set to false to skip running this script."
   nullable    = false
 }
+
+variable "affinity" {
+  description = "An object to define the affinity for the agents when deployed to the cluster. Only the keys `nodeAffinity`, `podAffinity`, and `podAntiAffinity` are supported. Default to empty configuration."
+  type = object({
+    nodeAffinity    = optional(any, null)
+    podAffinity     = optional(any, null)
+    podAntiAffinity = optional(any, null)
+  })
+  default  = {}
+  nullable = false
+}

@@ -324,6 +324,12 @@ resource "helm_release" "cloud_monitoring_agent" {
 %{~if length(var.node_selector) > 0}
     "nodeSelector": ${jsonencode(var.node_selector)}
 %{~endif}
+%{~if length(var.affinity) > 0}
+    "affinity":
+%{for line in split("\n", yamlencode(var.affinity))~}
+      ${line}
+%{endfor}
+%{~endif}
 EOT
   ]
 

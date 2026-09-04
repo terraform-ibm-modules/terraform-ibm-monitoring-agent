@@ -439,6 +439,17 @@ variable "prometheus_config" {
   nullable    = false
 }
 
+variable "affinity" {
+  description = "An object to define the affinity for the agents when deployed to the cluster. Only the keys `nodeAffinity`, `podAffinity`, and `podAntiAffinity` are supported. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent/blob/main/solutions/fully-configurable/DA-types.md#affinity)."
+  type = object({
+    nodeAffinity    = optional(any, null)
+    podAffinity     = optional(any, null)
+    podAntiAffinity = optional(any, null)
+  })
+  default  = {}
+  nullable = false
+}
+
 variable "provider_visibility" {
   description = "Set the visibility value for the IBM terraform provider. Supported values are `public`, `private`, `public-and-private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
   type        = string

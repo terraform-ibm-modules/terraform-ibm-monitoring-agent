@@ -82,4 +82,5 @@ module "monitoring_agent" {
   priority_class_name             = var.priority_class_name
   priority_class_value            = var.priority_class_value
   node_selector                   = var.node_selector
+  affinity                        = var.affinity
 }
