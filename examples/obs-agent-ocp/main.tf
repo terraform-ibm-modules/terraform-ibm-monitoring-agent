@@ -71,7 +71,7 @@ locals {
 
 module "ocp_base" {
   source               = "terraform-ibm-modules/base-ocp-vpc/ibm"
-  version              = "3.91.1"
+  version              = "3.91.4"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   resource_tags        = var.resource_tags
@@ -95,7 +95,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 module "cloud_monitoring" {
   source            = "terraform-ibm-modules/cloud-monitoring/ibm"
-  version           = "1.15.13"
+  version           = "1.15.15"
   instance_name     = "${var.prefix}-cloud-monitoring"
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
@@ -124,7 +124,7 @@ module "app_config" {
 
 module "scc_wp" {
   source                                       = "terraform-ibm-modules/scc-workload-protection/ibm"
-  version                                      = "1.22.3"
+  version                                      = "1.22.6"
   name                                         = "${var.prefix}-scc-wp"
   resource_group_id                            = module.resource_group.resource_group_id
   region                                       = var.region
