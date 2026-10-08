@@ -3,10 +3,10 @@ module github.com/terraform-ibm-modules/terraform-ibm-monitoring-agent
 go 1.26.1
 
 require (
-	github.com/IBM/go-sdk-core/v5 v5.24.0
+	github.com/IBM/go-sdk-core/v5 v5.25.0
 	github.com/gruntwork-io/terratest v1.0.1
 	github.com/stretchr/testify v1.12.1
-	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.80.1
+	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.80.2
 )
 
 require (

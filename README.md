@@ -104,7 +104,7 @@ You need the following permissions to run this module.
 ### Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 3.0.0, <4.0.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.79.2, <3.0.0 |
@@ -116,7 +116,7 @@ No modules.
 ### Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [helm_release.cloud_monitoring_agent](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [terraform_data.install_required_binaries](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [ibm_container_cluster.cluster](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/data-sources/container_cluster) | data source |
@@ -126,7 +126,7 @@ No modules.
 ### Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_access_key"></a> [access\_key](#input\_access\_key) | Access key used by the agent to communicate with the instance. Either `access_key` or `existing_access_key_secret_name` is required. This value will be stored in a new secret on the cluster if passed. If you want to use this agent for only metrics or metrics with security and compliance, use a manager key scoped to the IBM Cloud Monitoring instance. If you only want to use the agent for security and compliance use a manager key scoped to the Security and Compliance Center Workload Protection instance. | `string` | `null` | no |
 | <a name="input_add_cluster_name"></a> [add\_cluster\_name](#input\_add\_cluster\_name) | If true, configure the agent to associate a tag containing the cluster name. This tag is added in the format `ibm-containers-kubernetes-cluster-name: cluster_name`. | `bool` | `true` | no |
 | <a name="input_affinity"></a> [affinity](#input\_affinity) | An object to define the affinity for the agents when deployed to the cluster. Only the keys `nodeAffinity`, `podAffinity`, and `podAntiAffinity` are supported. Default to empty configuration. | <pre>object({<br/>    nodeAffinity    = optional(any, null)<br/>    podAffinity     = optional(any, null)<br/>    podAntiAffinity = optional(any, null)<br/>  })</pre> | `{}` | no |
