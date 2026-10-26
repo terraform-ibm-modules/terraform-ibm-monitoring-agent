@@ -197,6 +197,9 @@ locals {
   ]
 }
 
+# lookup IBM Cloud Account ID
+data "ibm_iam_account_settings" "iam_account_settings" {}
+
 # create a new zone
 resource "sysdig_secure_zone" "zones" {
   name        = "${var.prefix}-zone"
@@ -204,11 +207,19 @@ resource "sysdig_secure_zone" "zones" {
 
   scope {
     target_type = "ibm"
-    rules       = ""
+    expression {
+      field    = "account"
+      operator = "in"
+      values   = [data.ibm_iam_account_settings.iam_account_settings.account_id]
+    }
   }
   scope {
     target_type = "kubernetes" # this is required to view security metrics from the kubernetes cluster
-    rules       = ""
+    expression {
+      field    = "clusterId"
+      operator = "in"
+      values   = [module.ocp_base.cluster_id]
+    }
   }
 }
 
