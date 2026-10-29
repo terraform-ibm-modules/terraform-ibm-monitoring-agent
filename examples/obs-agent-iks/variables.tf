@@ -39,3 +39,9 @@ variable "datacenter" {
   description = "If creating a classic cluster, the data center where the cluster is created"
   default     = "syd01"
 }
+
+variable "existing_app_config_crn" {
+  type        = string
+  description = "The CRN of an existing App Configuration instance to use. If not specified, a new App Configuration instance is created."
+  default     = null
+}
