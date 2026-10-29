@@ -197,9 +197,6 @@ locals {
   ]
 }
 
-# lookup IBM Cloud Account ID
-data "ibm_iam_account_settings" "iam_account_settings" {}
-
 # create a new zone
 resource "sysdig_secure_zone" "zones" {
   name        = "${var.prefix}-zone"
@@ -210,7 +207,7 @@ resource "sysdig_secure_zone" "zones" {
     expression {
       field    = "account"
       operator = "in"
-      values   = [data.ibm_iam_account_settings.iam_account_settings.account_id]
+      values   = [module.scc_wp.account_id]
     }
   }
   scope {
