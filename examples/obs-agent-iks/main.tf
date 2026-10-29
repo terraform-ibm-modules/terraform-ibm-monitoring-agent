@@ -120,7 +120,9 @@ module "cloud_monitoring" {
 # App Config instance
 ##############################################################################
 
+# Only create a new App Config instance if an existing one is not passed in
 module "app_config" {
+  count                        = var.existing_app_config_crn == null ? 1 : 0
   source                       = "terraform-ibm-modules/app-configuration/ibm"
   version                      = "1.19.5"
   resource_group_id            = module.resource_group.resource_group_id
@@ -129,6 +131,10 @@ module "app_config" {
   app_config_plan              = "basic"
   app_config_service_endpoints = "public-and-private"
   resource_tags                = var.resource_tags
+}
+
+locals {
+  app_config_crn = var.existing_app_config_crn != null ? var.existing_app_config_crn : module.app_config[0].app_config_crn
 }
 
 ##############################################################################
@@ -144,7 +150,7 @@ module "scc_wp" {
   resource_tags                                = var.resource_tags
   cloud_monitoring_instance_crn                = module.cloud_monitoring.crn
   cspm_enabled                                 = true
-  app_config_crn                               = module.app_config.app_config_crn
+  app_config_crn                               = local.app_config_crn
   scc_workload_protection_trusted_profile_name = "${var.prefix}-tp"
 }
 
