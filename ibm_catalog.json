@@ -859,7 +859,7 @@
               "name": "deploy-arch-ibm-scc-workload-protection",
               "description": "Configure an IBM Cloud Security and Compliance Center Workload Protection instance to help you manage security and compliance for your organization.",
               "id": "4322cf44-2289-49aa-a719-dd79e39b14dc-global",
-              "version": "v1.17.4",
+              "version": "v1.22.20",
               "flavors": [
                 "fully-configurable"
               ],
@@ -997,7 +997,7 @@
                   "reference_version": true
                 }
               ],
-              "version": "v3.80.3"
+              "version": "v4.1.1"
             }
           ],
           "dependency_version_2": true,
