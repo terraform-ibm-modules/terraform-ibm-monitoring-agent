@@ -204,9 +204,11 @@ resource "sysdig_secure_zone" "zones" {
 
   scope {
     target_type = "ibm"
+    rules       = "*"
   }
   scope {
     target_type = "kubernetes" # this is required to view security metrics from the kubernetes cluster
+    rules       = "*"
   }
 }
 
