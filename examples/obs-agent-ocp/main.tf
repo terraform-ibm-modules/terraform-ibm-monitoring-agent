@@ -198,17 +198,19 @@ locals {
 }
 
 # create a new zone and add the FedRAMP policies to it
-resource "sysdig_secure_posture_zone" "zones" {
+resource "sysdig_secure_zone" "zones" {
   name        = "${var.prefix}-zone"
   description = "Zone description"
-  policy_ids  = [for p in local.fedramp_policies : p.id]
 
-  scopes {
-    scope {
-      target_type = "ibm"
-    }
-    scope {
-      target_type = "kubernetes" # this is required to view security metrics from the kubernetes cluster
-    }
+  scope {
+    target_type = "ibm"
   }
+  scope {
+    target_type = "kubernetes" # this is required to view security metrics from the kubernetes cluster
+  }
+}
+
+resource "sysdig_secure_zone_posture_policy_assignment" "zones" {
+  zone_id    = sysdig_secure_zone.zones.id
+  policy_ids = [for p in local.fedramp_policies : p.id]
 }
