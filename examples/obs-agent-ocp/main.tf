@@ -204,15 +204,26 @@ resource "sysdig_secure_zone" "zones" {
 
   scope {
     target_type = "ibm"
-    rules       = "*"
+    expression {
+      field    = "account"
+      operator = "in"
+      values   = [module.scc_wp.account_id]
+    }
   }
+
   scope {
     target_type = "kubernetes" # this is required to view security metrics from the kubernetes cluster
-    rules       = "*"
+    expression {
+      field    = "clusterId"
+      operator = "in"
+      values   = [var.prefix]
+    }
   }
 }
 
+# add the FedRAMP policies to the zone
 resource "sysdig_secure_zone_posture_policy_assignment" "zones" {
   zone_id    = sysdig_secure_zone.zones.id
   policy_ids = [for p in local.fedramp_policies : p.id]
 }
+
