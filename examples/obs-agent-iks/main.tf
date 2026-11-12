@@ -234,7 +234,7 @@ resource "sysdig_secure_zone" "zones" {
     expression {
       field    = "clusterId"
       operator = "in"
-      values   = [local.cluster_name_id]
+      values   = [var.prefix]
     }
   }
 }
