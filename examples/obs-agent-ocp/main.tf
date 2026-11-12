@@ -226,4 +226,3 @@ resource "sysdig_secure_zone_posture_policy_assignment" "zones" {
   zone_id    = sysdig_secure_zone.zones.id
   policy_ids = [for p in local.fedramp_policies : p.id]
 }
-
