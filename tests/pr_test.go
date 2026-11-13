@@ -308,8 +308,9 @@ func TestRunAgentVpcKubernetes(t *testing.T) {
 		CloudInfoService: sharedInfoSvc,
 	})
 	options.TerraformVars = map[string]any{
-		"resource_group": resourceGroup,
-		"prefix":         options.Prefix,
+		"resource_group":          resourceGroup,
+		"prefix":                  options.Prefix,
+		"existing_app_config_crn": permanentResources["app_config_crn"],
 	}
 
 	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
@@ -335,9 +336,10 @@ func TestRunAgentClassicKubernetes(t *testing.T) {
 		CloudInfoService: sharedInfoSvc,
 	})
 	options.TerraformVars = map[string]any{
-		"resource_group": resourceGroup,
-		"datacenter":     "syd01",
-		"prefix":         options.Prefix,
+		"resource_group":          resourceGroup,
+		"datacenter":              "syd01",
+		"prefix":                  options.Prefix,
+		"existing_app_config_crn": permanentResources["app_config_crn"],
 	}
 
 	output, err := options.RunTestConsistency()
