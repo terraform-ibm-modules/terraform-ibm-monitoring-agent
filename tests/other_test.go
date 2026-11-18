@@ -106,7 +106,6 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 		},
 	}
 
-	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
 	createContainersApikey(t, region, resourceGroup)
 
 	err := options.RunAddonTest()
