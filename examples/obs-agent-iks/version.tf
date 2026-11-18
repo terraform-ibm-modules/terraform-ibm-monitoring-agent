@@ -25,7 +25,7 @@ terraform {
     # The sysdig provider is not actually required by the module itself, just this example, so OK to use ">=" here instead of locking into a version
     sysdig = {
       source  = "sysdiglabs/sysdig"
-      version = ">= 3.3.1, <4.0.0"
+      version = ">= 3.8.0, <4.0.0"
     }
     # The restapi provider is not actually required by the module itself, just this example, so OK to use ">=" here instead of locking into a version
     restapi = {
