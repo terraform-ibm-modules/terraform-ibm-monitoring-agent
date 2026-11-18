@@ -91,6 +91,11 @@ func TestAgentDefaultConfiguration(t *testing.T) {
 				"enable_activity_tracker_event_routing_to_cloud_logs": false,
 			},
 		},
+		{
+			OfferingName:   "deploy-arch-ibm-apprapp",
+			OfferingFlavor: "fully-configurable",
+			Enabled:        core.BoolPtr(false),
+		},
 	}
 
 	// Temp workaround for https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc?tab=readme-ov-file#the-specified-api-key-could-not-be-found
